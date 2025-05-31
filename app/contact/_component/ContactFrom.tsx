@@ -1,0 +1,136 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import Image from "next/image"
+
+export default function ContactForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log("Form submitted:", formData)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  return (
+    <section className="py-8 sm:py-12 lg:py-0">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[60px] font-bold text-[#000000CC] pb-6 sm:pb-8 lg:pb-10">
+          Contact Us
+        </h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
+          {/* Form Section */}
+          <div className="order-2 lg:order-1 w-full">
+            <div className="w-full max-w-2xl">
+              <div className="mb-6 sm:mb-8">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#000000CC] mb-3">Get in Touch</h3>
+                <p className="text-[#000000CC] text-base sm:text-lg font-normal leading-relaxed">
+                  Have a question or need assistance? Fill out the form below and our team will get back to you as soon
+                  as possible.
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                <div>
+                  <Label htmlFor="name" className="text-sm font-normal text-[#000000] mb-2 block">
+                    Name
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full h-12 sm:h-[60px] border-[#000000] rounded-lg focus:ring-2 focus:ring-gray-200 transition-all"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="email" className="text-sm font-normal text-[#000000] mb-2 block">
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full h-12 sm:h-[60px] border-[#000000] rounded-lg focus:ring-2 focus:ring-gray-200 transition-all"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="message" className="text-sm font-normal text-[#000000] mb-2 block">
+                    How can we help?
+                  </Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={4}
+                    className="w-full min-h-[120px] sm:min-h-[150px] border-[#000000] rounded-lg resize-none focus:ring-2 focus:ring-gray-200 transition-all"
+                    required
+                  />
+                </div>
+
+                <div className="pt-6 sm:pt-8 lg:pt-[60px]">
+                  <Button
+                    type="submit"
+                    className="w-full sm:w-auto bg-transparent hover:bg-gray-50 text-[#000000CC] px-6 sm:px-8 h-12 sm:h-[51px] rounded-full border border-[#000000CC] transition-all duration-200 hover:shadow-md"
+                  >
+                    Let Us Know
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          {/* Image Section */}
+          <div className="order-1 lg:order-2">
+            <div className="relative w-full mx-auto">
+              {/* Mobile and Tablet */}
+              <div className="aspect-square w-full max-w-md mx-auto lg:hidden">
+                <Image
+                  src="/asset/contact1.png"
+                  alt="Beauty products and cosmetics"
+                  fill
+                  className="object-cover rounded-lg"
+                />
+              </div>
+
+              {/* Desktop */}
+              <div className="hidden lg:block relative aspect-square w-full max-w-[600px] xl:max-w-[772px] h-auto">
+                <Image
+                  src="/asset/contact1.png"
+                  alt="Beauty products and cosmetics"
+                  fill
+                  className="object-cover "
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
