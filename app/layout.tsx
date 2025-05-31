@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/web/Footer";
 
 // Import Raleway font
 const raleway = Raleway({
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${raleway.variable} antialiased`}>
         {children}
+          <Footer/>
       </body>
     </html>
   );

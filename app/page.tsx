@@ -1,5 +1,6 @@
-import Footer from "@/components/web/Footer";
+
 import HeroSection from "@/components/web/HeroSection";
+import TestimonialCarousel from "@/components/web/Testimonial";
 
 
 export default function Home() {
@@ -7,7 +8,8 @@ export default function Home() {
     <div >
       
      <HeroSection/>
-     <Footer/>
+     <TestimonialCarousel/>
+   
     </div>
   );
 }
