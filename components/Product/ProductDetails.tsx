@@ -6,6 +6,7 @@ import Link from "next/link"
 import { ArrowLeft, Star, Plus, Minus, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import BestSellers from "../BestSerllers"
+import ProductReviews from "./ProductReviews"
 
 // Mock product data - in a real app, this would come from an API
 const getProduct = (id: string) => {
@@ -143,7 +144,8 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+<section>
+      <div className="container mx-auto px-4 py-8">
       {/* Back Button */}
       <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
         <ArrowLeft className="w-4 h-4 mr-2" />
@@ -310,8 +312,17 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
 
 
 
+    </div>
+
+
+
+    {/* ProductReviews  */} 
+<div className="bg-[#F5D2A899] py-8">
+  <ProductReviews productId={productId} />
+</div>
+
 {/* Best Seller products */}
        <BestSellers/>
-    </div>
+</section>
   )
 }
