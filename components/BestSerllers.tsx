@@ -67,7 +67,7 @@ export default function BestSellers() {
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Bestsellers</h2>
           <Link
-            href="/product"
+            href="/products"
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 group"
           >
             <span className="text-sm md:text-base">View all products</span>
