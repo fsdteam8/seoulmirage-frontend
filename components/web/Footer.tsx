@@ -8,74 +8,97 @@ export default function Footer() {
   return (
     <footer className="bg-gray-50 border-t">
       {/* Newsletter Section */}
-      <div className="container mx-auto px-4 py-8 md:py-12">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-xl md:text-[32px] font-bold text-[#000000CC] mb-4">Join Our Community</h2>
-          <p className="text-sm md:text-[18px] text-[#000000CC] mb-[60px] w-[650px] mx-auto font-medium">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
+        <div className="text-center mb-8 md:mb-12 lg:mb-16">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#000000CC] mb-3 md:mb-4">
+            Join Our Community
+          </h2>
+          <p className="text-sm sm:text-base md:text-lg lg:text-[18px] text-[#000000CC] mb-8 md:mb-12 lg:mb-[60px] max-w-xs sm:max-w-md md:max-w-lg lg:max-w-[650px] mx-auto font-medium px-4 sm:px-0">
             Subscribe to our newsletter for exclusive offers, skincare tips, and new product announcements.
           </p>
 
           {/* Email Signup Form */}
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto items-center">
-            <Input type="email" placeholder="Your email address" className="flex-1 h-10 md:h-[51px] rounded-[100px] border border-[#00000033]" />
-            <Button className="bg-[#F092B0] hover:bg-[#F092B0]/90 text-[#000000] text-bae font-medium px-6 h-10 md:h-[51px] whitespace-nowra rounded-[100px]">
+          <div className="flex flex-col sm:flex-row gap-3 max-w-xs sm:max-w-md md:max-w-lg mx-auto items-stretch sm:items-center px-4 sm:px-0">
+            <Input
+              type="email"
+              placeholder="Your email address"
+              className="text-[#1E2A38] text-sm sm:text-base flex-1 h-[51px] rounded-full border border-[#00000033] placeholder:text-[#1E2A38] px-4 sm:px-6"
+            />
+            <Button className="bg-[#F092B0] hover:bg-[#F092B0]/90 text-[#000000] text-sm sm:text-base font-medium px-4 sm:px-6 md:px-8 h-10 sm:h-11 md:h-12 lg:h-[51px] whitespace-nowrap rounded-full">
               Subscribe
             </Button>
           </div>
         </div>
 
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
           {/* Logo and Description */}
-          <div className="lg:col-span-2">
-            <div className="mb-4">
-              <div className="w-[50px] h-12 rounded-lg flex items-center justify-center mb-4">
-               <Image src="/asset/logo.png" width={100} height={100} alt={"logo"}/>
+          <div className="sm:col-span-2 lg:col-span-2 text-center sm:text-left">
+            <div className="mb-4 md:mb-6">
+              <div className="w-12 sm:w-[50px] h-12 rounded-lg flex items-center justify-center mb-4 mx-auto sm:mx-0">
+                <Image
+                  src="/asset/logo.png"
+                  width={100}
+                  height={48}
+                  alt="logo"
+                  className="w-auto h-full object-contain"
+                />
               </div>
-              <p className="text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm">
+              <p className="text-base sm:text-lg lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
                 Lorem ipsum dolor sit amet consectetur. Scelerisque mauris lectus habitasse adipiscing elit.
               </p>
             </div>
 
             {/* Social Media Icons */}
-            <div className="flex space-x-1">
+            <div className="flex space-x-2 justify-center sm:justify-start">
               <Link
                 href="#"
-                className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors"
+                className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors shadow-sm"
               >
-                <Facebook className="w-4 h-4" />
+                <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
               <Link
                 href="#"
-                className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors"
+                className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors shadow-sm"
               >
-                <Twitter className="w-4 h-4" />
+                <Twitter className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
               <Link
                 href="#"
-                className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors"
+                className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors shadow-sm"
               >
-                <Instagram className="w-4 h-4" />
+                <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
             </div>
           </div>
 
           {/* Shop Links */}
-          <div>
-            <h3 className="font-medium text-[32px] text-[#000000CC] mb-4">Shop</h3>
-            <ul className="space-y-3">
+          <div className="text-center sm:text-left">
+            <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
+              Shop
+            </h3>
+            <ul className="space-y-2 md:space-y-3">
               <li>
-                <Link href="#" className="text-base text-[#000000CC] font-normal">
+                <Link
+                  href="#"
+                  className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
+                >
                   All Products
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-base text-[#000000CC] font-normal">
+                <Link
+                  href="#"
+                  className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
+                >
                   Bestsellers
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-base text-[#000000CC] font-normal">
+                <Link
+                  href="#"
+                  className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
+                >
                   New Arrivals
                 </Link>
               </li>
@@ -83,26 +106,40 @@ export default function Footer() {
           </div>
 
           {/* About Links */}
-          <div>
-            <h3 className="font-medium text-[32px] text-[#000000CC] mb-4">About</h3>
-            <ul className="space-y-3">
+          <div className="text-center sm:text-left">
+            <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
+              About
+            </h3>
+            <ul className="space-y-2 md:space-y-3">
               <li>
-                <Link href="#" className="text-base text-[#000000CC] font-normal">
+                <Link
+                  href="#"
+                  className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-base text-[#000000CC] font-normal">
+                <Link
+                  href="#"
+                  className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
+                >
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-base text-[#000000CC] font-normal">
+                <Link
+                  href="#"
+                  className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
+                >
                   Shipping & Returns
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-base text-[#000000CC] font-normal">
+                <Link
+                  href="#"
+                  className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
+                >
                   Privacy Policy
                 </Link>
               </li>
@@ -111,8 +148,10 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-[#00000033] mt-8 pt-6">
-          <p className="text-sm text-[#000000CC] font-medium text-center md:text-left">© 2024, Sensei Mirage. All rights reserved.</p>
+        <div className="border-t border-[#00000033] mt-6 sm:mt-8 md:mt-10 lg:mt-12 pt-4 sm:pt-6">
+          <p className="text-xs sm:text-sm text-[#000000CC] font-medium text-center">
+            © 2024, Sensei Mirage. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
