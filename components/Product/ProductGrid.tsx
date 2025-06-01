@@ -63,6 +63,36 @@ const products = [
       "/asset/p1.png",
     ],
   },
+  {
+    id: "5",
+    category: "Serums",
+    name: "Age Defense Elixir",
+    price: 75,
+    rating: 4.9,
+    reviews: 165,
+    image: "/asset/p4.png",
+    images: [
+      "/asset/p2.png",
+      "/asset/p3.png",
+      "/asset/p4.png",
+      "/asset/p1.png",
+    ],
+  },
+  {
+    id: "6",
+    category: "Serums",
+    name: "Age Defense Elixir",
+    price: 75,
+    rating: 4.9,
+    reviews: 165,
+    image: "/asset/p4.png",
+    images: [
+      "/asset/p2.png",
+      "/asset/p3.png",
+      "/asset/p4.png",
+      "/asset/p1.png",
+    ],
+  },
 ];
 
 
