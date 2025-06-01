@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, Star, Plus, Minus, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import BestSellers from "../BestSerllers"
 
 // Mock product data - in a real app, this would come from an API
 const getProduct = (id: string) => {
@@ -306,6 +307,11 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
           </div>
         </div>
       </div>
+
+
+
+{/* Best Seller products */}
+       <BestSellers/>
     </div>
   )
 }
