@@ -65,7 +65,7 @@ export default function NewArrive() {
       <div className="max-w-7xl mx-auto">
         {/* Header with title and view all link */}
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">New Arrive</h2>
+          <h2 className="text-xl md:text-2xl font-medium text-gray-900">New Arrive</h2>
           <Link
             href="/products"
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 group"
