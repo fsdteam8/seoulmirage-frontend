@@ -147,7 +147,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
 <section>
       <div className="container mx-auto px-4 py-8">
       {/* Back Button */}
-      <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
+      <Link href="/products" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Products
       </Link>
@@ -234,7 +234,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
                   <Star
                     key={i}
                     className={`w-4 h-4 ${
-                      i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                      i < Math.floor(product.rating) ? "fill-black text-black" : "text-gray-300"
                     }`}
                   />
                 ))}
