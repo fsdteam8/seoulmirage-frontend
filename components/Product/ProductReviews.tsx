@@ -173,7 +173,7 @@ function WriteReviewModal({ productId }: { productId: string }) {
                 <button key={star} type="button" onClick={() => handleRatingClick(star)} className="p-1">
                   <Star
                     className={`w-6 h-6 ${
-                      star <= formData.rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-200 text-gray-200"
+                      star <= formData.rating ? "fill-black text-black" : "fill-gray-200 text-gray-200"
                     }`}
                   />
                 </button>
