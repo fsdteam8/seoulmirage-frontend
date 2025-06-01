@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={raleway.className}>
       <body className={`${raleway.variable} antialiased`}>
        <Navbar/>
         {children}
