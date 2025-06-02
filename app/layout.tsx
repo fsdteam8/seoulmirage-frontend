@@ -6,6 +6,7 @@ import "./globals.css";
 import Footer from "@/components/web/Footer";
 
 import Navbar from "@/components/web/Navbar/Navbar";
+import { Toaster } from "sonner";
 
 
 // Import Raleway font
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body className={`${raleway.variable} antialiased`}>
        <Navbar/>
         {children}
+        <Toaster />
           <Footer/>
       </body>
     </html>
