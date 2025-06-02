@@ -63,7 +63,7 @@ export default function Navbar() {
 
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Left Side: Logo + Navigation */}
           <div className="flex items-center space-x-8">
@@ -221,9 +221,11 @@ export default function Navbar() {
             </DropdownMenu>
 
             {/* Cart */}
+            <Link href="/cart">
             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
               <ShoppingBag className="h-4 w-4" />
             </Button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden">
