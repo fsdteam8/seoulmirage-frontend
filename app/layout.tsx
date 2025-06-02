@@ -7,7 +7,8 @@ import Footer from "@/components/web/Footer";
 
 import Navbar from "@/components/web/Navbar/Navbar";
 import { Toaster } from "sonner";
-
+import AuthProvider from "@/components/Provider/AuthProvider";
+import Providers from "@/components/Provider/providers";
 
 // Import Raleway font
 const raleway = Raleway({
@@ -29,10 +30,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={raleway.className}>
       <body className={`${raleway.variable} antialiased`}>
-       <Navbar/>
-        {children}
-        <Toaster />
-          <Footer/>
+        <Providers>
+          <AuthProvider>
+            <Navbar />
+            {children}
+            <Toaster position="top-right" />
+            <Footer />
+          </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

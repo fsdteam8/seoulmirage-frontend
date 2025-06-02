@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import { Minus, Plus, Trash2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { useCartStore } from "@/store/cart-store"
+import Image from "next/image";
+import Link from "next/link";
+import { Minus, Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useCartStore } from "@/store/cart-store";
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, getTotalPrice } = useCartStore()
-  const subtotal = getTotalPrice()
-  const shipping = 5.99
-  const total = subtotal + shipping
+  const { items, updateQuantity, removeItem, getTotalPrice } = useCartStore();
+  const subtotal = getTotalPrice();
+  const shipping = 5.99;
+  const total = subtotal + shipping;
 
   if (items.length === 0) {
     return (
@@ -23,7 +23,7 @@ export default function CartPage() {
           </Link>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -35,7 +35,10 @@ export default function CartPage() {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
             {items.map((item) => (
-              <div key={item.id} className="flex items-center space-x-4 border-b pb-6">
+              <div
+                key={item.id}
+                className="flex items-center space-x-4 border-b pb-6"
+              >
                 <Image
                   src={item.image || "/placeholder.svg"}
                   alt={item.name}
@@ -52,12 +55,18 @@ export default function CartPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                      onClick={() =>
+                        updateQuantity(item.id, Math.max(1, item.quantity - 1))
+                      }
                     >
                       <Minus className="w-4 h-4" />
                     </Button>
                     <span className="w-8 text-center">{item.quantity}</span>
-                    <Button variant="outline" size="sm" onClick={() => updateQuantity(item.id, item.quantity + 1)}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    >
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
@@ -110,11 +119,13 @@ export default function CartPage() {
             </div>
 
             <Link href="/checkout">
-              <Button className="w-full bg-black text-white hover:bg-gray-800">Proceed to Checkout</Button>
+              <Button className="w-full bg-black text-white hover:bg-gray-800">
+                Proceed to Checkout
+              </Button>
             </Link>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

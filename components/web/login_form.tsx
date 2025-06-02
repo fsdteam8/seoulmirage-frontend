@@ -10,6 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // 1. Zod Schema
 const loginSchema = z.object({
@@ -24,6 +27,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -36,8 +41,29 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
     console.log("Form Data:", data);
+    try {
+      const res = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        throw new Error(res.error);
+      }
+      toast.success("Login successful!");
+      router.push("/");
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log("Login error:", error);
+      toast.error("Login failed. Please check your credentials and try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -141,7 +167,7 @@ export default function Login() {
               type="submit"
               className="w-full h-11 bg-black hover:bg-gray-800 text-white font-normal rounded-md transition-colors"
             >
-              Sign In
+              {isLoading ? "Sign in..." : "Sign In"}
             </Button>
           </div>
         </div>

@@ -10,6 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // Zod Schema
 const loginSchema = z
@@ -33,6 +36,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -45,8 +49,42 @@ export default function SignUp() {
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: async (data: LoginFormData) => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        toast.error(error.message || "Registration failed");
+        // throw new Error(error.message || "Registration failed");
+      }
+
+      const result = await res.json();
+
+      return result;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Registration successful!");
+      router.push("/login");
+    },
+    onError: (error: Error) => {
+      console.error("Registration error:", error);
+      toast.error(error.message || "An error occurred during registration");
+    },
+  });
+
   const onSubmit = (data: LoginFormData) => {
     console.log("Form Data:", data);
+    mutation.mutate(data);
   };
 
   return (
@@ -174,15 +212,9 @@ export default function SignUp() {
                   htmlFor="remember-me"
                   className="text-sm font-normal text-gray-700 cursor-pointer"
                 >
-                  Remember me
+                  I agree to the Terms of Service and Privacy Policy
                 </Label>
               </div>
-              <Link
-                href="#"
-                className="text-sm text-gray-900 hover:text-gray-700 font-normal"
-              >
-                Forgot your password?
-              </Link>
             </div>
 
             {/* Submit */}
@@ -190,27 +222,20 @@ export default function SignUp() {
               type="submit"
               className="w-full h-11 bg-black hover:bg-gray-800 text-white"
             >
-              Create Account
+              {mutation.isPending ? "Creating account..." : "Sign Up"}
             </Button>
           </div>
         </div>
 
         {/* Footer */}
         <div className="text-center text-sm text-gray-600">
-          By signing in, you agree to our{" "}
+          Already have an account?
           <Link
-            href="#"
+            href="/login"
             className="text-gray-900 hover:text-gray-700 underline"
           >
-            Terms of Service
+            Sign in
           </Link>{" "}
-          and{" "}
-          <Link
-            href="#"
-            className="text-gray-900 hover:text-gray-700 underline"
-          >
-            Privacy Policy
-          </Link>
           .
         </div>
       </form>

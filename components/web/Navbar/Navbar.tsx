@@ -32,6 +32,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { signOut, useSession } from "next-auth/react";
 
 const skincareItems = [
   { name: "Cleansers", href: "/skincare/cleansers" },
@@ -49,17 +50,14 @@ const collectionsItems = [
   { name: "Sensitive Skin", href: "/collections/sensitive-skin" },
 ];
 
-
-
 export default function Navbar() {
-
-  
+  const session = useSession();
+  const token = (session?.data?.user as { token: string })?.token || "";
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSkincareOpen, setIsSkincareOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
-  const [user, setUser] = useState(true);
 
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -184,7 +182,7 @@ export default function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                {user ? (
+                {token ? (
                   <>
                     <DropdownMenuItem>
                       <Link href="/account" className="w-full font-raleway">
@@ -197,7 +195,7 @@ export default function Navbar() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => setUser(false)}
+                      onClick={() => signOut()}
                       className="text-red-600 font-raleway"
                     >
                       Log Out
@@ -222,9 +220,9 @@ export default function Navbar() {
 
             {/* Cart */}
             <Link href="/cart">
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-              <ShoppingBag className="h-4 w-4" />
-            </Button>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <ShoppingBag className="h-4 w-4" />
+              </Button>
             </Link>
 
             {/* Mobile Menu Button */}
