@@ -41,7 +41,7 @@ export default function PaymentFailure() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          Oops! Your Payment Wasn&apoch;t{" "}
+          Oops! Your Payment Wasn&apos;t
           <motion.span
             className="text-red-600"
             initial={{ opacity: 0 }}
