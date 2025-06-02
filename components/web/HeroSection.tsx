@@ -26,7 +26,7 @@ export default function HeroSection() {
                             Premium skincare that combines innovation with clean, effective ingredients for all skin types.
                         </p>
 
-                        <div className="mt-[60px] flex flex-col gap-4 sm:flex-row sm:gap-6">
+                        <div className="mt-[60px] flex  gap-4  sm:gap-6">
                             <Button
                                 size="lg"
                                 className="bg-white text-[#000000] text-base hover:bg-white font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
@@ -36,7 +36,7 @@ export default function HeroSection() {
                             <Button
                                 variant="outline"
                                 size="lg"
-                                className=" bg-transparent text-[#000000] text-base hover:bg-transparent font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
+                                className=" bg-transparent text-white text-base hover:bg-transparent font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
                             >
                                 About Us
                             </Button>
