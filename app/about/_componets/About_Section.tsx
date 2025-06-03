@@ -1,12 +1,14 @@
 "use client";
-// import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 export default function About_Section() {
-  // const session = useSession();
+  const session = useSession();
   // const token = (session?.data?.user as { token: string })?.token || "";
   // console.log(token);
-  return (
+    const token = (session?.data) || "";
+   console.log(token)
+    return (
     <div className="w-full">
       {/* Our Story Section */}
       <section className="bg-[#F9E4CB] py-8 md:py-16 lg:py-0">

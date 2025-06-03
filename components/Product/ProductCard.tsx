@@ -8,18 +8,33 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useCartStore, type Product } from "@/store/cart-store";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 // import { useRouter } from 'next/navigation';
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const session = useSession();
+  const token = (session?.data?.user as { token: string })?.token || "";
   const [isHovered, setIsHovered] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
   // const router = useRouter()
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (!token) {
+      toast.error("Please log in to add items to your cart.", {
+        duration: 2000,
+        position: "top-center",
+        style: {
+          backgroundColor: "#f8d7da",
+          color: "black",
+          fontSize: "16px",
+        },
+      });
+      return;
+    }
     e.stopPropagation();
     addItem(product);
     toast.success(`${product.name} has been added to your cart!`, {
@@ -30,7 +45,6 @@ export default function ProductCard({ product }: ProductCardProps) {
         color: "black",
         fontSize: "16px",
       },
-      // icon: "🛒",
     });
   };
 
