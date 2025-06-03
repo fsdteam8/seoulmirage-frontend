@@ -1,37 +1,52 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import Image from "next/image"
-import Link from "next/link"
-import { Star, ShoppingCart } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
-
-interface Product {
-  id: string
-  category: string
-  name: string
-  price: number
-  rating: number
-  reviews: number
-  image: string
-  images: string[]
-}
-
+import type React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Star, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useCartStore, type Product } from "@/store/cart-store";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
+// import { useRouter } from 'next/navigation';
 interface ProductCardProps {
-  product: Product
+  product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
+  const session = useSession();
+  const token = (session?.data?.user as { token: string })?.token || "";
+  const [isHovered, setIsHovered] = useState(false);
+  const addItem = useCartStore((state) => state.addItem);
+  // const router = useRouter()
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    // Add to cart logic here
-    console.log("Added to cart:", product.name)
-  }
+    e.preventDefault();
+    if (!token) {
+      toast.error("Please log in to add items to your cart.", {
+        duration: 2000,
+        position: "top-center",
+        style: {
+          backgroundColor: "#f8d7da",
+          color: "black",
+          fontSize: "16px",
+        },
+      });
+      return;
+    }
+    e.stopPropagation();
+    addItem(product);
+    toast.success(`${product.name} has been added to your cart!`, {
+      duration: 2000,
+      position: "top-center",
+      style: {
+        backgroundColor: "#f5fff3",
+        color: "black",
+        fontSize: "16px",
+      },
+    });
+  };
 
   return (
     <Link href={`/products/${product.id}`}>
@@ -56,9 +71,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           >
             <Button
               onClick={handleAddToCart}
-              className="bg-white text-black hover:bg-gray-100 font-medium px-6 py-2 rounded-full shadow-lg transform transition-transform duration-200 hover:scale-105"
+              className="bg-white text-black hover:bg-gray-100 font-medium px-6 py-2 rounded-lg shadow-lg transform transition-transform duration-200 hover:scale-105"
             >
-              <ShoppingCart className="w-4 h-4 mr-2" />
+              <ShoppingBag className="w-4 h-4 mr-2" />
               Add to Cart
             </Button>
           </div>
@@ -66,7 +81,9 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <div className="p-4">
           <p className="text-sm text-gray-600 mb-1">{product.category}</p>
-          <h3 className="font-semibold text-lg mb-2 line-clamp-2">{product.name}</h3>
+          <h3 className="font-semibold text-lg mb-2 line-clamp-2">
+            {product.name}
+          </h3>
           <p className="text-2xl font-bold mb-2">${product.price}</p>
 
           <div className="flex items-center gap-2">
@@ -79,5 +96,5 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
     </Link>
-  )
+  );
 }

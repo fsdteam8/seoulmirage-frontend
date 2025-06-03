@@ -1,11 +1,16 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { ChevronDown, Search, User, ShoppingBag, Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ChevronDown, Search, User, ShoppingBag, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,10 +18,21 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Input } from "@/components/ui/input"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+} from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Input } from "@/components/ui/input";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { signOut, useSession } from "next-auth/react";
 
 const skincareItems = [
   { name: "Cleansers", href: "/skincare/cleansers" },
@@ -25,24 +41,27 @@ const skincareItems = [
   { name: "Toners", href: "/skincare/toners" },
   { name: "Serums", href: "/skincare/serums" },
   { name: "Masks", href: "/skincare/masks" },
-]
+];
 
 const collectionsItems = [
   { name: "Hydration", href: "/collections/hydration" },
   { name: "Anti-Aging", href: "/collections/anti-aging" },
   { name: "Brightening", href: "/collections/brightening" },
   { name: "Sensitive Skin", href: "/collections/sensitive-skin" },
-]
+];
 
 export default function Navbar() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isSkincareOpen, setIsSkincareOpen] = useState(false)
-  const [isCollectionsOpen, setIsCollectionsOpen] = useState(false)
+  const session = useSession();
+  const token = (session?.data?.user as { token: string })?.token || "";
+
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSkincareOpen, setIsSkincareOpen] = useState(false);
+  const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
 
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Left Side: Logo + Navigation */}
           <div className="flex items-center space-x-8">
@@ -60,19 +79,24 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation */}
+
             <NavigationMenu className="hidden lg:flex">
               <NavigationMenuList className="space-x-6">
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="nav-text">Skincare</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className="nav-text">
+                    Skincare
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[400px] gap-2 p-4">
+                    <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
                       {skincareItems.map((item) => (
                         <NavigationMenuLink key={item.name} asChild>
                           <Link
                             href={item.href}
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
                           >
-                            <div className="font-raleway text-base font-medium leading-tight">{item.name}</div>
+                            <div className="font-raleway text-base font-medium leading-tight">
+                              {item.name}
+                            </div>
                           </Link>
                         </NavigationMenuLink>
                       ))}
@@ -81,16 +105,20 @@ export default function Navbar() {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="nav-text">Collections</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className="nav-text">
+                    Collections
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[300px] gap-2 p-4">
+                    <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[300px]">
                       {collectionsItems.map((item) => (
                         <NavigationMenuLink key={item.name} asChild>
                           <Link
                             href={item.href}
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
                           >
-                            <div className="font-raleway text-base font-medium leading-tight">{item.name}</div>
+                            <div className="font-raleway text-base font-medium leading-tight">
+                              {item.name}
+                            </div>
                           </Link>
                         </NavigationMenuLink>
                       ))}
@@ -119,7 +147,12 @@ export default function Navbar() {
             <div className="relative">
               {isSearchOpen ? (
                 <div className="flex items-center">
-                  <Input type="text" placeholder="Search..." className="w-48 sm:w-64 pr-10 text-sm" autoFocus />
+                  <Input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-48 sm:w-64 pr-10 text-sm"
+                    autoFocus
+                  />
                   <Button
                     variant="ghost"
                     size="sm"
@@ -130,7 +163,12 @@ export default function Navbar() {
                   </Button>
                 </div>
               ) : (
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => setIsSearchOpen(true)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  onClick={() => setIsSearchOpen(true)}
+                >
                   <Search className="h-4 w-4" />
                 </Button>
               )}
@@ -144,34 +182,48 @@ export default function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem>
-                  <Link href="/account" className="w-full font-raleway">
-                    My Account
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/orders" className="w-full font-raleway">
-                    Order History
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/signin" className="w-full font-raleway">
-                    Sign in
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/signup" className="w-full font-raleway">
-                    Sign up
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-red-600 font-raleway">Log Out</DropdownMenuItem>
+                {token ? (
+                  <>
+                    <DropdownMenuItem>
+                      <Link href="/account" className="w-full font-raleway">
+                        My Account
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/orders" className="w-full font-raleway">
+                        Order History
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => signOut()}
+                      className="text-red-600 font-raleway"
+                    >
+                      Log Out
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem>
+                      <Link href="/login" className="w-full font-raleway">
+                        Sign in
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/sign-up" className="w-full font-raleway">
+                        Sign up
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 
             {/* Cart */}
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-              <ShoppingBag className="h-4 w-4" />
-            </Button>
+            <Link href="/cart">
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <ShoppingBag className="h-4 w-4" />
+              </Button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden">
@@ -181,16 +233,28 @@ export default function Navbar() {
                     <Menu className="h-4 w-4" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-[280px] sm:w-[350px] p-0">
+                <SheetContent
+                  side="right"
+                  className="w-[280px] sm:w-[350px] p-0"
+                >
                   <SheetHeader className="p-6 pb-4 border-b">
-                    <SheetTitle className="text-left font-raleway">Menu</SheetTitle>
+                    <SheetTitle className="text-left font-raleway">
+                      Menu
+                    </SheetTitle>
                   </SheetHeader>
                   <nav className="flex flex-col p-6 space-y-1">
                     {/* Mobile Skincare Collapsible */}
-                    <Collapsible open={isSkincareOpen} onOpenChange={setIsSkincareOpen}>
+                    <Collapsible
+                      open={isSkincareOpen}
+                      onOpenChange={setIsSkincareOpen}
+                    >
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-3 text-left font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md px-3 text-lg">
                         Skincare
-                        <ChevronDown className={`h-4 w-4 transition-transform ${isSkincareOpen ? "rotate-180" : ""}`} />
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${
+                            isSkincareOpen ? "rotate-180" : ""
+                          }`}
+                        />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
                         {skincareItems.map((item) => (
@@ -207,11 +271,16 @@ export default function Navbar() {
                     </Collapsible>
 
                     {/* Mobile Collections Collapsible */}
-                    <Collapsible open={isCollectionsOpen} onOpenChange={setIsCollectionsOpen}>
+                    <Collapsible
+                      open={isCollectionsOpen}
+                      onOpenChange={setIsCollectionsOpen}
+                    >
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-3 text-left font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md px-3 text-lg">
                         Collections
                         <ChevronDown
-                          className={`h-4 w-4 transition-transform ${isCollectionsOpen ? "rotate-180" : ""}`}
+                          className={`h-4 w-4 transition-transform ${
+                            isCollectionsOpen ? "rotate-180" : ""
+                          }`}
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
@@ -253,7 +322,12 @@ export default function Navbar() {
         {isSearchOpen && (
           <div className="lg:hidden py-3 border-t border-gray-200">
             <div className="relative">
-              <Input type="text" placeholder="Search..." className="w-full pr-10 text-sm font-raleway" autoFocus />
+              <Input
+                type="text"
+                placeholder="Search..."
+                className="w-full pr-10 text-sm font-raleway"
+                autoFocus
+              />
               <Button
                 variant="ghost"
                 size="sm"
@@ -267,5 +341,5 @@ export default function Navbar() {
         )}
       </div>
     </header>
-  )
+  );
 }
