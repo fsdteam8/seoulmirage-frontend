@@ -1,40 +1,46 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useCartStore } from "@/store/cart-store"
-import { useRouter } from "next/navigation"
+import { useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useCartStore } from "@/store/cart-store";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
-  const { items, getTotalPrice, clearCart } = useCartStore()
-  const router = useRouter()
-  const [shippingMethod, setShippingMethod] = useState("standard")
+  const { items, getTotalPrice, clearCart } = useCartStore();
+  const router = useRouter();
+  const [shippingMethod, setShippingMethod] = useState("standard");
 
-  const subtotal = getTotalPrice()
+  const subtotal = getTotalPrice();
   const shippingCosts = {
     standard: 5.99,
     express: 12.99,
     overnight: 24.99,
-  }
-  const shipping = shippingCosts[shippingMethod as keyof typeof shippingCosts]
-  const total = subtotal + shipping
+  };
+  const shipping = shippingCosts[shippingMethod as keyof typeof shippingCosts];
+  const total = subtotal + shipping;
 
   const handlePayment = () => {
     // Simulate payment processing
-    const success = Math.random() > 0.3 // 70% success rate
-    clearCart()
+    const success = Math.random() > 0.3; // 70% success rate
+    clearCart();
 
     if (success) {
-      router.push("/payment/success")
+      router.push("/payment/success");
     } else {
-      router.push("/payment/canceled")
+      router.push("/payment/canceled");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-[#F5E6D3]">
@@ -47,7 +53,9 @@ export default function CheckoutPage() {
             <div className="space-y-6">
               {/* Shipping Information */}
               <div>
-                <h2 className="text-xl font-semibold mb-4">Shipping Information</h2>
+                <h2 className="text-xl font-semibold mb-4">
+                  Shipping Information
+                </h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="firstName">Full name</Label>
@@ -66,7 +74,9 @@ export default function CheckoutPage() {
                     <Input id="phone" placeholder="" />
                   </div>
                   <div className="col-span-2">
-                    <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
+                    <Label htmlFor="apartment">
+                      Apartment, suite, etc. (optional)
+                    </Label>
                     <Input id="apartment" placeholder="" />
                   </div>
                   <div>
@@ -109,32 +119,44 @@ export default function CheckoutPage() {
               {/* Shipping Method */}
               <div>
                 <h2 className="text-xl font-semibold mb-4">Shipping Method</h2>
-                <RadioGroup value={shippingMethod} onValueChange={setShippingMethod}>
+                <RadioGroup
+                  value={shippingMethod}
+                  onValueChange={setShippingMethod}
+                >
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="standard" id="standard" />
-                      <Label htmlFor="standard">Standard Shipping (5-7 business days)</Label>
+                      <Label htmlFor="standard">
+                        Standard Shipping (5-7 business days)
+                      </Label>
                     </div>
                     <span className="font-semibold">$5.99</span>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="express" id="express" />
-                      <Label htmlFor="express">Express Shipping (2-3 business days)</Label>
+                      <Label htmlFor="express">
+                        Express Shipping (2-3 business days)
+                      </Label>
                     </div>
                     <span className="font-semibold">$12.99</span>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="overnight" id="overnight" />
-                      <Label htmlFor="overnight">Overnight Shipping (1 business day)</Label>
+                      <Label htmlFor="overnight">
+                        Overnight Shipping (1 business day)
+                      </Label>
                     </div>
                     <span className="font-semibold">$24.99</span>
                   </div>
                 </RadioGroup>
               </div>
 
-              <Button onClick={handlePayment} className="w-full bg-black text-white hover:bg-gray-800">
+              <Button
+                onClick={handlePayment}
+                className="w-full bg-black text-white hover:bg-gray-800"
+              >
                 Payment →
               </Button>
             </div>
@@ -156,7 +178,9 @@ export default function CheckoutPage() {
                   />
                   <div className="flex-1">
                     <h3 className="font-medium">{item.name}</h3>
-                    <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                    <p className="text-sm text-gray-600">
+                      Quantity: {item.quantity}
+                    </p>
                   </div>
                   <span className="font-semibold">${item.price}</span>
                 </div>
@@ -181,5 +205,5 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
