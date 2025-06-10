@@ -6,9 +6,9 @@ export default function About_Section() {
   const session = useSession();
   // const token = (session?.data?.user as { token: string })?.token || "";
   // console.log(token);
-    const token = (session?.data) || "";
-   console.log(token)
-    return (
+  const token = session?.data || "";
+  console.log(token);
+  return (
     <div className="w-full">
       {/* Our Story Section */}
       <section className="bg-[#F9E4CB] py-8 md:py-16 lg:py-0">
@@ -58,7 +58,7 @@ export default function About_Section() {
                 Our Journey
               </h2>
               <div className="space-y-4 sm:space-y-6">
-                <p className="text-base sm:text-[24px] text-[#000000CC] leading-[120%] font-normal">
+                <p className="text-base sm:text-[24px] md:text-[18px] text-[#000000CC] leading-[120%] font-normal">
                   Founded in 2018 by skincare enthusiast and biochemist Dr.
                   Ji-Yoon Park, Seoul Mirage began as a small laboratory in the
                   heart of Seoul&apos;s beauty district. Frustrated by the
@@ -66,7 +66,7 @@ export default function About_Section() {
                   promises, Dr. Park set out to create a line that combined
                   traditional Korean ingredients with cutting-edge science.
                 </p>
-                <p className="text-base sm:text-[24px] text-[#000000CC] leading-[120%] font-normal mt-[30px]">
+                <p className="text-base sm:text-[24px] md:text-[18px] text-[#000000CC] leading-[120%] font-normal mt-[30px]">
                   What started as a passion project quickly gained recognition
                   for its exceptional quality and remarkable results. Today,
                   Seoul Mirage has grown into a global brand, but our commitment
@@ -82,7 +82,7 @@ export default function About_Section() {
               <h2 className="text-3xl sm:text-4xl lg:text-[60px]  text-[#000000] font-medium mb-6 lg:mb-[60px]">
                 Our Philosophy
               </h2>
-              <p className="text-base sm:text-[24px] text-[#000000] leading-[120%] mb-8 lg:mb-12">
+              <p className="text-base sm:text-[24px] md:text-[18px] text-[#000000] leading-[120%] mb-8 lg:mb-12">
                 Founded in 2018 by skincare enthusiast and biochemist Dr.
                 Ji-Yoon Park, Seoul Mirage began as a small laboratory in the
                 heart of Seoul&apos;s beauty district. Frustrated by the
@@ -96,7 +96,7 @@ export default function About_Section() {
                   <h3 className="text-xl sm:text-[40px] font-semibold text-[#000000] mb-2 sm:mb-[30px]">
                     Purity
                   </h3>
-                  <p className="text-sm sm:text-xl text-[#000000] leading-[120%]">
+                  <p className="text-sm md:text-[18px] sm:text-xl text-[#000000] leading-[120%]">
                     We source the highest quality ingredients and maintain
                     rigorous standards to ensure our products are free from
                     harmful chemicals.
@@ -107,7 +107,7 @@ export default function About_Section() {
                   <h3 className="text-xl sm:text-[40px] font-semibold text-[#000000] mb-2 sm:mb-[30px]">
                     Innovation
                   </h3>
-                  <p className="text-sm sm:text-xl text-[#000000] leading-[120%]">
+                  <p className="text-sm sm:text-xl md:text-[18px] text-[#000000] leading-[120%]">
                     We continuously research and develop new formulations that
                     harness the power of both traditional Korean ingredients and
                     modern scientific breakthroughs.
@@ -118,7 +118,7 @@ export default function About_Section() {
                   <h3 className="text-xl sm:text-[40px] font-semibold text-[#000000] mb-2 sm:mb-4">
                     Sustainability
                   </h3>
-                  <p className="text-sm sm:text-xl text-[#000000] leading-[120%]">
+                  <p className="text-sm sm:text-xl md:text-[18px] text-[#000000] leading-[120%]">
                     We are committed to ethical practices, from responsible
                     sourcing to eco-friendly packaging, ensuring our beauty
                     doesn&apos;t come at the expense of our planet.
