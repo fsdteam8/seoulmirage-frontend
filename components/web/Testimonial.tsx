@@ -1,16 +1,21 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useCallback } from "react"
-import Image from "next/image"
-import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
-import { Card, CardContent } from "@/components/ui/card"
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface Testimonial {
-  id: number
-  name: string
-  quote: string
-  image: string
-  rating: number
+  id: number;
+  name: string;
+  quote: string;
+  image: string;
+  rating: number;
 }
 
 const testimonials: Testimonial[] = [
@@ -43,7 +48,7 @@ const testimonials: Testimonial[] = [
     name: "Sarah Johnson",
     quote:
       '"I\'ve recommended this to all my colleagues. The customer support is exceptional and the design quality is outstanding."',
-      image: "/asset/reveiw2.png",
+    image: "/asset/reveiw2.png",
     rating: 5,
   },
   {
@@ -51,7 +56,7 @@ const testimonials: Testimonial[] = [
     name: "Michael Chen",
     quote:
       '"The user interface is intuitive and the results exceed our expectations. It\'s become an essential tool for our team."',
-     image: "/asset/reveiw1.png",
+    image: "/asset/reveiw1.png",
     rating: 5,
   },
   {
@@ -59,41 +64,36 @@ const testimonials: Testimonial[] = [
     name: "Emma Wilson",
     quote:
       '"Outstanding service and incredible attention to detail. The team really understands what modern businesses need."',
-     image: "/asset/reveiw2.png",
+    image: "/asset/reveiw2.png",
     rating: 5,
   },
-]
+];
 
 export default function TestimonialCarousel() {
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
-  const [count, setCount] = useState(0)
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (!api) {
-      return
-    }
+    if (!api) return;
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+    api.on("select", () => setCurrent(api.selectedScrollSnap() + 1));
+  }, [api]);
 
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap() + 1)
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1)
-    })
-  }, [api])
-
-  const scrollTo = useCallback(
-    (index: number) => {
-      api?.scrollTo(index)
-    },
-    [api],
-  )
+  const scrollTo = useCallback((index: number) => {
+    api?.scrollTo(index);
+  }, [api]);
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="flex flex-col items-center mb-10">
-        <div className="text-[18px] font-medium text-[#000000CC] mb-4">{testimonials.length * 640}+ Happy Users</div>
-        <h2 className="text-3xl md:text-[40px] font-bold text-center text-[#C7A18A]">Don&apos;t just take our words</h2>
+        <div className="text-[18px] font-medium text-[#000000CC] mb-4">
+          {testimonials.length * 640}+ Happy Users
+        </div>
+        <h2 className="text-3xl md:text-[40px] font-bold text-center text-[#C7A18A]">
+          Don&apos;t just take our words
+        </h2>
       </div>
 
       <Carousel
@@ -106,21 +106,22 @@ export default function TestimonialCarousel() {
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {testimonials.map((testimonial) => (
-            <CarouselItem key={testimonial.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/2">
-              <Card className="border-0 shadow-sm">
-                <CardContent className="p-6 mt-[60px]">
+            <CarouselItem
+              key={testimonial.id}
+              className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/2"
+            >
+              <Card className="border-0 shadow-sm h-full">
+                <CardContent className="p-6 mt-[40px] flex flex-col h-full justify-between">
                   <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-[258px] md:h-[257px] relative flex-shrink-0">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-[258px] md:h-[257px] relative flex-shrink-0">
                       <Image
-                        src={testimonial.image || "/placeholder.svg"}
-                        width={1000}
-                        height={1000}
+                        src={testimonial.image}
                         alt={testimonial.name}
-                      
-                        className="rounded-lg object-cover w-[258px] h-[257px]"
+                        fill
+                        className="rounded-lg object-cover"
                       />
                     </div>
-                    <div className=" flex flex-col text-center sm:text-left">
+                    <div className="flex flex-col text-center sm:text-left">
                       <div className="flex justify-center sm:justify-start text-[#F092B0] mb-3">
                         {[...Array(testimonial.rating)].map((_, i) => (
                           <svg
@@ -134,8 +135,12 @@ export default function TestimonialCarousel() {
                           </svg>
                         ))}
                       </div>
-                      <p className="text-[#090914] text-[18px] sm:text-[18px] font-medium leading-relaxed w-[300px]">{testimonial.quote}</p>
-                      <p className="font-medium text-[#595959] text-[18px] pt-10">{testimonial.name}</p>
+                      <p className="text-[#090914] text-base sm:text-[18px] font-medium leading-relaxed">
+                        {testimonial.quote}
+                      </p>
+                      <p className="font-medium text-[#595959] text-[16px] pt-6">
+                        {testimonial.name}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -145,15 +150,17 @@ export default function TestimonialCarousel() {
         </CarouselContent>
       </Carousel>
 
-      {/* Functional dots indicator */}
+      {/* Dots */}
       <div className="flex justify-center mt-8">
         <div className="flex gap-2">
           {Array.from({ length: count }, (_, index) => (
             <button
               key={index}
               onClick={() => scrollTo(index)}
-              className={`h-3 w-3 rounded-full transition-all duration-300 ${
-                index + 1 === current ? "bg-[#F092B0] w-6" : "bg-gray-300 w-2"
+              className={`h-3 rounded-full transition-all duration-300 ${
+                index + 1 === current
+                  ? "bg-[#F092B0] w-6"
+                  : "bg-gray-300 w-2"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -161,5 +168,5 @@ export default function TestimonialCarousel() {
         </div>
       </div>
     </div>
-  )
+  );
 }

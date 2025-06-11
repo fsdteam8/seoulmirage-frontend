@@ -3,7 +3,10 @@ import { persist } from "zustand/middleware"
 
 export interface Product {
   id: string
-  category: string
+  category: {
+    id: string
+    name: string
+  }
   name: string
   price: number
   rating: number
