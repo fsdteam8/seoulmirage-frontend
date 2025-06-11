@@ -6,7 +6,7 @@ import ProductCard from "./Product/ProductCard"
 const products = [
   {
     id: "1",
-    category: "Serums",
+    category: { id: "serums", name: "Serums" },
     name: "Hydra Glow Serum",
     price: 72,
     rating: 4.7,
@@ -16,7 +16,7 @@ const products = [
   },
   {
     id: "2",
-    category: "Serums",
+    category: { id: "serums", name: "Serums" },
     name: "Vitamin C Radiance Boost",
     price: 58,
     rating: 4.8,
@@ -26,7 +26,7 @@ const products = [
   },
   {
     id: "3",
-    category: "Serums",
+    category: { id: "serums", name: "Serums" },
     name: "Overnight Repair Drops",
     price: 69,
     rating: 4.6,
@@ -36,7 +36,7 @@ const products = [
   },
   {
     id: "4",
-    category: "Serums",
+    category: { id: "serums", name: "Serums" },
     name: "Age Defense Elixir",
     price: 75,
     rating: 4.9,
@@ -46,7 +46,7 @@ const products = [
   },
   {
     id: "5",
-    category: "Serums",
+    category: { id: "serums", name: "Serums" },
     name: "Age Defense Elixir",
     price: 75,
     rating: 4.9,
