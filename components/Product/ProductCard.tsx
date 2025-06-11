@@ -18,7 +18,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const token = (session?.user as { token?: string })?.token || "";
   const [isHovered, setIsHovered] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
-
+   
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // prevent link navigation when clicking button inside Link
 
@@ -46,7 +46,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       },
     });
   };
-
+console.log(product)
   return (
     <Link href={`/products/${product.id}`} className="block">
       <div
