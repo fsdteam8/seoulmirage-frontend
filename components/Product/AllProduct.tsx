@@ -12,6 +12,7 @@ import {
 // import type { Product } from "@/store/cart-store";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { ProductPageSkeleton } from "./ProductSkeleton";
 
 const categories = [
   "All Product",
@@ -40,7 +41,7 @@ export default function AllProducts() {
     queryKey: ["allProducts"],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products?paginate_count=20`
       ); // replace with your actual endpoint
       if (!res.ok) {
         throw new Error("Failed to fetch product");
@@ -49,7 +50,7 @@ export default function AllProducts() {
     },
   });
 
-  if (isLoading) return <p className="text-center ">Loading...</p>;
+  if (isLoading) return <ProductPageSkeleton />;
   if (error instanceof Error) return <p>Error: {error.message}</p>;
 
   console.log(data?.data?.data);
@@ -68,12 +69,14 @@ export default function AllProducts() {
     image: string;
     images: string[];
   }
-
-  const filteredProducts = (products as Product[])?.filter(
-    (product: Product) =>
-      selectedCategory === "All Product" ||
-      product.category.name === selectedCategory
-  );
+  console.log(products?.data);
+  const filteredProducts =
+    products &&
+    (products?.data as Product[]).filter(
+      (product: Product) =>
+        selectedCategory === "All Product" ||
+        product.category.name === selectedCategory
+    );
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
