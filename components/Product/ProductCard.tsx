@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCartStore, type Product } from "@/store/cart-store";
+import { Product, useCartStore,  } from "@/store/cart-store";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
@@ -46,7 +46,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       },
     });
   };
-
+  console.log(product);
   return (
     <Link href={`/products/${product.id}`} className="block">
       <div
@@ -55,16 +55,18 @@ export default function ProductCard({ product }: ProductCardProps) {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="relative aspect-square overflow-hidden">
-          <Image
-            src={
-              `${process.env.NEXT_PUBLIC_API_URL}/${product.image}` ||
-              "/placeholder.png"
-            }
-            alt={product.name || "Product Image"}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 25vw"
-          />
+          {product?.media && (
+            <Image
+              src={
+                `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}` ||
+                "/placeholder.png"
+              }
+              alt={product.name || "Product Image"}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, 25vw"
+            />
+          )}
 
           <div
             className={`absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center transition-opacity duration-300 ${
