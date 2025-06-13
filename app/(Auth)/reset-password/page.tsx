@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AuthLayout from "@/components/auth-layout";
 import { toast } from "sonner";
+// import { useMutation } from "@tanstack/react-query";
 
 const resetPasswordSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -26,12 +27,59 @@ export default function ResetPasswordPage() {
     },
   });
 
+  // const mutation = useMutation({
+  //   mutationFn: async (formData: FormData) => {
+  //     try {
+  //       const res = await fetch(
+  //         `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password`,
+  //         {
+  //           method: "POST",
+  //           body: formData,
+  //         }
+  //       );
+
+  //       console.log("=== API RESPONSE ===");
+  //       console.log("Status:", res.status);
+  //       console.log("Status Text:", res.statusText);
+
+  //       if (!res.ok) {
+  //         let errorMessage = "Failed to create product";
+  //         try {
+  //           const error = await res.json();
+  //           errorMessage = error.message || errorMessage;
+  //           console.error("API Error Response:", error);
+  //         } catch (e) {
+  //           console.error("Failed to parse error response:", e);
+  //         }
+  //         throw new Error(errorMessage);
+  //       }
+
+  //       const result = await res.json();
+  //       console.log("API Success Response:", result);
+  //       return result;
+  //     } catch (error) {
+  //       console.error("Mutation error:", error);
+  //       throw error;
+  //     }
+  //   },
+
+  //   onSuccess: (data) => {
+  //     toast;
+  //   },
+
+  //   onError: (error: Error) => {
+  //     console.error("Error during mutation:", error);
+  //     toast.error(`Error: ${error.message}`);
+  //     toast("");
+  //   },
+  // });
+
   const onSubmit = async (data: ResetPasswordFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log("Reset password email:", data.email);
     toast.success("An OTP has been sent to your email address.");
     // Typically, you'd navigate to an OTP entry page or a page to set new password if OTP is handled differently
-    router.push("/reset-password/confirm");
+    router.push("/reset-password/otp");
   };
 
   return (

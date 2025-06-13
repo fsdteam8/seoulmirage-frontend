@@ -33,6 +33,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { signOut, useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+import { CategoryItem } from "@/types/CategoryTypeData";
 
 const skincareItems = [
   { name: "Cleansers", href: "/skincare/cleansers" },
@@ -59,6 +61,26 @@ export default function Navbar() {
   const [isSkincareOpen, setIsSkincareOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
 
+  const { data } = useQuery<CategoryItem>({
+    queryKey: ["categoriesData"],
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/categories-by-type`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch blogs");
+      }
+      return res.json();
+    },
+  });
+
+  console.log(data);
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">

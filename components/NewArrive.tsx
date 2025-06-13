@@ -1,71 +1,109 @@
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
-import ProductCard from "./Product/ProductCard"
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import ProductCard from "./Product/ProductCard";
+import { Product } from "@/store/cart-store";
 // import ProductCard from "./ProductCard"
 
-const products = [
+export const products: Product[] = [
   {
-    id: "1",
-    category: { id: "serums", name: "Serums" },
+    id: 1,
+    category: { id: 1, name: "Serums" },
     name: "Hydra Glow Serum",
-    price: 72,
+    price: "72",
     rating: 4.7,
     reviews: 142,
-    image: "/asset/p4.png",
-    images: ["/asset/p2.png", "/asset/p3.png", "/asset/p4.png", "/asset/p1.png"],
+    image: "/asset/p1.png",
+    images: [
+      "/asset/p2.png",
+      "/asset/p3.png",
+      "/asset/p4.png",
+      "/asset/p1.png",
+    ],
+    media: [],
   },
   {
-    id: "2",
-    category: { id: "serums", name: "Serums" },
+    id: 2,
+    category: { id: 2, name: "Serums" },
     name: "Vitamin C Radiance Boost",
-    price: 58,
+    price: "58",
     rating: 4.8,
     reviews: 95,
     image: "/asset/p2.png",
-    images: ["/asset/p2.png", "/asset/p3.png", "/asset/p4.png", "/asset/p1.png"],
+    images: [
+      "/asset/p2.png",
+      "/asset/p3.png",
+      "/asset/p4.png",
+      "/asset/p1.png",
+    ],
+    media: [],
   },
   {
-    id: "3",
-    category: { id: "serums", name: "Serums" },
+    id: 3,
+    category: { id: 3, name: "Serums" },
     name: "Overnight Repair Drops",
-    price: 69,
+    price: "69",
     rating: 4.6,
     reviews: 110,
     image: "/asset/p3.png",
-    images: ["/asset/p2.png", "/asset/p3.png", "/asset/p4.png", "/asset/p1.png"],
+    images: [
+      "/asset/p2.png",
+      "/asset/p3.png",
+      "/asset/p4.png",
+      "/asset/p1.png",
+    ],
+    media: [],
   },
   {
-    id: "4",
-    category: { id: "serums", name: "Serums" },
+    id: 4,
+    category: { id: 4, name: "Serums" },
     name: "Age Defense Elixir",
-    price: 75,
-    rating: 4.9,
-    reviews: 165,
-    image: "/asset/p2.png",
-    images: ["/asset/p2.png", "/asset/p3.png", "/asset/p4.png", "/asset/p1.png"],
-  },
-  {
-    id: "5",
-    category: { id: "serums", name: "Serums" },
-    name: "Age Defense Elixir",
-    price: 75,
+    price: "75",
     rating: 4.9,
     reviews: 165,
     image: "/asset/p4.png",
-    images: ["/asset/p2.png", "/asset/p3.png", "/asset/p4.png", "/asset/p1.png"],
+    images: [
+      "/asset/p2.png",
+      "/asset/p3.png",
+      "/asset/p4.png",
+      "/asset/p1.png",
+    ],
+    media: [],
   },
-]
+  {
+    id: 5,
+    category: { id: 5, name: "Serums" },
+    name: "Age Defense Elixir",
+    price: "75",
+    rating: 4.9,
+    reviews: 165,
+    image: "/asset/p4.png",
+    images: [
+      "/asset/p2.png",
+      "/asset/p3.png",
+      "/asset/p4.png",
+      "/asset/p1.png",
+    ],
+    media: [
+      { id: 1, product_id: 5, file_path: "/asset/p4.png" },
+      { id: 2, product_id: 5, file_path: "/asset/p2.png" },
+      { id: 3, product_id: 5, file_path: "/asset/p3.png" },
+      { id: 4, product_id: 5, file_path: "/asset/p1.png" },
+    ],
+  },
+];
 
 export default function NewArrive() {
   // Show only first 4 products for bestsellers section
-  const bestSellerProducts = products.slice(0, 4)
+  const bestSellerProducts = products.slice(0, 4);
 
   return (
     <section className="py-12 px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header with title and view all link */}
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-xl md:text-2xl font-medium text-gray-900">New Arrive</h2>
+          <h2 className="text-xl md:text-2xl font-medium text-gray-900">
+            New Arrive
+          </h2>
           <Link
             href="/products"
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 group"
@@ -83,5 +121,5 @@ export default function NewArrive() {
         </div>
       </div>
     </section>
-  )
+  );
 }

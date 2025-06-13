@@ -12,99 +12,7 @@ import {
 // import type { Product } from "@/store/cart-store";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-
-// const products: Product[] = [
-//   {
-//     id: "1",
-//     category: "Serums",
-//     name: "Hydra Glow Serum",
-//     price: 72,
-//     rating: 4.7,
-//     reviews: 142,
-//     image: "/asset/p1.png",
-//     images: [
-//       "/asset/p2.png",
-//       "/asset/p3.png",
-//       "/asset/p4.png",
-//       "/asset/p1.png",
-//     ],
-//   },
-//   {
-//     id: "2",
-//     category: "Serums",
-//     name: "Vitamin C Radiance Boost",
-//     price: 58,
-//     rating: 4.8,
-//     reviews: 95,
-//     image: "/asset/p2.png",
-//     images: [
-//       "/asset/p2.png",
-//       "/asset/p3.png",
-//       "/asset/p4.png",
-//       "/asset/p1.png",
-//     ],
-//   },
-//   {
-//     id: "3",
-//     category: "Face",
-//     name: "Overnight Repair Drops",
-//     price: 69,
-//     rating: 4.6,
-//     reviews: 110,
-//     image: "/asset/p3.png",
-//     images: [
-//       "/asset/p2.png",
-//       "/asset/p3.png",
-//       "/asset/p4.png",
-//       "/asset/p1.png",
-//     ],
-//   },
-//   {
-//     id: "4",
-//     category: "Eye",
-//     name: "Age Defense Elixir",
-//     price: 75,
-//     rating: 4.9,
-//     reviews: 165,
-//     image: "/asset/p4.png",
-//     images: [
-//       "/asset/p2.png",
-//       "/asset/p3.png",
-//       "/asset/p4.png",
-//       "/asset/p1.png",
-//     ],
-//   },
-//   {
-//     id: "5",
-//     category: "Lip",
-//     name: "Nourishing Lip Treatment",
-//     price: 45,
-//     rating: 4.5,
-//     reviews: 89,
-//     image: "/asset/p1.png",
-//     images: [
-//       "/asset/p2.png",
-//       "/asset/p3.png",
-//       "/asset/p4.png",
-//       "/asset/p1.png",
-//     ],
-//   },
-//   {
-//     id: "6",
-//     category: "Sets",
-//     name: "Complete Skincare Set",
-//     price: 120,
-//     rating: 4.8,
-//     reviews: 203,
-//     image: "/asset/p2.png",
-//     images: [
-//       "/asset/p2.png",
-//       "/asset/p3.png",
-//       "/asset/p4.png",
-//       "/asset/p1.png",
-//     ],
-//   },
-// ];
+import { ProductPageSkeleton } from "./ProductSkeleton";
 
 const categories = [
   "All Product",
@@ -130,23 +38,23 @@ export default function AllProducts() {
   }, [searchParams]);
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["allProducts"],
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products?paginate_count=20`
       ); // replace with your actual endpoint
       if (!res.ok) {
-        throw new Error("Failed to fetch users");
+        throw new Error("Failed to fetch product");
       }
       return res.json();
     },
   });
 
-  if (isLoading) return <p className="text-center ">Loading...</p>;
+  if (isLoading) return <ProductPageSkeleton />;
   if (error instanceof Error) return <p>Error: {error.message}</p>;
 
   console.log(data?.data?.data);
-  const products = data?.data?.data || [];
+  const products = data?.data || [];
 
   interface Product {
     id: string;
@@ -161,12 +69,14 @@ export default function AllProducts() {
     image: string;
     images: string[];
   }
-
-  const filteredProducts = (products as Product[]).filter(
-    (product: Product) =>
-      selectedCategory === "All Product" ||
-      product.category.name === selectedCategory
-  );
+  console.log(products?.data);
+  const filteredProducts =
+    products &&
+    (products?.data as Product[]).filter(
+      (product: Product) =>
+        selectedCategory === "All Product" ||
+        product.category.name === selectedCategory
+    );
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
