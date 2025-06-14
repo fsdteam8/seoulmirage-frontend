@@ -1,38 +1,95 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
-import { Facebook, Twitter, Instagram } from "lucide-react"
-import Image from "next/image"
+"use client";
+
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { z } from "zod";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { Facebook, Twitter, Instagram } from "lucide-react";
+import Image from "next/image";
+
+// Zod schema
+const emailSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+});
+
+// API call
+const subscribeToNewsletter = async (formData: FormData) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/newsletter`, {
+    method: "POST",
+    body: formData, // no need to stringify
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to subscribe. Please try again.");
+  }
+
+  return res.json();
+};
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+
+  const mutation = useMutation({
+    mutationFn: subscribeToNewsletter,
+    onSuccess: () => {
+      toast.success("Subscribed successfully!");
+      setEmail("");
+    },
+    onError: (err: Error) => {
+      toast.error(err.message);
+    },
+  });
+
+  const handleSubscribe = () => {
+    const result = emailSchema.safeParse({ email });
+    if (!result.success) {
+      toast.warning(result.error.errors[0].message);
+      return;
+    }
+    const fromdata = new FormData();
+
+    fromdata.append("email", email);
+    mutation.mutate(fromdata);
+  };
+
   return (
     <footer className="bg-gray-50 border-t">
-      {/* Newsletter Section */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
+        {/* Newsletter Section */}
         <div className="text-center mb-8 md:mb-12 lg:mb-16">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#000000CC] mb-3 md:mb-4">
             Join Our Community
           </h2>
           <p className="text-sm sm:text-base md:text-lg lg:text-[18px] text-[#000000CC] mb-8 md:mb-12 lg:mb-[60px] max-w-xs sm:max-w-md md:max-w-lg lg:max-w-[650px] mx-auto font-medium px-4 sm:px-0">
-            Subscribe to our newsletter for exclusive offers, skincare tips, and new product announcements.
+            Subscribe to our newsletter for exclusive offers, skincare tips, and
+            new product announcements.
           </p>
 
-          {/* Email Signup Form */}
+          {/* Email Form */}
           <div className="flex flex-col sm:flex-row gap-3 max-w-xs sm:max-w-md md:max-w-lg mx-auto items-stretch sm:items-center px-4 sm:px-0">
             <Input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Your email address"
-              className="text-[#1E2A38] text-sm sm:text-base flex-1  rounded-full border border-[#00000033] placeholder:text-[#1E2A38] px-[32px] py-[16px] "
+              className="text-[#1E2A38] text-sm sm:text-base flex-1 rounded-full border border-[#00000033] placeholder:text-[#1E2A38] px-[32px] py-[16px]"
             />
-            <Button className="bg-[#F092B0] hover:bg-[#F092B0]/90 text-[#000000] text-sm  px-[32px] py-[16px]   whitespace-nowrap rounded-full">
-              Subscribe
+            <Button
+              onClick={handleSubscribe}
+              disabled={mutation.isPending}
+              className="bg-[#F092B0] hover:bg-[#F092B0]/90 text-[#000000] text-sm px-[32px] py-[16px] whitespace-nowrap rounded-full"
+            >
+              {mutation.isPending ? "Subscribing..." : "Subscribe"}
             </Button>
           </div>
         </div>
 
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
-          {/* Logo and Description */}
+          {/* Logo & Description */}
           <div className="sm:col-span-2 lg:col-span-2 text-center sm:text-left">
             <div className="mb-4 md:mb-6">
               <div className="w-12 sm:w-[50px] h-12 rounded-lg flex items-center justify-center mb-4 mx-auto sm:mx-0">
@@ -45,11 +102,12 @@ export default function Footer() {
                 />
               </div>
               <p className="text-base sm:text-lg lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
-                Lorem ipsum dolor sit amet consectetur. Scelerisque mauris lectus habitasse adipiscing elit.
+                Lorem ipsum dolor sit amet consectetur. Scelerisque mauris
+                lectus habitasse adipiscing elit.
               </p>
             </div>
 
-            {/* Social Media Icons */}
+            {/* Social Icons */}
             <div className="flex space-x-2 justify-center sm:justify-start">
               <Link
                 href="#"
@@ -155,5 +213,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
