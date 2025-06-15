@@ -1,7 +1,10 @@
+"use client";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import ProductCard from "./Product/ProductCard";
 import { Product } from "@/store/cart-store";
+// import { useQuery } from "@tanstack/react-query";
+// import { ApiResponse } from "@/types/BestSellersDataType";
 // import ProductCard from "./ProductCard"
 
 export const products: Product[] = [
@@ -96,6 +99,30 @@ export default function BestSellers() {
   // Show only first 4 products for bestsellers section
   const bestSellerProducts = products.slice(0, 4);
 
+  // const { data, error, isLoading } = useQuery<ApiResponse>({
+  //   queryKey: ["bestSellers"],
+  //   queryFn: async () => {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_URL}/api/best-selling-products`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           // Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (!res.ok) {
+  //       throw new Error("Failed to fetch best-selling products");
+  //     }
+
+  //     const data: ApiResponse = await res.json();
+  //     return data;
+  //   },
+  //   // enabled: !!token, // only runs if token is available
+  // });
+
+  // const bestSellerProducts = data?.data.data;
   return (
     <section className="py-12 px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -115,9 +142,10 @@ export default function BestSellers() {
 
         {/* Product grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {bestSellerProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {bestSellerProducts &&
+            bestSellerProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
         </div>
       </div>
     </section>

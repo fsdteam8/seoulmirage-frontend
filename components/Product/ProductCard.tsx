@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 import { Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Product, useCartStore,  } from "@/store/cart-store";
+import { Product, useCartStore } from "@/store/cart-store";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+// import { Product } from "@/types/BestSellersDataType";
+import Image from "next/image";
 
 interface ProductCardProps {
   product: Product;
@@ -16,6 +18,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const { data: session } = useSession();
   const token = (session?.user as { token?: string })?.token || "";
+
   const [isHovered, setIsHovered] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
 
@@ -46,7 +49,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       },
     });
   };
-  console.log(product);
+
   return (
     <Link href={`/products/${product.id}`} className="block">
       <div
@@ -94,14 +97,14 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           <div className="flex items-center gap-2">
             <div className="flex items-center">
-              <span className="text-sm font-medium">
+              {/* <span className="text-sm font-medium">
                 {product.rating ?? "-"}
-              </span>
+              </span> */}
               <Star className="w-4 h-4 fill-black text-black ml-1" />
             </div>
-            <span className="text-sm text-gray-600">
+            {/* <span className="text-sm text-gray-600">
               ({product.reviews ?? 0})
-            </span>
+            </span> */}
           </div>
         </div>
       </div>
