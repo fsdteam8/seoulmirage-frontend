@@ -123,6 +123,7 @@ export default function BestSellers() {
   // });
 
   // const bestSellerProducts = data?.data.data;
+
   return (
     <section className="py-12 px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
