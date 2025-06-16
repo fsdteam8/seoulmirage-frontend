@@ -9,7 +9,7 @@ import { ProductResponse } from "@/types/ProductDataType";
 
 export default function NewArrive() {
   const { data, error, isLoading } = useQuery<ProductResponse>({
-    queryKey: ["allProducts"],
+    queryKey: ["newProducts"],
     queryFn: async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/products?paginate_count=4`
