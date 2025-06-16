@@ -34,23 +34,7 @@ import {
 } from "@/components/ui/collapsible";
 import { signOut, useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
-import { CategoryItem } from "@/types/CategoryTypeData";
-
-const skincareItems = [
-  { name: "Cleansers", href: "/skincare/cleansers" },
-  { name: "Essences", href: "/skincare/essences" },
-  { name: "Moisturizers", href: "/skincare/moisturizers" },
-  { name: "Toners", href: "/skincare/toners" },
-  { name: "Serums", href: "/skincare/serums" },
-  { name: "Masks", href: "/skincare/masks" },
-];
-
-const collectionsItems = [
-  { name: "Hydration", href: "/collections/hydration" },
-  { name: "Anti-Aging", href: "/collections/anti-aging" },
-  { name: "Brightening", href: "/collections/brightening" },
-  { name: "Sensitive Skin", href: "/collections/sensitive-skin" },
-];
+import { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
 
 export default function Navbar() {
   const session = useSession();
@@ -60,8 +44,9 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSkincareOpen, setIsSkincareOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
 
-  const { data } = useQuery<CategoryItem>({
+  const { data, isLoading } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
     queryFn: async () => {
       const res = await fetch(
@@ -74,13 +59,16 @@ export default function Navbar() {
         }
       );
       if (!res.ok) {
-        throw new Error("Failed to fetch blogs");
+        throw new Error("Failed to fetch categories");
       }
       return res.json();
     },
   });
 
-  console.log(data);
+  // Helper function to generate href from name
+  const generateHref = (type: string, name: string) =>
+    `/${type.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, "-")}`;
+
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">
@@ -101,7 +89,6 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation */}
-
             <NavigationMenu className="hidden lg:flex">
               <NavigationMenuList className="space-x-6">
                 <NavigationMenuItem>
@@ -110,18 +97,22 @@ export default function Navbar() {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
-                      {skincareItems.map((item) => (
-                        <NavigationMenuLink key={item.name} asChild>
-                          <Link
-                            href={item.href}
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
-                          >
-                            <div className="font-raleway text-base font-medium leading-tight">
-                              {item.name}
-                            </div>
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
+                      {isLoading ? (
+                        <div>Loading...</div>
+                      ) : (
+                        data?.Skincare?.map((item) => (
+                          <NavigationMenuLink key={item.id} asChild>
+                            <Link
+                              href={generateHref("skincare", item.name)}
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
+                            >
+                              <div className="font-raleway text-base font-medium leading-tight">
+                                {item.name}
+                              </div>
+                            </Link>
+                          </NavigationMenuLink>
+                        )) || <div>No Skincare items</div>
+                      )}
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -131,19 +122,49 @@ export default function Navbar() {
                     Collections
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[300px]">
-                      {collectionsItems.map((item) => (
-                        <NavigationMenuLink key={item.name} asChild>
-                          <Link
-                            href={item.href}
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
-                          >
-                            <div className="font-raleway text-base font-medium leading-tight">
-                              {item.name}
-                            </div>
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
+                    <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
+                      {isLoading ? (
+                        <div>Loading...</div>
+                      ) : (
+                        data?.Collections?.map((item) => (
+                          <NavigationMenuLink key={item.id} asChild>
+                            <Link
+                              href={generateHref("collections", item.name)}
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
+                            >
+                              <div className="font-raleway text-base font-medium leading-tight">
+                                {item.name}
+                              </div>
+                            </Link>
+                          </NavigationMenuLink>
+                        )) || <div>No Collections items</div>
+                      )}
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="nav-text">
+                    Products
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
+                      {isLoading ? (
+                        <div>Loading...</div>
+                      ) : (
+                        data?.Products?.map((item) => (
+                          <NavigationMenuLink key={item.id} asChild>
+                            <Link
+                              href={generateHref("products", item.name)}
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
+                            >
+                              <div className="font-raleway text-base font-medium leading-tight">
+                                {item.name}
+                              </div>
+                            </Link>
+                          </NavigationMenuLink>
+                        )) || <div>No Products items</div>
+                      )}
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -279,16 +300,20 @@ export default function Navbar() {
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
-                        {skincareItems.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className="block py-2 px-3 font-raleway text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
+                        {isLoading ? (
+                          <div>Loading...</div>
+                        ) : (
+                          data?.Skincare?.map((item) => (
+                            <Link
+                              key={item.id}
+                              href={generateHref("skincare", item.name)}
+                              className="block py-2 px-3 font-raleway text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {item.name}
+                            </Link>
+                          )) || <div>No Skincare items</div>
+                        )}
                       </CollapsibleContent>
                     </Collapsible>
 
@@ -306,16 +331,51 @@ export default function Navbar() {
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
-                        {collectionsItems.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className="block py-2 px-3 font-raleway text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
+                        {isLoading ? (
+                          <div>Loading...</div>
+                        ) : (
+                          data?.Collections?.map((item) => (
+                            <Link
+                              key={item.id}
+                              href={generateHref("collections", item.name)}
+                              className="block py-2 px-3 font-raleway text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {item.name}
+                            </Link>
+                          )) || <div>No Collections items</div>
+                        )}
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    {/* Mobile Products Collapsible */}
+                    <Collapsible
+                      open={isProductsOpen}
+                      onOpenChange={setIsProductsOpen}
+                    >
+                      <CollapsibleTrigger className="flex items-center justify-between w-full py-3 text-left font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md px-3 text-lg">
+                        Products
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${
+                            isProductsOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="ml-3 mt-1 space-y-1">
+                        {isLoading ? (
+                          <div>Loading...</div>
+                        ) : (
+                          data?.Products?.map((item) => (
+                            <Link
+                              key={item.id}
+                              href={generateHref("products", item.name)}
+                              className="block py-2 px-3 font-raleway text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {item.name}
+                            </Link>
+                          )) || <div>No Products items</div>
+                        )}
                       </CollapsibleContent>
                     </Collapsible>
 
