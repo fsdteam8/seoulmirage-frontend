@@ -96,6 +96,12 @@ export default function NewArrive() {
   // Show only first 4 products for bestsellers section
   const bestSellerProducts = products.slice(0, 4);
 
+
+
+
+  
+
+
   return (
     <section className="py-12 px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
