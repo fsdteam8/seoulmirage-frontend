@@ -1,105 +1,33 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import ProductCard from "./Product/ProductCard";
-import { Product } from "@/store/cart-store";
-// import ProductCard from "./ProductCard"
-
-export const products: Product[] = [
-  {
-    id: 1,
-    category: { id: 1, name: "Serums" },
-    name: "Hydra Glow Serum",
-    price: "72",
-    rating: 4.7,
-    reviews: 142,
-    image: "/asset/p1.png",
-    images: [
-      "/asset/p2.png",
-      "/asset/p3.png",
-      "/asset/p4.png",
-      "/asset/p1.png",
-    ],
-    media: [],
-  },
-  {
-    id: 2,
-    category: { id: 2, name: "Serums" },
-    name: "Vitamin C Radiance Boost",
-    price: "58",
-    rating: 4.8,
-    reviews: 95,
-    image: "/asset/p2.png",
-    images: [
-      "/asset/p2.png",
-      "/asset/p3.png",
-      "/asset/p4.png",
-      "/asset/p1.png",
-    ],
-    media: [],
-  },
-  {
-    id: 3,
-    category: { id: 3, name: "Serums" },
-    name: "Overnight Repair Drops",
-    price: "69",
-    rating: 4.6,
-    reviews: 110,
-    image: "/asset/p3.png",
-    images: [
-      "/asset/p2.png",
-      "/asset/p3.png",
-      "/asset/p4.png",
-      "/asset/p1.png",
-    ],
-    media: [],
-  },
-  {
-    id: 4,
-    category: { id: 4, name: "Serums" },
-    name: "Age Defense Elixir",
-    price: "75",
-    rating: 4.9,
-    reviews: 165,
-    image: "/asset/p4.png",
-    images: [
-      "/asset/p2.png",
-      "/asset/p3.png",
-      "/asset/p4.png",
-      "/asset/p1.png",
-    ],
-    media: [],
-  },
-  {
-    id: 5,
-    category: { id: 5, name: "Serums" },
-    name: "Age Defense Elixir",
-    price: "75",
-    rating: 4.9,
-    reviews: 165,
-    image: "/asset/p4.png",
-    images: [
-      "/asset/p2.png",
-      "/asset/p3.png",
-      "/asset/p4.png",
-      "/asset/p1.png",
-    ],
-    media: [
-      { id: 1, product_id: 5, file_path: "/asset/p4.png" },
-      { id: 2, product_id: 5, file_path: "/asset/p2.png" },
-      { id: 3, product_id: 5, file_path: "/asset/p3.png" },
-      { id: 4, product_id: 5, file_path: "/asset/p1.png" },
-    ],
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ProductResponse } from "@/types/ProductDataType";
 
 export default function NewArrive() {
-  // Show only first 4 products for bestsellers section
-  const bestSellerProducts = products.slice(0, 4);
+  const { data, error, isLoading } = useQuery<ProductResponse>({
+    queryKey: ["newProducts"],
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products?paginate_count=4`
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch products");
+      }
+      return res.json();
+    },
+  });
+
+  // Make sure this matches your API structure
+  const mappedProducts = data?.data?.data ?? [];
 
   return (
     <section className="py-12 px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header with title and view all link */}
+        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-xl md:text-2xl font-medium text-gray-900">
             New Arrive
@@ -113,11 +41,28 @@ export default function NewArrive() {
           </Link>
         </div>
 
-        {/* Product grid */}
+        {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {bestSellerProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {isLoading &&
+            Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="space-y-4">
+                <Skeleton className="w-full h-48 rounded-lg" />
+                <Skeleton className="w-3/4 h-4" />
+                <Skeleton className="w-1/2 h-4" />
+              </div>
+            ))}
+
+          {error && (
+            <div className="col-span-full text-red-500 text-center">
+              Failed to load products. Please try again later.
+            </div>
+          )}
+
+          {!isLoading &&
+            !error &&
+            mappedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
         </div>
       </div>
     </section>

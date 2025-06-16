@@ -1,32 +1,66 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import Image from "next/image"
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 export default function ContactForm() {
-  const [formData, setFormData] = useState({
+  const [formDatas, setFormData] = useState({
     name: "",
     email: "",
     message: "",
-  })
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (formData: FormData) => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Failed to create product");
+      }
+
+      return res.json();
+    },
+
+    onSuccess: (data) => {
+      toast.success(data.message || "Product created successfully");
+      setFormData({ name: "", email: "", message: "" }); // Reset form
+    },
+
+    onError: (error: Error) => {
+      toast.error(error.message || "Something went wrong");
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Form submitted:", formData)
-  }
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", formDatas.name);
+    formData.append("email", formDatas.email);
+    formData.append("how_can_we_help", formDatas.message);
+    mutation.mutate(formData);
+  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
-      ...formData,
+      ...formDatas,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   return (
     <section className="py-8 sm:py-12 lg:py-0">
@@ -37,26 +71,31 @@ export default function ContactForm() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
           {/* Form Section */}
-          <div className="order-2 lg:order-1 w-full">
+          <div className="order-2 lg:order-1 w-full mb-[20PX]">
             <div className="w-full max-w-2xl">
               <div className="mb-6 sm:mb-8">
-                <h3 className="text-xl sm:text-2xl font-bold text-[#000000CC] mb-3">Get in Touch</h3>
+                <h3 className="text-xl sm:text-2xl font-bold text-[#000000CC] mb-3">
+                  Get in Touch
+                </h3>
                 <p className="text-[#000000CC] text-base sm:text-lg font-normal leading-relaxed">
-                  Have a question or need assistance? Fill out the form below and our team will get back to you as soon
-                  as possible.
+                  Have a question or need assistance? Fill out the form below
+                  and our team will get back to you as soon as possible.
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div>
-                  <Label htmlFor="name" className="text-sm font-normal text-[#000000] mb-2 block">
+                  <Label
+                    htmlFor="name"
+                    className="text-sm font-normal text-[#000000] mb-2 block"
+                  >
                     Name
                   </Label>
                   <Input
                     id="name"
                     name="name"
                     type="text"
-                    value={formData.name}
+                    value={formDatas.name}
                     onChange={handleChange}
                     className="w-full h-12 sm:h-[60px] border-[#000000] rounded-lg focus:ring-2 focus:ring-gray-200 transition-all"
                     required
@@ -64,14 +103,17 @@ export default function ContactForm() {
                 </div>
 
                 <div>
-                  <Label htmlFor="email" className="text-sm font-normal text-[#000000] mb-2 block">
+                  <Label
+                    htmlFor="email"
+                    className="text-sm font-normal text-[#000000] mb-2 block"
+                  >
                     Email
                   </Label>
                   <Input
                     id="email"
                     name="email"
                     type="email"
-                    value={formData.email}
+                    value={formDatas.email}
                     onChange={handleChange}
                     className="w-full h-12 sm:h-[60px] border-[#000000] rounded-lg focus:ring-2 focus:ring-gray-200 transition-all"
                     required
@@ -79,13 +121,16 @@ export default function ContactForm() {
                 </div>
 
                 <div>
-                  <Label htmlFor="message" className="text-sm font-normal text-[#000000] mb-2 block">
+                  <Label
+                    htmlFor="message"
+                    className="text-sm font-normal text-[#000000] mb-2 block"
+                  >
                     How can we help?
                   </Label>
                   <Textarea
                     id="message"
                     name="message"
-                    value={formData.message}
+                    value={formDatas.message}
                     onChange={handleChange}
                     rows={4}
                     className="w-full min-h-[120px] sm:min-h-[150px] border-[#000000] rounded-lg resize-none focus:ring-2 focus:ring-gray-200 transition-all"
@@ -96,9 +141,17 @@ export default function ContactForm() {
                 <div className="pt-6 sm:pt-8 lg:pt-[60px]">
                   <Button
                     type="submit"
+                    disabled={mutation.isPending}
                     className="w-full sm:w-auto bg-transparent hover:bg-gray-50 text-[#000000CC] px-6 sm:px-8 h-12 sm:h-[51px] rounded-full border border-[#000000CC] transition-all duration-200 hover:shadow-md"
                   >
-                    Let Us Know
+                    {mutation.isPending ? (
+                      <div className="flex items-center gap-2">
+                        <span className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                        Sending...
+                      </div>
+                    ) : (
+                      "Let Us Know"
+                    )}
                   </Button>
                 </div>
               </form>
@@ -124,7 +177,7 @@ export default function ContactForm() {
                   src="/asset/contact1.png"
                   alt="Beauty products and cosmetics"
                   fill
-                  className="object-cover "
+                  className="object-cover"
                 />
               </div>
             </div>
@@ -132,5 +185,5 @@ export default function ContactForm() {
         </div>
       </div>
     </section>
-  )
+  );
 }

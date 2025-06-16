@@ -11,20 +11,31 @@ export interface Category {
   id: number;
   name: string;
 }
+export interface Media {
+  id: number;
+  product_id: number;
+  file_path: string;
+  created_at?: string; // ISO date string
+  updated_at?: string; // ISO date string
+}
 
 export interface Product {
   id: number;
-  category: Category;
   name: string;
-  price: string; // original API returns as string
-  cost_price?: string;
-  stock_quantity?: number;
-  rating?: number;
-  reviews?: number;
-  image: string | null;
-  media: MediaItem[];
-  images: string[]
-  status?: "active" | "draft";
+  description: string;
+  image: string | null; // ✅ not optional
+  price: string;
+  category_id: number;
+  status: "active" | "inactive";
+  cost_price: string;
+  stock_quantity: number;
+  sales: number;
+  // orders_count: number;
+  created_at: string;
+  updated_at: string;
+  category: Category;
+  media: Media[];
+  images?: string[]; // if you're adding this for cart/store compatibility
 }
 
 export interface CartItem extends Product {

@@ -1,15 +1,13 @@
-// bestSellingProducts.types.ts
-
-export interface ApiResponse {
+export interface ProductResponse {
   success: boolean;
-  data: PaginatedData;
+  data: PaginatedProducts;
   current_page: number;
   total_pages: number;
   per_page: number;
   total: number;
 }
 
-export interface PaginatedData {
+export interface PaginatedProducts {
   current_page: number;
   data: Product[];
   first_page_url: string;
@@ -25,40 +23,36 @@ export interface PaginatedData {
   total: number;
 }
 
+export interface PaginationLink {
+  url: string | null;
+  label: string;
+  active: boolean;
+}
+
 export interface Product {
   id: number;
   name: string;
   description: string;
-  image: string | null; // ✅ not optional
+  image: string | null;
   price: string;
   category_id: number;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive'; // Add other status values if needed
   cost_price: string;
   stock_quantity: number;
   sales: number;
-  orders_count: number;
   created_at: string;
   updated_at: string;
-  category: Category;
   media: Media[];
-  images?: string[]; // if you're adding this for cart/store compatibility
+  category: Category;
 }
 
 export interface Media {
   id: number;
   product_id: number;
   file_path: string;
-  created_at: string; // ISO date string
-  updated_at: string; // ISO date string
 }
 
 export interface Category {
   id: number;
   name: string;
-}
-
-export interface PaginationLink {
-  url: string | null;
-  label: string;
-  active: boolean;
 }

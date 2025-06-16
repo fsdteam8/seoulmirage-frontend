@@ -5,147 +5,134 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Star, Plus, Minus, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import BestSellers from "../BestSerllers";
+// import BestSellers from "../BestSellers"; // Fixed typo
 import ProductReviews from "./ProductReviews";
+import { useQuery } from "@tanstack/react-query";
+import BestSellers from "../BestSerllers";
 
-// Mock product data - in a real app, this would come from an API
-const getProduct = (id: string) => {
-  const products = {
-    "1": {
-      id: "1",
-      category: "Serums",
-      name: "111111111Radiance Boost Serum",
-      price: 65,
-      originalPrice: 99,
-      rating: 4.9,
-      reviews: 157,
-      discount: 50,
-      images: [
-        "/asset/p2.png",
-        "/asset/p3.png",
-        "/asset/p4.png",
-        "/asset/p1.png",
-      ],
-      description:
-        "Unleash your natural glow with this lightweight serum packed with Vitamin C and botanical extracts.",
-      details: {
-        "STRAIGHT UP:":
-          "Designed to boost skin's natural brightness and improve texture over time.",
-        "THE LOWDOWN:": [
-          "Targets dullness and uneven tone.",
-          "Enriched with Vitamin C and Licorice Root Extract.",
-          "Hydrates and protects with Hyaluronic Acid.",
-          "Non-greasy, fast-absorbing formula.",
-          "Ideal for daily use, morning or night.",
-        ],
-      },
-      additionalInfo:
-        "Dermatologist-tested. Suitable for all skin types including sensitive skin.",
-    },
-    "2": {
-      id: "2",
-      category: "Serums",
-      name: "Hydra Plump Elixir",
-      price: 59,
-      originalPrice: 89,
-      rating: 4.8,
-      reviews: 132,
-      discount: 45,
-      images: [
-        "/asset/p2.png",
-        "/asset/p3.png",
-        "/asset/p4.png",
-        "/asset/p1.png",
-      ],
-      description:
-        "Intensely hydrating serum that plumps skin and smooths fine lines with every drop.",
-      details: {
-        "STRAIGHT UP:":
-          "Formulated to deliver long-lasting hydration and promote youthful elasticity.",
-        "THE LOWDOWN:": [
-          "Locks in moisture for 24 hours.",
-          "Reduces signs of dehydration instantly.",
-          "Infused with Squalane and Hyaluronic Acid.",
-          "Fragrance-free and hypoallergenic.",
-        ],
-      },
-      additionalInfo: "Vegan and cruelty-free. Use under moisturizer or alone.",
-    },
-    "3": {
-      id: "3",
-      category: "Serums",
-      name: "333Overnight Repair Drops",
-      price: 72,
-      originalPrice: 105,
-      rating: 4.7,
-      reviews: 98,
-      discount: 30,
-      images: [
-        "/asset/p2.png",
-        "/asset/p3.png",
-        "/asset/p4.png",
-        "/asset/p1.png",
-      ],
-      description:
-        "Wake up to smoother, revitalized skin with this intensive nighttime serum.",
-      details: {
-        "STRAIGHT UP:":
-          "Deeply restorative formula targets tired, stressed skin overnight.",
-        "THE LOWDOWN:": [
-          "Supports overnight cell renewal.",
-          "Powered by Retinol and Peptides.",
-          "Minimizes pores and evens texture.",
-          "Encourages smoother, firmer skin tone.",
-        ],
-      },
-      additionalInfo:
-        "For PM use only. Follow with moisturizer. Avoid direct sunlight after use.",
-    },
-    "4": {
-      id: "4",
-      category: "Serums",
-      name: "Youth Shield Concentrate",
-      price: 68,
-      originalPrice: 102,
-      rating: 4.9,
-      reviews: 165,
-      discount: 33,
-      images: [
-        "/asset/p2.png",
-        "/asset/p3.png",
-        "/asset/p4.png",
-        "/asset/p1.png",
-      ],
-      description:
-        "A protective serum that fights environmental damage and signs of aging.",
-      details: {
-        "STRAIGHT UP:":
-          "Boosts skin's natural defenses while reducing fine lines and dullness.",
-        "THE LOWDOWN:": [
-          "Contains antioxidants like Green Tea and Vitamin E.",
-          "Shields skin from pollution and UV stress.",
-          "Improves firmness and resilience over time.",
-          "Lightweight formula absorbs quickly into skin.",
-        ],
-      },
-      additionalInfo: "Perfect for city living. Wear under SPF during the day.",
-    },
-  };
+// Define the API response types
+interface Media {
+  id: number;
+  product_id: number;
+  file_path: string;
+  created_at: string;
+  updated_at: string;
+}
 
-  return products[id as keyof typeof products] || products["1"];
-};
+interface Category {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  image: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  image: string | null;
+  price: string;
+  category_id: number;
+  status: string;
+  cost_price: string;
+  stock_quantity: number;
+  sales: number;
+  created_at: string;
+  updated_at: string;
+  category: Category;
+  media: Media[];
+}
+
+interface ProductDetailsResponse {
+  success: boolean;
+  message: string;
+  data: Product;
+}
 
 interface ProductDetailsProps {
   productId: string;
 }
 
 export default function ProductDetails({ productId }: ProductDetailsProps) {
-  const product = getProduct(productId);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
   const handleQuantityChange = (change: number) => {
     setQuantity(Math.max(1, quantity + change));
+  };
+
+  const { data, error, isLoading } = useQuery<ProductDetailsResponse>({
+    queryKey: ["productDetails", productId],
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products/${productId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch product details");
+      }
+
+      const data = await res.json();
+      return data as ProductDetailsResponse;
+    },
+  });
+
+  const productDetails = data?.data;
+
+  // Handle loading and error states
+  if (isLoading) {
+    return <div className="container mx-auto px-4 py-8">Loading...</div>;
+  }
+
+  if (error || !productDetails) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        Error loading product details. Please try again later.
+      </div>
+    );
+  }
+
+  // Map API data to the expected structure
+  const product = {
+    id: productDetails.id.toString(),
+    name: productDetails.name,
+    category: productDetails.category.name,
+    price: parseFloat(productDetails.price),
+    originalPrice:
+      parseFloat(productDetails.cost_price) ||
+      parseFloat(productDetails.price) * 1.5, // Fallback: assume original price is 1.5x if not provided
+    rating: 4.5, // Fallback: API doesn't provide rating
+    reviews: 0, // Fallback: API doesn't provide reviews
+    discount:
+      Math.round(
+        ((parseFloat(productDetails.cost_price || productDetails.price) -
+          parseFloat(productDetails.price)) /
+          parseFloat(productDetails.cost_price || productDetails.price)) *
+          100
+      ) || 0, // Calculate discount if possible, else 0
+    images: productDetails.media.map(
+      (media) => `${process.env.NEXT_PUBLIC_API_URL}/${media.file_path}`
+    ), // Prepend API URL to image paths
+    description: productDetails.description || "No description available.",
+    details: {
+      "STRAIGHT UP": "A high-quality product designed for your needs.", // Fallback
+      "THE LOWDOWN": [
+        "Premium quality materials.",
+        "Suitable for various uses.",
+        "Crafted with care.", // Fallback details
+      ],
+    },
+    additionalInfo: `Part of our ${productDetails.category.name} collection.`, // Fallback
+    stock_quantity: productDetails.stock_quantity, // Additional field from API
+    status: productDetails.status, // Additional field from API
   };
 
   const handleAddToCart = () => {
@@ -167,7 +154,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Image Gallery */}
           <div className="space-y-4">
-            {/* Thumbnail Images - Mobile: Horizontal scroll, Desktop: Vertical */}
+            {/* Thumbnail Images - Mobile: Horizontal scroll */}
             <div className="lg:hidden">
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {product.images.map((image, index) => (
@@ -267,12 +254,32 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
 
             {/* Price */}
             <div className="flex items-center gap-3">
-              <span className="text-3xl font-bold">${product.price}</span>
-              <span className="text-lg text-gray-500 line-through">
-                ${product.originalPrice}
+              <span className="text-3xl font-bold">
+                ${product.price.toFixed(2)}
               </span>
-              <span className="text-sm text-green-600 font-medium">
-                Save {product.discount}% right now
+              {product.originalPrice && (
+                <span className="text-lg text-gray-500 line-through">
+                  ${product.originalPrice.toFixed(2)}
+                </span>
+              )}
+              {product.discount > 0 && (
+                <span className="text-sm text-green-600 font-medium">
+                  Save {product.discount}% right now
+                </span>
+              )}
+            </div>
+
+            {/* Stock Status */}
+            <div>
+              <span
+                className={`text-sm font-medium ${
+                  product.status === "active"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {product.status === "active" ? "In Stock" : "Out of Stock"} (
+                {product.stock_quantity} available)
               </span>
             </div>
 
@@ -326,6 +333,10 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
                     size="sm"
                     onClick={() => handleQuantityChange(1)}
                     className="px-3"
+                    disabled={
+                      product.stock_quantity <= quantity ||
+                      product.status !== "active"
+                    }
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
@@ -335,6 +346,9 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
               <Button
                 onClick={handleAddToCart}
                 className="w-full bg-black text-white hover:bg-gray-800 py-3 text-lg font-medium"
+                disabled={
+                  product.status !== "active" || product.stock_quantity === 0
+                }
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 Add to Cart
@@ -344,7 +358,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
         </div>
       </div>
 
-      {/* ProductReviews  */}
+      {/* ProductReviews */}
       <div className="bg-[#F5D2A899] py-8">
         <ProductReviews productId={productId} />
       </div>
