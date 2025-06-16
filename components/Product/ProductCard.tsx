@@ -61,8 +61,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product?.media && (
             <Image
               src={
-                `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}` ||
-                "/placeholder.png"
+                `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}` ?
+              `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}` :  "/asset/no-image.jpg"
               }
               alt={product.name || "Product Image"}
               fill
