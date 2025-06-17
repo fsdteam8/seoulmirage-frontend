@@ -1,7 +1,7 @@
 "use client";
 
 interface ShippingInformationProps {
-  subtotal: number;
+  // subtotal: number;
   discount: number;
   shipping: number;
   tax: number;
@@ -9,7 +9,7 @@ interface ShippingInformationProps {
 }
 
 export default function ShippingInformation({
-  subtotal,
+  // subtotal,
   discount,
   shipping,
   tax,
@@ -21,10 +21,10 @@ export default function ShippingInformation({
         Shipping Information
       </h2>
       <div className="space-y-3">
-        <div className="flex justify-between">
+        {/* <div className="flex justify-between">
           <span className="text-gray-700">Subtotal</span>
           <span className="font-medium">${subtotal.toFixed(2)}</span>
-        </div>
+        </div> */}
         <div className="flex justify-between">
           <span className="text-green-600">Discount (30%)</span>
           <span className="text-green-600 font-medium">

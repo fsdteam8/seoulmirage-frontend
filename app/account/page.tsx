@@ -3,7 +3,7 @@
 import { useState } from "react";
 import AccountHeader from "./_components/account-header";
 import UserInformation from "./_components/user-information";
-import ShippingAddress from "./_components/shipping-address";
+// import ShippingAddress from "./_components/shipping-address";
 import ChangePassword from "./_components/change-password";
 import OrderCard from "./_components/order-card";
 
@@ -18,7 +18,7 @@ export default function AccountPage() {
         {activeTab === "profile" && (
           <div className="space-y-[60px]">
             <UserInformation />
-            <ShippingAddress />
+            {/* <ShippingAddress /> */}
             <ChangePassword />
             {/* <AccountFooter /> */}
           </div>
