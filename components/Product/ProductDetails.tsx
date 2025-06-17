@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import BestSellers from "../BestSerllers";
 
 // Define the API response types
-interface Media {
+export interface Media {
   id: number;
   product_id: number;
   file_path: string;
@@ -19,7 +19,7 @@ interface Media {
   updated_at: string;
 }
 
-interface Category {
+export interface Category {
   id: number;
   name: string;
   description: string;
@@ -29,7 +29,30 @@ interface Category {
   updated_at: string;
 }
 
-interface Product {
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  email_verified_at: string | null;
+  image: string | null;
+  role: string;
+  phone: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Review {
+  id: number;
+  product_id: number;
+  user_id: number;
+  comment: string;
+  rating: number;
+  created_at: string;
+  updated_at: string;
+  user: User;
+}
+
+export interface Product {
   id: number;
   name: string;
   description: string;
@@ -44,9 +67,10 @@ interface Product {
   updated_at: string;
   category: Category;
   media: Media[];
+  reviews: Review[];
 }
 
-interface ProductDetailsResponse {
+export interface ProductDetailsResponse {
   success: boolean;
   message: string;
   data: Product;
@@ -87,6 +111,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
 
   const productDetails = data?.data;
 
+  console.log(productDetails?.reviews);
   // Handle loading and error states
   if (isLoading) {
     return <div className="container mx-auto px-4 py-8">Loading...</div>;
@@ -110,7 +135,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
       parseFloat(productDetails.cost_price) ||
       parseFloat(productDetails.price) * 1.5, // Fallback: assume original price is 1.5x if not provided
     rating: 4.5, // Fallback: API doesn't provide rating
-    reviews: 0, // Fallback: API doesn't provide reviews
+    reviews: productDetails?.reviews?.length, // Fallback: API doesn't provide reviews
     discount:
       Math.round(
         ((parseFloat(productDetails.cost_price || productDetails.price) -
@@ -306,12 +331,12 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
                 </div>
               ))}
 
-              <div>
+              {/* <div>
                 <h4 className="font-semibold mb-2">What else?!</h4>
                 <p className="text-sm text-gray-700">
                   {product.additionalInfo}
                 </p>
-              </div>
+              </div> */}
             </div>
 
             {/* Quantity and Add to Cart */}
@@ -333,10 +358,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
                     size="sm"
                     onClick={() => handleQuantityChange(1)}
                     className="px-3"
-                    disabled={
-                      product.stock_quantity <= quantity ||
-                      product.status !== "active"
-                    }
+                    disabled={product.stock_quantity <= quantity}
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
@@ -346,9 +368,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
               <Button
                 onClick={handleAddToCart}
                 className="w-full bg-black text-white hover:bg-gray-800 py-3 text-lg font-medium"
-                disabled={
-                  product.status !== "active" || product.stock_quantity === 0
-                }
+                disabled={product.stock_quantity === 0}
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 Add to Cart
