@@ -8,24 +8,78 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 
-// Zod schema
+// Zod validation schema
 const userSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email"),
+  name: z.string().min(1, "Name is required"),
   phone: z.string().min(10, "Phone number is required"),
   image: z
     .any()
-    .refine((file) => file instanceof File || file === null, {
-      message: "Invalid image file",
-    }),
+    .refine(
+      (file) =>
+        file instanceof File || file === null || typeof file === "string",
+      { message: "Invalid image file" }
+    ),
 });
 
 type UserFormValues = z.infer<typeof userSchema>;
 
 export default function UserInformation() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const session = useSession();
+  const token = (session?.data?.user as { token: string })?.token || "";
+
+  const {
+    data: meData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["me"],
+    enabled: !!token,
+    queryFn: async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error("Failed to fetch user");
+      return res.json();
+    },
+  });
+
+  const user = meData?.data;
+
+  const mutation = useMutation({
+    mutationFn: async (formData: FormData) => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/change-profile-details`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update profile");
+      }
+
+      return response.json();
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Profile updated successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Profile update failed");
+    },
+  });
 
   const {
     register,
@@ -36,16 +90,29 @@ export default function UserInformation() {
   } = useForm<UserFormValues>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
+      name: "",
       phone: "",
       image: null,
     },
   });
 
+  // Set form fields when user data is loaded
+  useEffect(() => {
+    if (user) {
+      setValue("name", user.name || "");
+      setValue("phone", user.phone || "");
+      setValue("image", user.image || null);
+
+      // Set initial image preview if image exists
+      if (user.image && typeof user.image === "string") {
+        setPreviewImage(`${process.env.NEXT_PUBLIC_API_URL}/${user.image}`);
+      }
+    }
+  }, [user, setValue]);
+
   const image = watch("image");
 
+  // Handle image preview
   useEffect(() => {
     if (image instanceof File) {
       const url = URL.createObjectURL(image);
@@ -55,23 +122,32 @@ export default function UserInformation() {
   }, [image]);
 
   const onSubmit = (data: UserFormValues) => {
-    console.log("Validated form data:", data);
-    // Handle form submission logic
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("phone", data.phone);
+    formData.append("image", data.image);
+    mutation.mutate(formData);
   };
+
+  if (isLoading) return <p className="p-4">Loading...</p>;
+  if (isError)
+    return <p className="p-4 text-red-500">Failed to load user info</p>;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="rounded-lg p-6 mb-6">
-      <h2 className="text-lg font-medium text-gray-900 mb-6">User Information</h2>
+      <h2 className="text-lg font-medium text-gray-900 mb-6">
+        User Information
+      </h2>
 
       {/* Profile Picture */}
       <div className="flex mb-[30px]">
         <label htmlFor="image">
-          <Avatar className="w-[200px] h-[200px] border border-gray-200">
+          <Avatar className="w-[200px] h-[200px] border border-gray-200 cursor-pointer">
             <AvatarImage
               src={previewImage || "/placeholder.svg?height=80&width=80"}
               alt="Profile"
             />
-            <AvatarFallback className="text-lg">JD</AvatarFallback>
+            <AvatarFallback className="text-lg">U</AvatarFallback>
           </Avatar>
         </label>
         <input
@@ -83,6 +159,7 @@ export default function UserInformation() {
             const file = e.target.files?.[0];
             if (file) {
               setValue("image", file);
+              setPreviewImage(null); // Reset, will be re-applied in useEffect
             }
           }}
         />
@@ -91,27 +168,16 @@ export default function UserInformation() {
       {/* Form Fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] mb-6">
         <div className="space-y-2">
-          <Label htmlFor="firstName">First name</Label>
-          <Input id="firstName" {...register("firstName")} />
-          {errors.firstName && (
-            <p className="text-sm text-red-500">{errors.firstName.message}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="lastName">Last name</Label>
-          <Input id="lastName" {...register("lastName")} />
-          {errors.lastName && (
-            <p className="text-sm text-red-500">{errors.lastName.message}</p>
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" {...register("name")} />
+          {errors.name && (
+            <p className="text-sm text-red-500">{errors.name.message}</p>
           )}
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" {...register("email")} />
-          {errors.email && (
-            <p className="text-sm text-red-500">{errors.email.message}</p>
-          )}
+          <Input id="email" type="email" value={user?.email ?? ""} disabled />
         </div>
 
         <div className="space-y-2">
@@ -126,9 +192,17 @@ export default function UserInformation() {
       {/* Save Button */}
       <Button
         type="submit"
-        className="bg-black text-white px-6 rounded-3xl py-[10px] hover:bg-gray-800 transition-colors font-medium"
+        disabled={mutation.isPending}
+        className="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
       >
-        Update Profile
+        {mutation.isPending ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Update...
+          </>
+        ) : (
+          "Update Profile"
+        )}
       </Button>
     </form>
   );

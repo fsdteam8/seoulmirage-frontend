@@ -5,52 +5,118 @@ import { useRouter } from "next/navigation";
 import OrderItems from "./_components/order-items";
 import ShippingInformation from "./_components/shipping-information";
 import ShippingDetails from "./_components/shipping-details";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
-const Page = () => {
+interface PageProps {
+  params: { id: string };
+}
+
+const Page = ({ params }: PageProps) => {
   const [activeTab, setActiveTab] = useState<"summary" | "shipping">("summary");
+  const session = useSession();
+  const token = (session?.data?.user as { token: string })?.token || "";
   const router = useRouter();
-  const orderData = {
-    orderNumber: "Order ORD-12345",
-    orderDate: "Placed on May 15, 2023",
-    status: "Shipped",
-    items: [
-      {
-        id: "1",
-        name: "Hydrating Essence",
-        image: "/placeholder.svg?height=64&width=64",
-        quantity: 1,
-        price: 48,
-      },
-      {
-        id: "2",
-        name: "Nourishing Cream",
-        image: "/placeholder.svg?height=64&width=64",
-        quantity: 1,
-        price: 48,
-      },
-    ],
-    pricing: {
-      subtotal: 152.0,
-      discount: 5.99,
-      shipping: 5.99,
-      tax: 15.99,
-      total: 157.99,
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["singelOrder", params.id],
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/orders/${params.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch order");
+      return res.json();
     },
-    shippingAddress: {
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phone: "(555) 123-4567",
-      apartment: "Apt 4B",
-      street: "123 Main Street",
-      city: "New York",
-      state: "NY",
-      zipCode: "10001",
-      country: "United States",
-    },
-    shippingMethod: "Standard Shipping (5-7 business days)",
-    trackingNumber: "1Z999AA10123456784",
-    estimatedDelivery: "May 27-29, 2023",
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {(error as Error).message}</div>;
+  if (!data?.data) return <div>No order data found</div>;
+
+  const order = data.data;
+
+  // Format the order date
+  const orderDate = new Date(order.created_at).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  // Map products to OrderItems format
+  interface ProductPivot {
+    quantity: number;
+  }
+
+  interface Product {
+    id: number;
+    name: string;
+    image: string;
+    price: string;
+    pivot: ProductPivot;
+  }
+
+  interface OrderItem {
+    id: string;
+    name: string;
+    image: string;
+    quantity: number;
+    price: number;
+  }
+
+  const items: OrderItem[] = order.products.map(
+    (product: Product): OrderItem => ({
+      id: product.id.toString(),
+      name: product.name,
+      image: `${process.env.NEXT_PUBLIC_API_URL}/${product.image}`,
+      quantity: product.pivot.quantity,
+      price: parseFloat(product.price),
+    })
+  );
+
+  // Pricing information
+  const pricing = {
+    // subtotal: order.products.reduce(
+    //   (sum: number, product: Product) =>
+    //     sum + parseFloat(product.price) * product.pivot.quantity,
+    //   0
+    // ),
+    discount: order.promocode ? 0 : 0,
+    shipping: parseFloat(order.shipping_price),
+    tax: 0,
+    total: parseFloat(order.total),
   };
+
+  // Shipping address (mocked since not provided in API response)
+  const shippingAddress = {
+    name: "Customer Name", // Placeholder, as API doesn't provide this
+    email: "customer@example.com", // Placeholder
+    phone: "(555) 123-4567", // Placeholder
+    apartment: "Apt 4B", // Placeholder
+    street: "123 Main Street", // Placeholder
+    city: "New York", // Placeholder
+    state: "NY", // Placeholder
+    zipCode: "10001", // Placeholder
+    country: "United States", // Placeholder
+  };
+
+  // Shipping details
+  const shippingDetails = {
+    shippingMethod: order.shipping_method
+      ? `${
+          order.shipping_method.charAt(0).toUpperCase() +
+          order.shipping_method.slice(1)
+        } Shipping`
+      : "Standard Shipping",
+    trackingNumber: "N/A", // Placeholder, as API doesn't provide this
+    estimatedDelivery: "N/A", // Placeholder, as API doesn't provide this
+  };
+
   const handleBackToAccount = () => {
     router.push("/account");
   };
@@ -61,9 +127,11 @@ const Page = () => {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-lg shadow-sm p-6">
             <OrderHeader
-              orderNumber={orderData.orderNumber}
-              orderDate={orderData.orderDate}
-              status={orderData.status}
+              orderNumber={`Order ${order.uniq_id.slice(0, 8)}`}
+              orderDate={`Placed on ${orderDate}`}
+              status={
+                order.status.charAt(0).toUpperCase() + order.status.slice(1)
+              }
               activeTab={activeTab}
               onTabChange={setActiveTab}
               onBackToAccount={handleBackToAccount}
@@ -71,23 +139,23 @@ const Page = () => {
 
             {activeTab === "summary" && (
               <>
-                <OrderItems items={orderData.items} />
+                <OrderItems items={items} />
                 <ShippingInformation
-                  subtotal={orderData.pricing.subtotal}
-                  discount={orderData.pricing.discount}
-                  shipping={orderData.pricing.shipping}
-                  tax={orderData.pricing.tax}
-                  total={orderData.pricing.total}
+                  // subtotal={pricing.subtotal}
+                  discount={pricing.discount}
+                  shipping={pricing.shipping}
+                  tax={pricing.tax}
+                  total={pricing.total}
                 />
               </>
             )}
 
             {activeTab === "shipping" && (
               <ShippingDetails
-                address={orderData.shippingAddress}
-                shippingMethod={orderData.shippingMethod}
-                trackingNumber={orderData.trackingNumber}
-                estimatedDelivery={orderData.estimatedDelivery}
+                address={shippingAddress}
+                shippingMethod={shippingDetails.shippingMethod}
+                trackingNumber={shippingDetails.trackingNumber}
+                estimatedDelivery={shippingDetails.estimatedDelivery}
               />
             )}
           </div>
