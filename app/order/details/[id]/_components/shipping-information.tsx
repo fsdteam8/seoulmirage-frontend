@@ -10,7 +10,7 @@ interface ShippingInformationProps {
 
 export default function ShippingInformation({
   // subtotal,
-  discount,
+  // discount,
   shipping,
   tax,
   total,
@@ -25,12 +25,12 @@ export default function ShippingInformation({
           <span className="text-gray-700">Subtotal</span>
           <span className="font-medium">${subtotal.toFixed(2)}</span>
         </div> */}
-        <div className="flex justify-between">
+        {/* <div className="flex justify-between">
           <span className="text-green-600">Discount (30%)</span>
           <span className="text-green-600 font-medium">
             -${discount.toFixed(2)}
           </span>
-        </div>
+        </div> */}
         <div className="flex justify-between">
           <span className="text-gray-700">Shipping</span>
           <span className="font-medium">${shipping.toFixed(2)}</span>

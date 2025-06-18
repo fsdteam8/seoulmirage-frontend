@@ -1,11 +1,16 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { ChevronDown, Search, User, ShoppingBag, Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ChevronDown, Search, User, ShoppingBag, Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,43 +18,56 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { signOut, useSession } from "next-auth/react"
-import { useQuery } from "@tanstack/react-query"
-import type { CategorizedData } from "@/types/CategoryDataTypeByNavbar"
-import SearchDialog from "@/components/search-dialog"
+} from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { signOut, useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+import type { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
+import SearchDialog from "@/components/search-dialog";
 
 export default function Navbar() {
-  const session = useSession()
-  const token = (session?.data?.user as { token: string })?.token || ""
+  const session = useSession();
+  const token = (session?.data?.user as { token: string })?.token || "";
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isSkincareOpen, setIsSkincareOpen] = useState(false)
-  const [isCollectionsOpen, setIsCollectionsOpen] = useState(false)
-  const [isProductsOpen, setIsProductsOpen] = useState(false)
-  const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSkincareOpen, setIsSkincareOpen] = useState(false);
+  const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
 
   const { data, isLoading } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
     queryFn: async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories-by-type`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/categories-by-type`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (!res.ok) {
-        throw new Error("Failed to fetch categories")
+        throw new Error("Failed to fetch categories");
       }
-      return res.json()
+      return res.json();
     },
-  })
+  });
 
   // Helper function to generate href from name
   const generateHref = (type: string, name: string) =>
-    `/${type.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, "-")}`
+    `/${type.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, "-")}`;
 
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -74,7 +92,9 @@ export default function Navbar() {
             <NavigationMenu className="hidden lg:flex">
               <NavigationMenuList className="space-x-6">
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="nav-text">Skincare</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className="nav-text">
+                    Skincare
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
                       {isLoading ? (
@@ -86,7 +106,9 @@ export default function Navbar() {
                               href={generateHref("skincare", item.name)}
                               className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
                             >
-                              <div className="font-raleway text-base font-medium leading-tight">{item.name}</div>
+                              <div className="font-raleway text-base font-medium leading-tight">
+                                {item.name}
+                              </div>
                             </Link>
                           </NavigationMenuLink>
                         )) || <div>No Skincare items</div>
@@ -96,7 +118,9 @@ export default function Navbar() {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="nav-text">Collections</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className="nav-text">
+                    Collections
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
                       {isLoading ? (
@@ -108,7 +132,9 @@ export default function Navbar() {
                               href={generateHref("collections", item.name)}
                               className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
                             >
-                              <div className="font-raleway text-base font-medium leading-tight">{item.name}</div>
+                              <div className="font-raleway text-base font-medium leading-tight">
+                                {item.name}
+                              </div>
                             </Link>
                           </NavigationMenuLink>
                         )) || <div>No Collections items</div>
@@ -117,7 +143,7 @@ export default function Navbar() {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
-                <NavigationMenuItem>
+                {/* <NavigationMenuItem>
                   <NavigationMenuTrigger className="nav-text">Products</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
@@ -137,7 +163,7 @@ export default function Navbar() {
                       )}
                     </div>
                   </NavigationMenuContent>
-                </NavigationMenuItem>
+                </NavigationMenuItem> */}
 
                 <NavigationMenuItem>
                   <Link href="/about" className="nav-text">
@@ -157,7 +183,12 @@ export default function Navbar() {
           {/* Right Side: Icons */}
           <div className="flex items-center space-x-2">
             {/* Search */}
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => setIsSearchDialogOpen(true)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={() => setIsSearchDialogOpen(true)}
+            >
               <Search className="h-4 w-4" />
             </Button>
 
@@ -177,11 +208,14 @@ export default function Navbar() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link href="/orders" className="w-full font-raleway">
+                      <Link href="/account" className="w-full font-raleway">
                         Order History
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => signOut()} className="text-red-600 font-raleway">
+                    <DropdownMenuItem
+                      onClick={() => signOut()}
+                      className="text-red-600 font-raleway"
+                    >
                       Log Out
                     </DropdownMenuItem>
                   </>
@@ -217,16 +251,28 @@ export default function Navbar() {
                     <Menu className="h-4 w-4" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-[280px] sm:w-[350px] p-0">
+                <SheetContent
+                  side="right"
+                  className="w-[280px] sm:w-[350px] p-0"
+                >
                   <SheetHeader className="p-6 pb-4 border-b">
-                    <SheetTitle className="text-left font-raleway">Menu</SheetTitle>
+                    <SheetTitle className="text-left font-raleway">
+                      Menu
+                    </SheetTitle>
                   </SheetHeader>
                   <nav className="flex flex-col p-6 space-y-1">
                     {/* Mobile Skincare Collapsible */}
-                    <Collapsible open={isSkincareOpen} onOpenChange={setIsSkincareOpen}>
+                    <Collapsible
+                      open={isSkincareOpen}
+                      onOpenChange={setIsSkincareOpen}
+                    >
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-3 text-left font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md px-3 text-lg">
                         Skincare
-                        <ChevronDown className={`h-4 w-4 transition-transform ${isSkincareOpen ? "rotate-180" : ""}`} />
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${
+                            isSkincareOpen ? "rotate-180" : ""
+                          }`}
+                        />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
                         {isLoading ? (
@@ -247,11 +293,16 @@ export default function Navbar() {
                     </Collapsible>
 
                     {/* Mobile Collections Collapsible */}
-                    <Collapsible open={isCollectionsOpen} onOpenChange={setIsCollectionsOpen}>
+                    <Collapsible
+                      open={isCollectionsOpen}
+                      onOpenChange={setIsCollectionsOpen}
+                    >
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-3 text-left font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md px-3 text-lg">
                         Collections
                         <ChevronDown
-                          className={`h-4 w-4 transition-transform ${isCollectionsOpen ? "rotate-180" : ""}`}
+                          className={`h-4 w-4 transition-transform ${
+                            isCollectionsOpen ? "rotate-180" : ""
+                          }`}
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
@@ -273,10 +324,17 @@ export default function Navbar() {
                     </Collapsible>
 
                     {/* Mobile Products Collapsible */}
-                    <Collapsible open={isProductsOpen} onOpenChange={setIsProductsOpen}>
+                    <Collapsible
+                      open={isProductsOpen}
+                      onOpenChange={setIsProductsOpen}
+                    >
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-3 text-left font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md px-3 text-lg">
                         Products
-                        <ChevronDown className={`h-4 w-4 transition-transform ${isProductsOpen ? "rotate-180" : ""}`} />
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${
+                            isProductsOpen ? "rotate-180" : ""
+                          }`}
+                        />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
                         {isLoading ? (
@@ -318,8 +376,11 @@ export default function Navbar() {
         </div>
 
         {/* Search Dialog */}
-        <SearchDialog open={isSearchDialogOpen} onOpenChange={setIsSearchDialogOpen} />
+        <SearchDialog
+          open={isSearchDialogOpen}
+          onOpenChange={setIsSearchDialogOpen}
+        />
       </div>
     </header>
-  )
+  );
 }
