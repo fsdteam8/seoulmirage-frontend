@@ -4,9 +4,8 @@ import Image from "next/image";
 
 export default function About_Section() {
   const session = useSession();
-  // const token = (session?.data?.user as { token: string })?.token || "";
-  // console.log(token);
-  const token = session?.data || "";
+  const token = (session?.data?.user as { token: string })?.token || "";
+  
   console.log(token);
   return (
     <div className="w-full">

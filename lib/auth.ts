@@ -6,8 +6,8 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // 24 hours in seconds
-    updateAge: 36 * 60 * 60, // 36 hours in seconds
+    maxAge: 24 * 60 * 60, // 24 hours
+    updateAge: 36 * 60 * 60, // 36 hours
   },
   providers: [
     CredentialsProvider({
@@ -35,16 +35,25 @@ export const authOptions: NextAuthOptions = {
           );
 
           const data = await res.json();
-          console.log("data" + data?.data);
-          if (!res.ok || !data?.token) {
+          console.log("kongkon", data);
+
+          if (!res.ok || !data?.token || !data?.data) {
             throw new Error(data.message || "Invalid credentials");
           }
 
+          const user = data.data;
+          console.log("mehedi", user);
+
           return {
-            id: data?.id,
-            name: data?.name,
-            email: data?.email,
-            token: data?.token,
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            role: user.role,
+            phone: user.phone,
+            createdAt: user.created_at,
+            updatedAt: user.updated_at,
+            token: data.token,
           };
         } catch (error) {
           console.error("Authentication error:", error);
@@ -54,22 +63,32 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    //eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ token, user }: { token: JWT; user?: any }) {
       if (user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
+        token.image = user.image;
+        token.role = user.role;
+        token.phone = user.phone;
+        token.createdAt = user.createdAt;
+        token.updatedAt = user.updatedAt;
         token.accessToken = user.token;
       }
       return token;
     },
-    //eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: { session: any; token: JWT }) {
       session.user = {
         id: token.id,
         name: token.name,
         email: token.email,
+        image: token.image,
+        role: token.role,
+        phone: token.phone,
+        createdAt: token.createdAt,
+        updatedAt: token.updatedAt,
         token: token.accessToken,
       };
       return session;
