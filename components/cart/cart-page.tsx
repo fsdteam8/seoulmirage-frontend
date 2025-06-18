@@ -4,53 +4,54 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/store/cart-store";
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, getTotalPrice } = useCartStore();
   const subtotal = getTotalPrice();
-  const [promocode, setPromocode] = useState("");
-  const [discount, setDiscount] = useState(0);
-  const [promoApplied, setPromoApplied] = useState(false);
- console.log(items)
-  const total = Math.max(0, subtotal - discount);
+  // const [promocode, setPromocode] = useState("");
+  // const [discount, setDiscount] = useState(0);
+  // const [promoApplied, setPromoApplied] = useState(false);
 
-  const handelSubmited = async () => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/promocodes?search=${promocode}`
-      );
-      const json = await res.json();
-      const promo = json?.data?.data?.[0];
+  console.log(items);
+  // const total = Math.max(0, subtotal - discount);
 
-      if (!promo) {
-        alert("Promo code not found.");
-        return;
-      }
+  // const handelSubmited = async () => {
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_URL}/api/promocodes?search=${promocode}`
+  //     );
+  //     const json = await res.json();
+  //     const promo = json?.data?.data?.[0];
 
-      if (promo.status.toLowerCase() !== "active") {
-        alert("Promo code is not active.");
-        return;
-      }
+  //     if (!promo) {
+  //       alert("Promo code not found.");
+  //       return;
+  //     }
 
-      let calcDiscount = 0;
+  //     if (promo.status.toLowerCase() !== "active") {
+  //       alert("Promo code is not active.");
+  //       return;
+  //     }
 
-      if (promo.type.toLowerCase() === "percentage") {
-        calcDiscount = (subtotal * parseFloat(promo.amount)) / 100;
-      } else {
-        calcDiscount = parseFloat(promo.amount);
-      }
+  //     let calcDiscount = 0;
 
-      setDiscount(calcDiscount);
-      setPromoApplied(true);
+  //     if (promo.type.toLowerCase() === "percentage") {
+  //       calcDiscount = (subtotal * parseFloat(promo.amount)) / 100;
+  //     } else {
+  //       calcDiscount = parseFloat(promo.amount);
+  //     }
 
-      alert(`Promo applied! You saved $${calcDiscount.toFixed(2)}.`);
-    } catch (error) {
-      console.error("Error applying promo:", error);
-    }
-  };
+  //     setDiscount(calcDiscount);
+  //     setPromoApplied(true);
+
+  //     alert(`Promo applied! You saved $${calcDiscount.toFixed(2)}.`);
+  //   } catch (error) {
+  //     console.error("Error applying promo:", error);
+  //   }
+  // };
 
   if (items.length === 0) {
     return (
@@ -80,10 +81,11 @@ export default function CartPage() {
               >
                 <Image
                   src={
-                    `${process.env.NEXT_PUBLIC_API_URL}/${item.image}` ||
-                    "/placeholder.svg"
+                    item?.media?.[0]?.file_path
+                      ? `${process.env.NEXT_PUBLIC_API_URL}/${item.media[0].file_path}`
+                      : "/placeholder.svg"
                   }
-                  alt={item.name}
+                  alt={item?.name || "Image"}
                   width={100}
                   height={100}
                   className="rounded-lg object-cover"
@@ -142,20 +144,20 @@ export default function CartPage() {
                 <span>Subtotal</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
-              {promoApplied && (
+              {/* {promoApplied && (
                 <div className="flex justify-between text-green-600 font-semibold">
                   <span>Promo Discount</span>
                   <span>- ${discount.toFixed(2)}</span>
                 </div>
-              )}
+              )} */}
               <hr className="my-2" />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>${subtotal.toFixed(2)}</span>
               </div>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <Input
                 placeholder="Promo Code"
                 onChange={(e) => setPromocode(e.target.value)}
@@ -168,7 +170,7 @@ export default function CartPage() {
               >
                 Apply
               </Button>
-            </div>
+            </div> */}
 
             <Link href="/checkout">
               <Button className="w-full bg-black text-white hover:bg-gray-800">
