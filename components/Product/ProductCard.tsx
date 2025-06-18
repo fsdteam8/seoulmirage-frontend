@@ -16,6 +16,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  console.log(product)
   const { data: session } = useSession();
   const token = (session?.user as { token?: string })?.token || "";
 

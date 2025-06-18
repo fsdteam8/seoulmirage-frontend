@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import ProductReviews from "./ProductReviews";
 import { useQuery } from "@tanstack/react-query";
 import BestSellers from "../BestSerllers";
+import { toast } from "sonner";
+import { useCartStore } from "@/store/cart-store";
 
 // Define the API response types
 export interface Media {
@@ -83,6 +85,7 @@ interface ProductDetailsProps {
 export default function ProductDetails({ productId }: ProductDetailsProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const addItem = useCartStore((state) => state.addItem);
 
   const handleQuantityChange = (change: number) => {
     setQuantity(Math.max(1, quantity + change));
@@ -111,7 +114,6 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
 
   const productDetails = data?.data;
 
-  console.log(productDetails?.reviews);
   // Handle loading and error states
   if (isLoading) {
     return <div className="container mx-auto px-4 py-8">Loading...</div>;
@@ -160,8 +162,26 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
     status: productDetails.status, // Additional field from API
   };
 
-  const handleAddToCart = () => {
-    console.log("Added to cart:", product.name, "Quantity:", quantity);
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // prevent link navigation when clicking button inside Link
+
+    addItem({
+      ...productDetails,
+      status:
+        productDetails.status === "active" ||
+        productDetails.status === "inactive"
+          ? productDetails.status
+          : "inactive",
+    });
+    toast.success(`${product.name} has been added to your cart!`, {
+      duration: 2000,
+      position: "top-center",
+      style: {
+        backgroundColor: "#f5fff3",
+        color: "black",
+        fontSize: "16px",
+      },
+    });
   };
 
   return (
@@ -298,13 +318,15 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
             <div>
               <span
                 className={`text-sm font-medium ${
-                  product.status === "active"
+                  product.status === "available"
                     ? "text-green-600"
                     : "text-red-600"
                 }`}
               >
-                {product.status === "active" ? "In Stock" : "Out of Stock"} (
-                {product.stock_quantity} available)
+                {product?.status?.toLowerCase() === "low stock"
+                  ? "available"
+                  : "Out of Stock"}{" "}
+                ({product.stock_quantity} available)
               </span>
             </div>
 
