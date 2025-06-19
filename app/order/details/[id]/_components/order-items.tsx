@@ -15,6 +15,7 @@ interface OrderItemsProps {
 }
 
 export default function OrderItems({ items }: OrderItemsProps) {
+  console.log(items);
   return (
     <div className="mb-8">
       <h2 className="text-lg font-medium text-gray-900 mb-4">Order Items</h2>

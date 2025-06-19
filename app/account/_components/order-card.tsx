@@ -89,8 +89,8 @@ const OrderCard = () => {
               <div className="flex flex-col sm:items-end sm:text-right mt-2 sm:mt-0">
                 <p
                   className={`font-medium ${
-                    order.status === "pending"
-                      ? "text-yellow-600"
+                    order.status === "Pending"
+                      ? "text-yellow-500"
                       : order.status === "delivered"
                       ? "text-green-600"
                       : "text-gray-600"

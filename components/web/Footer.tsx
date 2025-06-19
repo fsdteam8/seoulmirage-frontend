@@ -92,18 +92,17 @@ export default function Footer() {
           {/* Logo & Description */}
           <div className="sm:col-span-2 lg:col-span-2 text-center sm:text-left">
             <div className="mb-4 md:mb-6">
-              <div className="w-12 sm:w-[50px] h-12 rounded-lg flex items-center justify-center mb-4 mx-auto sm:mx-0">
+              <div className="mb-4 ">
                 <Image
                   src="/asset/logo.png"
                   width={100}
-                  height={48}
+                  height={100}
                   alt="logo"
                   className="w-auto h-full object-contain"
                 />
               </div>
               <p className="text-base sm:text-lg lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
-                Lorem ipsum dolor sit amet consectetur. Scelerisque mauris
-                lectus habitasse adipiscing elit.
+               Nurturing your skin with nature’s finest ingredients for a radiant, healthy glow every day.
               </p>
             </div>
 
@@ -138,7 +137,7 @@ export default function Footer() {
             <ul className="space-y-2 md:space-y-3">
               <li>
                 <Link
-                  href="#"
+                  href="/products"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   All Products
@@ -146,7 +145,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="#best"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   Bestsellers
@@ -154,7 +153,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="#new"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   New Arrivals
@@ -171,7 +170,7 @@ export default function Footer() {
             <ul className="space-y-2 md:space-y-3">
               <li>
                 <Link
-                  href="#"
+                  href="/about"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   About Us
@@ -179,7 +178,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/contact"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   Contact Us
@@ -187,7 +186,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/coming"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   Shipping & Returns
@@ -195,7 +194,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/coming"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   Privacy Policy
