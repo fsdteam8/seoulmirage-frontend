@@ -7,7 +7,7 @@ import { Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Product, useCartStore } from "@/store/cart-store";
 import { toast } from "sonner";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 // import { Product } from "@/types/BestSellersDataType";
 import Image from "next/image";
 
@@ -16,9 +16,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  console.log(product)
-  const { data: session } = useSession();
-  const token = (session?.user as { token?: string })?.token || "";
+  // const { data: session } = useSession();
+  // const token = (session?.user as { token?: string })?.token || "";
 
   const [isHovered, setIsHovered] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
@@ -26,18 +25,18 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // prevent link navigation when clicking button inside Link
 
-    if (!token) {
-      toast.error("Please log in to add items to your cart.", {
-        duration: 2000,
-        position: "top-center",
-        style: {
-          backgroundColor: "#f8d7da",
-          color: "black",
-          fontSize: "16px",
-        },
-      });
-      return;
-    }
+    // if (!token) {
+    //   toast.error("Please log in to add items to your cart.", {
+    //     duration: 2000,
+    //     position: "top-center",
+    //     style: {
+    //       backgroundColor: "#f8d7da",
+    //       color: "black",
+    //       fontSize: "16px",
+    //     },
+    //   });
+    //   return;
+    // }
 
     addItem(product);
     toast.success(`${product.name} has been added to your cart!`, {
@@ -62,8 +61,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product?.media && (
             <Image
               src={
-                `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}` ?
-              `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}` :  "/asset/no-image.jpg"
+                `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}`
+                  ? `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}`
+                  : "/asset/no-image.jpg"
               }
               alt={product.name || "Product Image"}
               fill

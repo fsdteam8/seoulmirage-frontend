@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={raleway.className}>
+    <html lang="en" className={`${raleway.className} scroll-smooth`}>
       <body className={`${raleway.variable} antialiased`}>
         <Providers>
           <AuthProvider>

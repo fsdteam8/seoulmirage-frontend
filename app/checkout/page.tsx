@@ -1,35 +1,52 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useCartStore } from "@/store/cart-store"
-// import { useRouter } from "next/navigation"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
-import { createCheckoutSession, createOrder, OrderData } from "@/types/order"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useCartStore } from "@/store/cart-store";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { createCheckoutSession, OrderData } from "@/types/order";
+import Image from "next/image";
 
 interface FormData {
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  apartment: string
-  city: string
-  state: string
-  postal: string
-  country: string
-  promo: string
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  apartment: string;
+  city: string;
+  state: string;
+  postal: string;
+  country: string;
+  promo: string;
+}
+
+interface PromoInfo {
+  id: number;
+  name: string;
+  description: string;
+  type: "fixed" | "percentage";
+  status: "Active" | "inactive";
+  usage_limit: string;
+  amount: string;
+  created_at: string;
+  updated_at: string;
+  orders_count: number;
 }
 
 export default function CheckoutPage() {
-  const { items, getTotalPrice, clearCart } = useCartStore()
-  // const router = useRouter()
-  const [shippingMethod, setShippingMethod] = useState("standard")
+  const { items, getTotalPrice, clearCart } = useCartStore();
+  const [shippingMethod, setShippingMethod] = useState("standard");
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -41,55 +58,81 @@ export default function CheckoutPage() {
     postal: "",
     country: "",
     promo: "",
-  })
+  });
+  const [promoInfo, setPromoInfo] = useState<PromoInfo | null>(null);
 
-  const subtotal = getTotalPrice()
+  const subtotal = getTotalPrice();
   const shippingCosts = {
     standard: 5.99,
     express: 12.99,
     overnight: 24.99,
-  }
-  const shipping = shippingCosts[shippingMethod as keyof typeof shippingCosts]
-  const total = subtotal + shipping
+  };
+  const shipping = shippingCosts[shippingMethod as keyof typeof shippingCosts];
 
-  // Create order mutation
-  const createOrderMutation = useMutation({
-    mutationFn: createOrder,
-    onSuccess: (orderResponse) => {
-      // On successful order creation, create checkout session
-      createCheckoutMutation.mutate({
-        order_id: orderResponse.id,
-        email: formData.email,
-      })
-    },
-    onError: (error) => {
-      toast.error(`Failed to create order: ${error.message}`)
-    },
-  })
+  const discount =
+    promoInfo && promoInfo.status === "Active"
+      ? promoInfo.type === "fixed"
+        ? parseFloat(promoInfo.amount)
+        : (parseFloat(promoInfo.amount) / 100) * subtotal
+      : 0;
 
-  // Create checkout session mutation
+  const total = Math.max(0, subtotal + shipping - discount);
+
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "{{url}}";
+
   const createCheckoutMutation = useMutation({
     mutationFn: createCheckoutSession,
     onSuccess: (checkoutResponse) => {
-      if (checkoutResponse.status === "success" && checkoutResponse.checkout_url) {
-        // Clear cart and redirect to Stripe checkout
-        clearCart()
-        window.location.href = checkoutResponse.checkout_url
+      if (
+        checkoutResponse.status === "success" &&
+        checkoutResponse.checkout_url
+      ) {
+        clearCart();
+        window.location.href = checkoutResponse.checkout_url;
       } else {
-        toast.error("Failed to create checkout session")
+        toast.error("Failed to create checkout session");
       }
     },
     onError: (error) => {
-      toast.error(`Failed to create checkout session: ${error.message}`)
+      console.error("Checkout Error:", error);
+      toast.error(`Failed to create checkout session: ${error.message}`);
     },
-  })
+  });
+
+  const createOrderMutation = useMutation({
+    mutationFn: async (orderData: OrderData) => {
+      const response = await fetch(`${API_BASE_URL}/api/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || `Failed to create order: ${response.status}`
+        );
+      }
+
+      return response.json();
+    },
+    onSuccess: (orderResponse) => {
+      createCheckoutMutation.mutate({
+        order_id: orderResponse.data.order.id,
+        email: formData.email,
+      });
+    },
+    onError: (error) => {
+      console.error("❌ Order Creation Failed:", error);
+      toast.error(`Failed to create order: ${error.message}`);
+    },
+  });
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const validateForm = (): boolean => {
     const requiredFields: (keyof FormData)[] = [
@@ -101,42 +144,42 @@ export default function CheckoutPage() {
       "state",
       "postal",
       "country",
-    ]
+    ];
 
     for (const field of requiredFields) {
       if (!formData[field].trim()) {
-        toast.error(`Please fill in ${field.replace(/([A-Z])/g, " $1").toLowerCase()}`)
-        return false
+        toast.error(
+          `Please fill in ${field.replace(/([A-Z])/g, " $1").toLowerCase()}`
+        );
+        return false;
       }
     }
 
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      toast.error("Please enter a valid email address")
-      return false
+      toast.error("Please enter a valid email address");
+      return false;
     }
 
     if (items.length === 0) {
-      toast.error("Your cart is empty")
-      return false
+      toast.error("Your cart is empty");
+      return false;
     }
 
-    return true
-  }
+    return true;
+  };
 
   const handlePayment = () => {
-    if (!validateForm()) {
-      return
-    }
+    if (!validateForm()) return;
 
-    // Prepare order data
     const orderData: OrderData = {
       full_name: formData.firstName,
       last_name: formData.lastName,
       email: formData.email,
       phone: formData.phone,
-      full_address: formData.apartment ? `${formData.apartment}, ${formData.city}` : formData.city,
+      full_address: formData.apartment
+        ? `${formData.apartment}, ${formData.city}`
+        : formData.city,
       city: formData.city,
       state: formData.state,
       postal_code: formData.postal,
@@ -146,23 +189,80 @@ export default function CheckoutPage() {
       status: "pending",
       shipping_method: shippingMethod,
       shipping_price: shipping.toString(),
-      order_summary: items.map((item) => `${item.name} x${item.quantity}`).join(", "),
+      order_summary: items
+        .map((item) => `${item.name} x${item.quantity}`)
+        .join(", "),
       payment_method: "cash_on_delivery",
       payment_status: "unpaid",
-      promocode_id: formData.promo ? "1" : undefined,
+      promocode_id: promoInfo?.id?.toString(),
       total: total.toString(),
       products: items.map((item) => ({
         product_id: item.id.toString(),
         quantity: item.quantity.toString(),
       })),
       promocode_name: formData.promo || undefined,
+    };
+
+    createOrderMutation.mutate(orderData);
+  };
+
+  const isLoading =
+    createOrderMutation.isPending || createCheckoutMutation.isPending;
+
+  const handleUsePromoCode = async () => {
+    if (!formData.promo) {
+      toast.error("Please enter a promo code");
+      return;
     }
 
-    // Create order
-    createOrderMutation.mutate(orderData)
-  }
+    try {
+      const res = await fetch(
+        `${API_BASE_URL}/api/promocodes?search=${formData.promo}&for=use_in_order`
+      );
 
-  const isLoading = createOrderMutation.isPending || createCheckoutMutation.isPending
+      if (!res.ok) {
+        throw new Error("Failed to fetch promo code");
+      }
+
+      const data = await res.json();
+
+      if (data?.data?.data?.length > 0) {
+        const promo = data.data.data[0];
+
+        if (promo.status !== "Active") {
+          setPromoInfo(null);
+          toast.error("Promo code is not active");
+          return;
+        }
+
+        if (parseInt(promo.orders_count) >= parseInt(promo.usage_limit)) {
+          setPromoInfo(null);
+          toast.error("Promo code has reached its usage limit");
+          return;
+        }
+
+        const discountAmount =
+          promo.type === "fixed"
+            ? parseFloat(promo.amount)
+            : (parseFloat(promo.amount) / 100) * subtotal;
+
+        if (isNaN(discountAmount) || discountAmount <= 0) {
+          setPromoInfo(null);
+          toast.error("Invalid promo code amount");
+          return;
+        }
+
+        setPromoInfo(promo);
+        toast.success("Promo code applied!");
+      } else {
+        setPromoInfo(null);
+        toast.error("Invalid promo code");
+      }
+    } catch (error) {
+      console.error("Promo code fetch error:", error);
+      toast.error("Something went wrong while applying promo code");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F5E6D3]">
@@ -175,7 +275,9 @@ export default function CheckoutPage() {
             <div className="space-y-6">
               {/* Shipping Information */}
               <div>
-                <h2 className="text-xl font-semibold mb-4">Shipping Information</h2>
+                <h2 className="text-xl font-semibold mb-4">
+                  Shipping Information
+                </h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="firstName">Full name *</Label>
@@ -183,7 +285,9 @@ export default function CheckoutPage() {
                       id="firstName"
                       placeholder="John"
                       value={formData.firstName}
-                      onChange={(e) => handleInputChange("firstName", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("firstName", e.target.value)
+                      }
                       disabled={isLoading}
                     />
                   </div>
@@ -193,7 +297,9 @@ export default function CheckoutPage() {
                       id="lastName"
                       placeholder="Doe"
                       value={formData.lastName}
-                      onChange={(e) => handleInputChange("lastName", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("lastName", e.target.value)
+                      }
                       disabled={isLoading}
                     />
                   </div>
@@ -204,7 +310,9 @@ export default function CheckoutPage() {
                       type="email"
                       placeholder="john@example.com"
                       value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("email", e.target.value)
+                      }
                       disabled={isLoading}
                     />
                   </div>
@@ -214,17 +322,23 @@ export default function CheckoutPage() {
                       id="phone"
                       placeholder="01700000001"
                       value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("phone", e.target.value)
+                      }
                       disabled={isLoading}
                     />
                   </div>
                   <div className="col-span-2">
-                    <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
+                    <Label htmlFor="apartment">
+                      Apartment, suite, etc. (optional)
+                    </Label>
                     <Input
                       id="apartment"
                       placeholder="House 1, Road 1"
                       value={formData.apartment}
-                      onChange={(e) => handleInputChange("apartment", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("apartment", e.target.value)
+                      }
                       disabled={isLoading}
                     />
                   </div>
@@ -234,7 +348,9 @@ export default function CheckoutPage() {
                       id="city"
                       placeholder="Dhaka"
                       value={formData.city}
-                      onChange={(e) => handleInputChange("city", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("city", e.target.value)
+                      }
                       disabled={isLoading}
                     />
                   </div>
@@ -242,7 +358,9 @@ export default function CheckoutPage() {
                     <Label htmlFor="state">State/Province *</Label>
                     <Select
                       value={formData.state}
-                      onValueChange={(value) => handleInputChange("state", value)}
+                      onValueChange={(value) =>
+                        handleInputChange("state", value)
+                      }
                       disabled={isLoading}
                     >
                       <SelectTrigger>
@@ -266,26 +384,20 @@ export default function CheckoutPage() {
                       id="postal"
                       placeholder="1205"
                       value={formData.postal}
-                      onChange={(e) => handleInputChange("postal", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("postal", e.target.value)
+                      }
                       disabled={isLoading}
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="promo">Promo Code</Label>
-                    <Input
-                      placeholder="FREESHIP"
-                      value={formData.promo}
-                      onChange={(e) => handleInputChange("promo", e.target.value)}
-                      className="mb-2"
-                      id="promo"
-                      disabled={isLoading}
-                    />
-                  </div>
+
                   <div className="col-span-2">
                     <Label htmlFor="country">Country *</Label>
                     <Select
                       value={formData.country}
-                      onValueChange={(value) => handleInputChange("country", value)}
+                      onValueChange={(value) =>
+                        handleInputChange("country", value)
+                      }
                       disabled={isLoading}
                     >
                       <SelectTrigger>
@@ -306,25 +418,35 @@ export default function CheckoutPage() {
               {/* Shipping Method */}
               <div>
                 <h2 className="text-xl font-semibold mb-4">Shipping Method</h2>
-                <RadioGroup value={shippingMethod} onValueChange={setShippingMethod} disabled={isLoading}>
+                <RadioGroup
+                  value={shippingMethod}
+                  onValueChange={setShippingMethod}
+                  disabled={isLoading}
+                >
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="standard" id="standard" />
-                      <Label htmlFor="standard">Standard Shipping (5-7 business days)</Label>
+                      <Label htmlFor="standard">
+                        Standard Shipping (5-7 business days)
+                      </Label>
                     </div>
                     <span className="font-semibold">$5.99</span>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="express" id="express" />
-                      <Label htmlFor="express">Express Shipping (2-3 business days)</Label>
+                      <Label htmlFor="express">
+                        Express Shipping (2-3 business days)
+                      </Label>
                     </div>
                     <span className="font-semibold">$12.99</span>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="overnight" id="overnight" />
-                      <Label htmlFor="overnight">Overnight Shipping (1 business day)</Label>
+                      <Label htmlFor="overnight">
+                        Overnight Shipping (1 business day)
+                      </Label>
                     </div>
                     <span className="font-semibold">$24.99</span>
                   </div>
@@ -335,7 +457,8 @@ export default function CheckoutPage() {
               {(createOrderMutation.error || createCheckoutMutation.error) && (
                 <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                   <p className="text-red-600 text-sm">
-                    {createOrderMutation.error?.message || createCheckoutMutation.error?.message}
+                    {createOrderMutation.error?.message ||
+                      createCheckoutMutation.error?.message}
                   </p>
                 </div>
               )}
@@ -365,15 +488,21 @@ export default function CheckoutPage() {
               {items.map((item) => (
                 <div key={item.id} className="flex items-center space-x-3">
                   <Image
-                    src={item.image || "/placeholder.svg"}
-                    alt={item.name}
-                    width={60}
-                    height={60}
+                    src={
+                      item?.media?.[0]?.file_path
+                        ? `${API_BASE_URL}/${item.media[0].file_path}`
+                        : "/placeholder.svg"
+                    }
+                    alt={item?.name || "Image"}
+                    width={100}
+                    height={100}
                     className="rounded-lg object-cover"
                   />
                   <div className="flex-1">
                     <h3 className="font-medium">{item.name}</h3>
-                    <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                    <p className="text-sm text-gray-600">
+                      Quantity: {item.quantity}
+                    </p>
                   </div>
                   <span className="font-semibold">${item.price}</span>
                 </div>
@@ -389,10 +518,30 @@ export default function CheckoutPage() {
                 <span>Shipping</span>
                 <span>${shipping.toFixed(2)}</span>
               </div>
-              {formData.promo && (
+              <div>
+                <Label htmlFor="promo">Promo Code</Label>
+                <Input
+                  placeholder="FREESHIP"
+                  value={formData.promo}
+                  onChange={(e) => handleInputChange("promo", e.target.value)}
+                  className="mb-2"
+                  id="promo"
+                  disabled={isLoading}
+                />
+              </div>
+              <div className="flex items-center justify-center py-2">
+                <button
+                  onClick={handleUsePromoCode}
+                  className="bg-black text-white py-2 px-2 w-full hover:bg-gray-700 rounded-lg"
+                  disabled={isLoading}
+                >
+                  Redeem
+                </button>
+              </div>
+              {promoInfo && (
                 <div className="flex justify-between text-green-600">
                   <span>Promo ({formData.promo})</span>
-                  <span>Applied</span>
+                  <span>-${discount.toFixed(2)}</span>
                 </div>
               )}
               <div className="flex justify-between font-bold text-lg border-t pt-2">
@@ -404,5 +553,5 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
