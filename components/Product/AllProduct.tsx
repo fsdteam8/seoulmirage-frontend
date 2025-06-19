@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ProductCard from "./ProductCard";
 import {
   Select,
@@ -9,20 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import type { Product } from "@/store/cart-store";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { ProductPageSkeleton } from "./ProductSkeleton";
-
-const categories = [
-  "All Product",
-  "Face",
-  "Brow",
-  "Eye",
-  "Lip",
-  "Sets",
-  "Serums",
-];
 
 export default function AllProducts() {
   const [selectedCategory, setSelectedCategory] = useState("All Product");
@@ -30,19 +19,54 @@ export default function AllProducts() {
 
   const searchParams = useSearchParams();
 
+  const { data: category } = useQuery({
+    queryKey: ["productStats"],
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/categories`,
+        {
+          method: "GET",
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch product stats");
+      return res.json();
+    },
+  });
+
+  interface Category {
+    id: string;
+    name: string;
+  }
+
+  interface CategoryApiResponse {
+    data: {
+      data: Category[];
+    };
+  }
+
+  // ✅ Memoize categories to avoid triggering useEffect every render
+  const categories = useMemo(() => {
+    return [
+      "All Product",
+      ...((category as CategoryApiResponse)?.data?.data?.map(
+        (cat: Category) => cat.name
+      ) || []),
+    ];
+  }, [category]);
+
   useEffect(() => {
     const categoryFromQuery = searchParams.get("category");
-    if (categoryFromQuery && categories.includes(categoryFromQuery)) {
+    if (categoryFromQuery && categories?.includes(categoryFromQuery)) {
       setSelectedCategory(categoryFromQuery);
     }
-  }, [searchParams]);
+  }, [searchParams, categories]);
 
   const { data, error, isLoading } = useQuery({
     queryKey: ["allProducts"],
     queryFn: async () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/products?paginate_count=20`
-      ); // replace with your actual endpoint
+      );
       if (!res.ok) {
         throw new Error("Failed to fetch product");
       }
@@ -53,7 +77,6 @@ export default function AllProducts() {
   if (isLoading) return <ProductPageSkeleton />;
   if (error instanceof Error) return <p>Error: {error.message}</p>;
 
-  console.log(data?.data?.data);
   const products = data?.data || [];
 
   interface Product {
@@ -69,13 +92,13 @@ export default function AllProducts() {
     image: string;
     images: string[];
   }
-  console.log(products?.data);
+
   const filteredProducts =
     products &&
     (products?.data as Product[]).filter(
       (product: Product) =>
         selectedCategory === "All Product" ||
-        product.category.name === selectedCategory
+        product?.category?.name === selectedCategory
     );
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -141,9 +164,15 @@ export default function AllProducts() {
       {/* Products Grid */}
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {sortedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {sortedProducts.length > 0 ? (
+            sortedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))
+          ) : (
+            <div className="col-span-full text-center text-gray-500 text-sm py-10">
+              No products found in this category.
+            </div>
+          )}
         </div>
       </div>
     </div>

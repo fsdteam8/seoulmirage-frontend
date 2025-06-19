@@ -31,6 +31,19 @@ interface FormData {
   promo: string;
 }
 
+interface PromoInfo {
+  id: number;
+  name: string;
+  description: string;
+  type: "fixed" | "percentage";
+  status: "Active" | "inactive";
+  usage_limit: string;
+  amount: string;
+  created_at: string;
+  updated_at: string;
+  orders_count: number;
+}
+
 export default function CheckoutPage() {
   const { items, getTotalPrice, clearCart } = useCartStore();
   const [shippingMethod, setShippingMethod] = useState("standard");
@@ -46,6 +59,7 @@ export default function CheckoutPage() {
     country: "",
     promo: "",
   });
+  const [promoInfo, setPromoInfo] = useState<PromoInfo | null>(null);
 
   const subtotal = getTotalPrice();
   const shippingCosts = {
@@ -54,7 +68,16 @@ export default function CheckoutPage() {
     overnight: 24.99,
   };
   const shipping = shippingCosts[shippingMethod as keyof typeof shippingCosts];
-  const total = subtotal + shipping;
+
+  const discount =
+    promoInfo && promoInfo.status === "Active"
+      ? promoInfo.type === "fixed"
+        ? parseFloat(promoInfo.amount)
+        : (parseFloat(promoInfo.amount) / 100) * subtotal
+      : 0;
+
+  const total = Math.max(0, subtotal + shipping - discount);
+
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "{{url}}";
 
   const createCheckoutMutation = useMutation({
@@ -96,10 +119,6 @@ export default function CheckoutPage() {
       return response.json();
     },
     onSuccess: (orderResponse) => {
-      console.log(
-        "✅ Order Created Successfully:",
-        orderResponse.data.customer.email
-      );
       createCheckoutMutation.mutate({
         order_id: orderResponse.data.order.id,
         email: formData.email,
@@ -175,7 +194,7 @@ export default function CheckoutPage() {
         .join(", "),
       payment_method: "cash_on_delivery",
       payment_status: "unpaid",
-      promocode_id: formData.promo ? "1" : undefined,
+      promocode_id: promoInfo?.id?.toString(),
       total: total.toString(),
       products: items.map((item) => ({
         product_id: item.id.toString(),
@@ -189,6 +208,61 @@ export default function CheckoutPage() {
 
   const isLoading =
     createOrderMutation.isPending || createCheckoutMutation.isPending;
+
+  const handleUsePromoCode = async () => {
+    if (!formData.promo) {
+      toast.error("Please enter a promo code");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${API_BASE_URL}/api/promocodes?search=${formData.promo}&for=use_in_order`
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch promo code");
+      }
+
+      const data = await res.json();
+
+      if (data?.data?.data?.length > 0) {
+        const promo = data.data.data[0];
+
+        if (promo.status !== "Active") {
+          setPromoInfo(null);
+          toast.error("Promo code is not active");
+          return;
+        }
+
+        if (parseInt(promo.orders_count) >= parseInt(promo.usage_limit)) {
+          setPromoInfo(null);
+          toast.error("Promo code has reached its usage limit");
+          return;
+        }
+
+        const discountAmount =
+          promo.type === "fixed"
+            ? parseFloat(promo.amount)
+            : (parseFloat(promo.amount) / 100) * subtotal;
+
+        if (isNaN(discountAmount) || discountAmount <= 0) {
+          setPromoInfo(null);
+          toast.error("Invalid promo code amount");
+          return;
+        }
+
+        setPromoInfo(promo);
+        toast.success("Promo code applied!");
+      } else {
+        setPromoInfo(null);
+        toast.error("Invalid promo code");
+      }
+    } catch (error) {
+      console.error("Promo code fetch error:", error);
+      toast.error("Something went wrong while applying promo code");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F5E6D3]">
@@ -316,19 +390,7 @@ export default function CheckoutPage() {
                       disabled={isLoading}
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="promo">Promo Code</Label>
-                    <Input
-                      placeholder="FREESHIP"
-                      value={formData.promo}
-                      onChange={(e) =>
-                        handleInputChange("promo", e.target.value)
-                      }
-                      className="mb-2"
-                      id="promo"
-                      disabled={isLoading}
-                    />
-                  </div>
+
                   <div className="col-span-2">
                     <Label htmlFor="country">Country *</Label>
                     <Select
@@ -426,10 +488,14 @@ export default function CheckoutPage() {
               {items.map((item) => (
                 <div key={item.id} className="flex items-center space-x-3">
                   <Image
-                    src={item.image || "/placeholder.svg"}
-                    alt={item.name}
-                    width={60}
-                    height={60}
+                    src={
+                      item?.media?.[0]?.file_path
+                        ? `${API_BASE_URL}/${item.media[0].file_path}`
+                        : "/placeholder.svg"
+                    }
+                    alt={item?.name || "Image"}
+                    width={100}
+                    height={100}
                     className="rounded-lg object-cover"
                   />
                   <div className="flex-1">
@@ -452,10 +518,30 @@ export default function CheckoutPage() {
                 <span>Shipping</span>
                 <span>${shipping.toFixed(2)}</span>
               </div>
-              {formData.promo && (
+              <div>
+                <Label htmlFor="promo">Promo Code</Label>
+                <Input
+                  placeholder="FREESHIP"
+                  value={formData.promo}
+                  onChange={(e) => handleInputChange("promo", e.target.value)}
+                  className="mb-2"
+                  id="promo"
+                  disabled={isLoading}
+                />
+              </div>
+              <div className="flex items-center justify-center py-2">
+                <button
+                  onClick={handleUsePromoCode}
+                  className="bg-black text-white py-2 px-2 w-full hover:bg-gray-700 rounded-lg"
+                  disabled={isLoading}
+                >
+                  Redeem
+                </button>
+              </div>
+              {promoInfo && (
                 <div className="flex justify-between text-green-600">
                   <span>Promo ({formData.promo})</span>
-                  <span>Applied</span>
+                  <span>-${discount.toFixed(2)}</span>
                 </div>
               )}
               <div className="flex justify-between font-bold text-lg border-t pt-2">

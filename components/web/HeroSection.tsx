@@ -8,7 +8,7 @@ export default function HeroSection() {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/asset/hero.png')",
+          backgroundImage: "url('/hero.jpg')",
         }}
       >
         {/* Optional overlay for better text readability */}
@@ -19,7 +19,7 @@ export default function HeroSection() {
       <div className="relative z-10 flex min-h-screen items-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[60px]">
+            <h1 className="text-4xl font-bold tracking-tight  text-white sm:text-5xl md:text-6xl lg:text-[60px]">
               Discover your skin&apos;s true potential
             </h1>
 
@@ -29,12 +29,14 @@ export default function HeroSection() {
             </p>
 
             <div className="mt-[60px] flex  gap-4  sm:gap-6">
+            <Link href={'/products'}>
               <Button
                 size="lg"
                 className="bg-white text-[#000000] text-base hover:bg-white font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
               >
                 Shop Now
               </Button>
+            </Link>
               <Link href="/about">
                 <Button
                   variant="outline"

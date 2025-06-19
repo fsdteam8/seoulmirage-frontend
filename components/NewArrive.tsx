@@ -25,7 +25,7 @@ export default function NewArrive() {
   const mappedProducts = data?.data?.data ?? [];
 
   return (
-    <section className="py-12 px-4 md:px-6 lg:px-8">
+    <section className="py-12 px-4 md:px-6 lg:px-8" id="new">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

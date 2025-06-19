@@ -11,47 +11,6 @@ import { useCartStore } from "@/store/cart-store";
 export default function CartPage() {
   const { items, updateQuantity, removeItem, getTotalPrice } = useCartStore();
   const subtotal = getTotalPrice();
-  // const [promocode, setPromocode] = useState("");
-  // const [discount, setDiscount] = useState(0);
-  // const [promoApplied, setPromoApplied] = useState(false);
-
-  console.log(items);
-  // const total = Math.max(0, subtotal - discount);
-
-  // const handelSubmited = async () => {
-  //   try {
-  //     const res = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_URL}/api/promocodes?search=${promocode}`
-  //     );
-  //     const json = await res.json();
-  //     const promo = json?.data?.data?.[0];
-
-  //     if (!promo) {
-  //       alert("Promo code not found.");
-  //       return;
-  //     }
-
-  //     if (promo.status.toLowerCase() !== "active") {
-  //       alert("Promo code is not active.");
-  //       return;
-  //     }
-
-  //     let calcDiscount = 0;
-
-  //     if (promo.type.toLowerCase() === "percentage") {
-  //       calcDiscount = (subtotal * parseFloat(promo.amount)) / 100;
-  //     } else {
-  //       calcDiscount = parseFloat(promo.amount);
-  //     }
-
-  //     setDiscount(calcDiscount);
-  //     setPromoApplied(true);
-
-  //     alert(`Promo applied! You saved $${calcDiscount.toFixed(2)}.`);
-  //   } catch (error) {
-  //     console.error("Error applying promo:", error);
-  //   }
-  // };
 
   if (items.length === 0) {
     return (
@@ -94,6 +53,9 @@ export default function CartPage() {
                 <div className="flex-1">
                   <h3 className="font-semibold text-lg">{item.name}</h3>
                   <p className="text-gray-600">Quantity: {item.quantity}</p>
+                  <p className="text-sm text-gray-500">
+                    In Stock: {item.stock_quantity}
+                  </p>
 
                   <div className="flex items-center space-x-2 mt-2">
                     <Button
@@ -109,7 +71,12 @@ export default function CartPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => {
+                        if (item.quantity < item.stock_quantity) {
+                          updateQuantity(item.id, item.quantity + 1);
+                        }
+                      }}
+                      disabled={item.quantity >= item.stock_quantity}
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
@@ -144,33 +111,12 @@ export default function CartPage() {
                 <span>Subtotal</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
-              {/* {promoApplied && (
-                <div className="flex justify-between text-green-600 font-semibold">
-                  <span>Promo Discount</span>
-                  <span>- ${discount.toFixed(2)}</span>
-                </div>
-              )} */}
               <hr className="my-2" />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
             </div>
-
-            {/* <div className="mb-4">
-              <Input
-                placeholder="Promo Code"
-                onChange={(e) => setPromocode(e.target.value)}
-                className="mb-2"
-              />
-              <Button
-                onClick={handelSubmited}
-                variant="outline"
-                className="w-full"
-              >
-                Apply
-              </Button>
-            </div> */}
 
             <Link href="/checkout">
               <Button className="w-full bg-black text-white hover:bg-gray-800">

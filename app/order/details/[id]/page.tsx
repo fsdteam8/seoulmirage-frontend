@@ -39,6 +39,8 @@ const Page = ({ params }: PageProps) => {
   if (error) return <div>Error: {(error as Error).message}</div>;
   if (!data?.data) return <div>No order data found</div>;
 
+console.log(data)
+
   const order = data.data;
 
   // Format the order date
@@ -53,12 +55,17 @@ const Page = ({ params }: PageProps) => {
     quantity: number;
   }
 
+  interface ProductMedia {
+    file_path: string;
+  }
+
   interface Product {
     id: number;
     name: string;
     image: string;
     price: string;
     pivot: ProductPivot;
+    media?: ProductMedia[];
   }
 
   interface OrderItem {
@@ -73,7 +80,9 @@ const Page = ({ params }: PageProps) => {
     (product: Product): OrderItem => ({
       id: product.id.toString(),
       name: product.name,
-      image: `${process.env.NEXT_PUBLIC_API_URL}/${product.image}`,
+      image: product.media?.length
+        ? `${process.env.NEXT_PUBLIC_API_URL}/${product.media[0].file_path}`
+        : "", // fallback if no media
       quantity: product.pivot.quantity,
       price: parseFloat(product.price),
     })
@@ -91,21 +100,24 @@ const Page = ({ params }: PageProps) => {
     tax: 0,
     total: parseFloat(order.total),
   };
+console.log(order)
 
   // Shipping address (mocked since not provided in API response)
   const shippingAddress = {
-    name: "Customer Name", // Placeholder, as API doesn't provide this
-    email: "customer@example.com", // Placeholder
-    phone: "(555) 123-4567", // Placeholder
-    apartment: "Apt 4B", // Placeholder
-    street: "123 Main Street", // Placeholder
-    city: "New York", // Placeholder
-    state: "NY", // Placeholder
-    zipCode: "10001", // Placeholder
-    country: "United States", // Placeholder
+    name: order.shipping_address?.name ?? "",
+    email: order.shipping_address?.email ?? "",
+    phone: order.shipping_address?.phone ?? "",
+    apartment: order.shipping_address?.apartment ?? "",
+    street: order.shipping_address?.street ?? "",
+    city: order.shipping_address?.city ?? "",
+    state: order.shipping_address?.state ?? "",
+    zipCode: order.shipping_address?.zip_code ?? "",
+    country: order.shipping_address?.country ?? "",
   };
 
-  // Shipping details
+console.log(shippingAddress)
+
+
   const shippingDetails = {
     shippingMethod: order.shipping_method
       ? `${
