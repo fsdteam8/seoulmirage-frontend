@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AuthLayout from "@/components/auth-layout";
 import { toast } from "sonner";
-// import { useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 const resetPasswordSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -18,7 +18,7 @@ const resetPasswordSchema = z.object({
 type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
 export default function ResetPasswordPage() {
-  const router = useRouter();
+  // const router = useRouter();
 
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -27,59 +27,49 @@ export default function ResetPasswordPage() {
     },
   });
 
-  // const mutation = useMutation({
-  //   mutationFn: async (formData: FormData) => {
-  //     try {
-  //       const res = await fetch(
-  //         `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password`,
-  //         {
-  //           method: "POST",
-  //           body: formData,
-  //         }
-  //       );
+  const mutation = useMutation({
+    mutationFn: async (data: ResetPasswordFormValues) => {
+      const formData = new FormData();
+      formData.append("email", data.email);
 
-  //       console.log("=== API RESPONSE ===");
-  //       console.log("Status:", res.status);
-  //       console.log("Status Text:", res.statusText);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/forget-password`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-  //       if (!res.ok) {
-  //         let errorMessage = "Failed to create product";
-  //         try {
-  //           const error = await res.json();
-  //           errorMessage = error.message || errorMessage;
-  //           console.error("API Error Response:", error);
-  //         } catch (e) {
-  //           console.error("Failed to parse error response:", e);
-  //         }
-  //         throw new Error(errorMessage);
-  //       }
+      if (!res.ok) {
+        let errorMsg = "Something went wrong";
+        try {
+          const error = await res.json();
+          if (error?.message) errorMsg = error.message;
+          console.error("API Error Response:", error);
+        } catch (e) {
+          console.error("Failed to parse error response:", e);
+        }
+        throw new Error(errorMsg);
+      }
 
-  //       const result = await res.json();
-  //       console.log("API Success Response:", result);
-  //       return result;
-  //     } catch (error) {
-  //       console.error("Mutation error:", error);
-  //       throw error;
-  //     }
-  //   },
+      const result = await res.json();
+      console.log("API Success Response:", result);
+      return result;
+    },
 
-  //   onSuccess: (data) => {
-  //     toast;
-  //   },
+    onSuccess: () => {
+      toast.success("Reset password link has been sent to your email address.");
+      // router.push("/reset-password/otp");
+    },
 
-  //   onError: (error: Error) => {
-  //     console.error("Error during mutation:", error);
-  //     toast.error(`Error: ${error.message}`);
-  //     toast("");
-  //   },
-  // });
+    onError: (error: Error) => {
+      console.error("Error during mutation:", error);
+      toast.error(`Error: ${error.message}`);
+    },
+  });
 
-  const onSubmit = async (data: ResetPasswordFormValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Reset password email:", data.email);
-    toast.success("An OTP has been sent to your email address.");
-    // Typically, you'd navigate to an OTP entry page or a page to set new password if OTP is handled differently
-    router.push("/reset-password/otp");
+  const onSubmit = (data: ResetPasswordFormValues) => {
+    mutation.mutate(data);
   };
 
   return (
@@ -103,6 +93,7 @@ export default function ResetPasswordPage() {
               placeholder="Enter your email"
               {...form.register("email")}
               className="pl-10"
+              disabled={mutation.isPending}
             />
           </div>
           {form.formState.errors.email && (
@@ -114,10 +105,10 @@ export default function ResetPasswordPage() {
         <div>
           <Button
             type="submit"
-            className="w-full bg-brand-black text-brand-white bg-black text-white hover:bg-brand-black/90"
-            disabled={form.formState.isSubmitting}
+            className="w-full bg-brand-black text-brand-white hover:bg-brand-black/90"
+            disabled={mutation.isPending}
           >
-            {form.formState.isSubmitting ? "Sending..." : "Send"}
+            {mutation.isPending ? "Sending..." : "Send"}
           </Button>
         </div>
       </form>

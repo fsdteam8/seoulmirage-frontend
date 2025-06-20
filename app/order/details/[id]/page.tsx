@@ -39,8 +39,6 @@ const Page = ({ params }: PageProps) => {
   if (error) return <div>Error: {(error as Error).message}</div>;
   if (!data?.data) return <div>No order data found</div>;
 
-console.log(data)
-
   const order = data.data;
 
   // Format the order date
@@ -82,7 +80,7 @@ console.log(data)
       name: product.name,
       image: product.media?.length
         ? `${process.env.NEXT_PUBLIC_API_URL}/${product.media[0].file_path}`
-        : "", // fallback if no media
+        : "",
       quantity: product.pivot.quantity,
       price: parseFloat(product.price),
     })
@@ -90,33 +88,26 @@ console.log(data)
 
   // Pricing information
   const pricing = {
-    // subtotal: order.products.reduce(
-    //   (sum: number, product: Product) =>
-    //     sum + parseFloat(product.price) * product.pivot.quantity,
-    //   0
-    // ),
-    discount: order.promocode ? 0 : 0,
+    discount: order.promocode_name ? 0 : 0, // Modify if discount calculation available
     shipping: parseFloat(order.shipping_price),
     tax: 0,
     total: parseFloat(order.total),
   };
-console.log(order)
 
-  // Shipping address (mocked since not provided in API response)
+  // Shipping address fallback from customer
   const shippingAddress = {
-    name: order.shipping_address?.name ?? "",
-    email: order.shipping_address?.email ?? "",
-    phone: order.shipping_address?.phone ?? "",
-    apartment: order.shipping_address?.apartment ?? "",
-    street: order.shipping_address?.street ?? "",
-    city: order.shipping_address?.city ?? "",
-    state: order.shipping_address?.state ?? "",
-    zipCode: order.shipping_address?.zip_code ?? "",
-    country: order.shipping_address?.country ?? "",
+    name: `${order.customer?.full_name ?? ""} ${
+      order.customer?.last_name ?? ""
+    }`,
+    email: order.customer?.email ?? "",
+    phone: order.customer?.phone ?? "",
+    apartment: "", // Not in API
+    street: order.customer?.full_address ?? "",
+    city: order.customer?.city ?? "",
+    state: order.customer?.state ?? "",
+    zipCode: order.customer?.postal_code ?? "",
+    country: order.customer?.country ?? "",
   };
-
-console.log(shippingAddress)
-
 
   const shippingDetails = {
     shippingMethod: order.shipping_method
@@ -125,8 +116,8 @@ console.log(shippingAddress)
           order.shipping_method.slice(1)
         } Shipping`
       : "Standard Shipping",
-    trackingNumber: "N/A", // Placeholder, as API doesn't provide this
-    estimatedDelivery: "N/A", // Placeholder, as API doesn't provide this
+    trackingNumber: "N/A",
+    estimatedDelivery: "N/A",
   };
 
   const handleBackToAccount = () => {
@@ -153,7 +144,6 @@ console.log(shippingAddress)
               <>
                 <OrderItems items={items} />
                 <ShippingInformation
-                  // subtotal={pricing.subtotal}
                   discount={pricing.discount}
                   shipping={pricing.shipping}
                   tax={pricing.tax}

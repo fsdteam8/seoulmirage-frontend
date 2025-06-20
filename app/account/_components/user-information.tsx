@@ -12,8 +12,9 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// Zod validation schema
+// ✅ Zod validation schema
 const userSchema = z.object({
   name: z.string().min(1, "Name is required"),
   phone: z.string().min(10, "Phone number is required"),
@@ -27,6 +28,36 @@ const userSchema = z.object({
 });
 
 type UserFormValues = z.infer<typeof userSchema>;
+
+// ✅ Skeleton for loading
+function UserInformationSkeleton() {
+  return (
+    <div className="rounded-lg p-6 mb-6">
+      <Skeleton className="h-6 w-40 mb-6" />
+
+      <div className="flex mb-[30px]">
+        <Skeleton className="w-[200px] h-[200px] rounded-full" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] mb-6">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      </div>
+
+      <Skeleton className="h-10 w-40" />
+    </div>
+  );
+}
 
 export default function UserInformation() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -96,14 +127,13 @@ export default function UserInformation() {
     },
   });
 
-  // Set form fields when user data is loaded
+  // Set form values when user data is fetched
   useEffect(() => {
     if (user) {
       setValue("name", user.name || "");
       setValue("phone", user.phone || "");
       setValue("image", user.image || null);
 
-      // Set initial image preview if image exists
       if (user.image && typeof user.image === "string") {
         setPreviewImage(`${process.env.NEXT_PUBLIC_API_URL}/${user.image}`);
       }
@@ -112,7 +142,6 @@ export default function UserInformation() {
 
   const image = watch("image");
 
-  // Handle image preview
   useEffect(() => {
     if (image instanceof File) {
       const url = URL.createObjectURL(image);
@@ -129,7 +158,7 @@ export default function UserInformation() {
     mutation.mutate(formData);
   };
 
-  if (isLoading) return <p className="p-4">Loading...</p>;
+  if (isLoading) return <UserInformationSkeleton />;
   if (isError)
     return <p className="p-4 text-red-500">Failed to load user info</p>;
 
@@ -139,7 +168,7 @@ export default function UserInformation() {
         User Information
       </h2>
 
-      {/* Profile Picture */}
+      {/* Profile Image Upload */}
       <div className="flex mb-[30px]">
         <label htmlFor="image">
           <Avatar className="w-[200px] h-[200px] border border-gray-200 cursor-pointer">
@@ -159,13 +188,13 @@ export default function UserInformation() {
             const file = e.target.files?.[0];
             if (file) {
               setValue("image", file);
-              setPreviewImage(null); // Reset, will be re-applied in useEffect
+              setPreviewImage(null);
             }
           }}
         />
       </div>
 
-      {/* Form Fields */}
+      {/* Input Fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] mb-6">
         <div className="space-y-2">
           <Label htmlFor="name">Name</Label>
@@ -189,7 +218,7 @@ export default function UserInformation() {
         </div>
       </div>
 
-      {/* Save Button */}
+      {/* Submit Button */}
       <Button
         type="submit"
         disabled={mutation.isPending}
