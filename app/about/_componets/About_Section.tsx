@@ -17,7 +17,7 @@ export default function About_Section() {
               <h2 className="text-3xl sm:text-4xl lg:text-[60px] font-semibold text-[#000000CC] mb-6 lg:mb-[30px]">
                 Our <span className="font-bold">Story</span>
               </h2>
-              <p className="text-base sm:text-lg lg:text-[24px] text-[#000000CC] w-[750px] leading-[120%] font-normal">
+              <p className="text-base sm:text-lg lg:text-[24px] text-[#000000CC]  leading-[120%] font-normal">
                 Seoul Mirage was born from a passion for Korean skincare
                 innovation and a commitment to creating luxury products that
                 deliver exceptional results.

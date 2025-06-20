@@ -65,7 +65,7 @@ export default function TestimonialCarousel() {
   );
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="w-full container mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="flex flex-col items-center mb-10">
         <div className="text-[18px] font-medium text-[#000000CC] mb-4">
           {happyUser?.happyUser}+ Happy Users

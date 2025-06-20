@@ -1,20 +1,29 @@
-"use client"
+"use client";
 
-import type { Category, PaginatedCategoryResponse } from "@/types/CategoryTypeData"
-import { useQuery } from "@tanstack/react-query"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-import { useCallback, useEffect, useState } from "react"
-import type { CarouselApi } from "@/components/ui/carousel"
+import type {
+  Category,
+  PaginatedCategoryResponse,
+} from "@/types/CategoryTypeData";
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useCallback, useEffect, useState } from "react";
+import type { CarouselApi } from "@/components/ui/carousel";
 
 // Category Card Component
-function CategoryCard({ name, image, id }: Category) {
-  const router = useRouter()
+function CategoryCard({ name, image,  }: Category) {
+  const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/products?category=${encodeURIComponent(id)}`)
-  }
+    router.push(`/products?${name.toLowerCase().replace(/\s+/g, "-")}`);
+  };
 
   return (
     <div
@@ -25,7 +34,11 @@ function CategoryCard({ name, image, id }: Category) {
       <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 opacity-0 hover:opacity-20 transition-opacity duration-500 blur-sm -z-10 scale-110" />
 
       <Image
-        src={image ? `${process.env.NEXT_PUBLIC_API_URL}/${image}` : "/asset/no-image.jpg"}
+        src={
+          image
+            ? `${process.env.NEXT_PUBLIC_API_URL}/${image}`
+            : "/asset/no-image.jpg"
+        }
         alt={name}
         fill
         className="object-cover transition-all duration-500 hover:scale-110 hover:brightness-110"
@@ -54,53 +67,56 @@ function CategoryCard({ name, image, id }: Category) {
       {/* Shimmer effect */}
       <div className="absolute inset-0 -translate-x-full hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12" />
     </div>
-  )
+  );
 }
 
 // Main Component
 export default function ShopByCategory() {
-  const [api, setApi] = useState<CarouselApi>()
-  const [isHovered, setIsHovered] = useState(false)
+  const [api, setApi] = useState<CarouselApi>();
+  const [isHovered, setIsHovered] = useState(false);
 
   const { data, error, isLoading } = useQuery<PaginatedCategoryResponse>({
     queryKey: ["categories"],
     queryFn: async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/categories`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!res.ok) {
-        throw new Error("Failed to fetch categories")
+        throw new Error("Failed to fetch categories");
       }
 
-      return await res.json()
+      return await res.json();
     },
-  })
+  });
 
-  const categoryData = data?.data?.data
+  const categoryData = data?.data?.data;
 
   // Auto-slide functionality
   const scrollNext = useCallback(() => {
     if (api) {
-      api.scrollNext()
+      api.scrollNext();
     }
-  }, [api])
+  }, [api]);
 
   useEffect(() => {
-    if (!api || isHovered) return
+    if (!api || isHovered) return;
 
     const interval = setInterval(() => {
-      scrollNext()
-    }, 3000) // Auto-slide every 3 seconds
+      scrollNext();
+    }, 3000); // Auto-slide every 3 seconds
 
-    return () => clearInterval(interval)
-  }, [api, scrollNext, isHovered])
+    return () => clearInterval(interval);
+  }, [api, scrollNext, isHovered]);
 
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#ebcad04d]">
-      <div className="max-w-7xl mx-auto">
+      <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-black mb-8">Shop by Category</h2>
 
         {isLoading ? (
@@ -158,7 +174,9 @@ export default function ShopByCategory() {
                 <button
                   key={index}
                   className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                    api?.selectedScrollSnap() === index ? "bg-gray-800" : "bg-gray-300 hover:bg-gray-400"
+                    api?.selectedScrollSnap() === index
+                      ? "bg-gray-800"
+                      : "bg-gray-300 hover:bg-gray-400"
                   }`}
                   onClick={() => api?.scrollTo(index)}
                 />
@@ -170,5 +188,5 @@ export default function ShopByCategory() {
         )}
       </div>
     </section>
-  )
+  );
 }

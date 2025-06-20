@@ -36,6 +36,8 @@ export interface Product {
   category: Category;
   media: Media[];
   images?: string[]; // if you're adding this for cart/store compatibility
+  reviews_avg_rating?: number | string;
+  reviews_count?:number | string
 }
 
 export interface CartItem extends Product {
