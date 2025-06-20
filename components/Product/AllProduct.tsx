@@ -19,8 +19,6 @@ export default function AllProducts() {
 
   const searchParams = useSearchParams();
 
-  console.log(searchParams)
-
   const { data: category } = useQuery({
     queryKey: ["productStats"],
     queryFn: async () => {
@@ -46,7 +44,6 @@ export default function AllProducts() {
     };
   }
 
-  // ✅ Memoize categories to avoid triggering useEffect every render
   const categories = useMemo(() => {
     return [
       "All Product",
@@ -55,29 +52,28 @@ export default function AllProducts() {
       ) || []),
     ];
   }, [category]);
-  
-const capitalizeWords = (str: string) =>
-  str
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+
+  const normalizeCategoryKey = (str: string) =>
+    str
+      .replace(/-/g, " ")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
 
   useEffect(() => {
-  const categoryFromQuery =
-    searchParams.get("category") ||
-    Array.from(searchParams.entries()).find(([key]) =>
-      categories.includes(capitalizeWords(key))
-    )?.[0]; // handles ?mula%20gajor=
+    const categoryFromQuery =
+      searchParams.get("category") ||
+      Array.from(searchParams.entries()).find(([key]) =>
+        categories.includes(normalizeCategoryKey(key))
+      )?.[0];
 
-  if (
-    categoryFromQuery &&
-    categories.includes(capitalizeWords(categoryFromQuery))
-  ) {
-    setSelectedCategory(capitalizeWords(categoryFromQuery));
-  }
-}, [searchParams, categories]);
-
-
+    if (
+      categoryFromQuery &&
+      categories.includes(normalizeCategoryKey(categoryFromQuery))
+    ) {
+      setSelectedCategory(normalizeCategoryKey(categoryFromQuery));
+    }
+  }, [searchParams, categories]);
 
   const { data, error, isLoading } = useQuery({
     queryKey: ["allProducts"],
@@ -140,26 +136,34 @@ const capitalizeWords = (str: string) =>
       <div className="bg-[#F5E6D3] border-b border-gray-200">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex space-x-8">
+            <div
+              className="flex space-x-6 overflow-x-auto px-4 scrollbar-hide scroll-snap-x"
+              role="tablist"
+              aria-label="Product Categories"
+            >
               {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`text-sm font-medium transition-colors ${
+                  className={`flex-shrink-0 text-sm font-medium transition-colors whitespace-nowrap scroll-snap-align-start ${
                     selectedCategory === category
                       ? "text-black border-b-2 border-black pb-1"
                       : "text-gray-600 hover:text-black"
                   }`}
+                  role="tab"
+                  aria-selected={selectedCategory === category}
+                  tabIndex={selectedCategory === category ? 0 : -1}
                 >
                   {category}
                 </button>
               ))}
             </div>
 
-            <div className="flex items-center space-x-2">
+            {/* Sort dropdown with responsive smaller width on mobile */}
+            <div className="flex items-center space-x-1 sm:space-x-2">
               <span className="text-sm font-medium">Sort:</span>
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-40 bg-white">
+                <SelectTrigger className="w-28 sm:w-40 bg-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

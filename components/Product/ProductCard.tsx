@@ -1,42 +1,53 @@
 "use client";
 
 import React, { useState } from "react";
-// import Image from "next/image";
 import Link from "next/link";
-import { Star, ShoppingBag } from "lucide-react";
+import { ShoppingBag, Star, StarHalf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Product, useCartStore } from "@/store/cart-store";
 import { toast } from "sonner";
-// import { useSession } from "next-auth/react";
-// import { Product } from "@/types/BestSellersDataType";
 import Image from "next/image";
 
 interface ProductCardProps {
   product: Product;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
-  // const { data: session } = useSession();
-  // const token = (session?.user as { token?: string })?.token || "";
+// StarRating component to show full, half, empty stars based on rating
+function StarRating({
+  rating,
+  maxStars = 5,
+}: {
+  rating: number;
+  maxStars?: number;
+}) {
+  const stars = [];
 
+  for (let i = 1; i <= maxStars; i++) {
+    if (rating >= i) {
+      // full star
+      stars.push(
+        <Star key={i} className="w-4 h-4 fill-black " />
+      );
+    } else if (rating >= i - 0.5) {
+      // half star
+      stars.push(
+        <StarHalf key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+      );
+    } else {
+      // empty star
+      stars.push(<Star key={i} className="w-4 h-4 text-gray-300" />);
+    }
+  }
+
+  return <div className="flex items-center gap-1">{stars}</div>;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // prevent link navigation when clicking button inside Link
-
-    // if (!token) {
-    //   toast.error("Please log in to add items to your cart.", {
-    //     duration: 2000,
-    //     position: "top-center",
-    //     style: {
-    //       backgroundColor: "#f8d7da",
-    //       color: "black",
-    //       fontSize: "16px",
-    //     },
-    //   });
-    //   return;
-    // }
+    e.preventDefault();
 
     addItem(product);
     toast.success(`${product.name} has been added to your cart!`, {
@@ -61,7 +72,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product?.media && (
             <Image
               src={
-                `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}`
+                product?.media[0]?.file_path
                   ? `${process.env.NEXT_PUBLIC_API_URL}/${product?.media[0]?.file_path}`
                   : "/asset/no-image.jpg"
               }
@@ -97,11 +108,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           <p className="text-2xl font-bold mb-2">${product.price}</p>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
+              <StarRating rating={Number(product?.reviews_avg_rating) || 0}  />
               <span className="text-sm font-medium">
-                {product.reviews_avg_rating ?? ""}
+                {product?.reviews_avg_rating !== undefined &&
+                product?.reviews_avg_rating !== null
+                  ? String(product.reviews_avg_rating).slice(0, 3)
+                  : ""}
               </span>
-              <Star className="w-4 h-4 fill-black text-black ml-1" />
             </div>
             <span className="text-sm text-gray-600">
               ({product.reviews_count ?? 0})
