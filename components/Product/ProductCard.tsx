@@ -98,14 +98,14 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           <div className="flex items-center gap-2">
             <div className="flex items-center">
-              {/* <span className="text-sm font-medium">
-                {product.rating ?? "-"}
-              </span> */}
+              <span className="text-sm font-medium">
+                {product.reviews_avg_rating ?? ""}
+              </span>
               <Star className="w-4 h-4 fill-black text-black ml-1" />
             </div>
-            {/* <span className="text-sm text-gray-600">
-              ({product.reviews ?? 0})
-            </span> */}
+            <span className="text-sm text-gray-600">
+              ({product.reviews_count ?? 0})
+            </span>
           </div>
         </div>
       </div>

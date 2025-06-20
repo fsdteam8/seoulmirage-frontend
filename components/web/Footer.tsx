@@ -145,7 +145,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#best"
+                  href="/#best"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   Bestsellers
@@ -153,7 +153,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#new"
+                  href="/#new"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   New Arrivals
@@ -207,7 +207,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="border-t border-[#00000033] mt-6 sm:mt-8 md:mt-10 lg:mt-12 pt-4 sm:pt-6">
           <p className="text-xs sm:text-sm text-[#000000CC] font-medium text-center">
-            © 2024, Sensei Mirage. All rights reserved.
+            © 2025, Seoul Mirage. All rights reserved.
           </p>
         </div>
       </div>

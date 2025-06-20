@@ -67,7 +67,7 @@ export default function Navbar() {
 
   // Helper function to generate href from name
   const generateHref = (type: string, name: string) =>
-    `/${type.toLowerCase()}/${name.toLowerCase().replace(/\s+/g, "-")}`;
+    `/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
 
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -103,7 +103,7 @@ export default function Navbar() {
                         data?.Skincare?.map((item) => (
                           <NavigationMenuLink key={item.id} asChild>
                             <Link
-                              href={generateHref("skincare", item.name)}
+                              href={generateHref("category", item.name)}
                               className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
                             >
                               <div className="font-raleway text-base font-medium leading-tight">

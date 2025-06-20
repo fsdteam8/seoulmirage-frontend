@@ -131,7 +131,14 @@ export default function CheckoutPage() {
   });
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => {
+      const newState = { ...prev, [field]: value };
+      // Reset state if country changes, to avoid invalid state selection
+      if (field === "country" && prev.country !== value) {
+        newState.state = "";
+      }
+      return newState;
+    });
   };
 
   const validateForm = (): boolean => {
@@ -264,6 +271,108 @@ export default function CheckoutPage() {
     }
   };
 
+  // Define states for different countries
+  const bangladeshStates = [
+    { value: "dhaka", label: "Dhaka" },
+    { value: "chittagong", label: "Chittagong" },
+    { value: "sylhet", label: "Sylhet" },
+    { value: "rajshahi", label: "Rajshahi" },
+    { value: "khulna", label: "Khulna" },
+    { value: "barisal", label: "Barisal" },
+    { value: "rangpur", label: "Rangpur" },
+    { value: "mymensingh", label: "Mymensingh" },
+  ];
+
+  const usStates = [
+    { value: "AL", label: "Alabama" },
+    { value: "AK", label: "Alaska" },
+    { value: "AZ", label: "Arizona" },
+    { value: "AR", label: "Arkansas" },
+    { value: "CA", label: "California" },
+    { value: "CO", label: "Colorado" },
+    { value: "CT", label: "Connecticut" },
+    { value: "DE", label: "Delaware" },
+    { value: "FL", label: "Florida" },
+    { value: "GA", label: "Georgia" },
+    { value: "HI", label: "Hawaii" },
+    { value: "ID", label: "Idaho" },
+    { value: "IL", label: "Illinois" },
+    { value: "IN", label: "Indiana" },
+    { value: "IA", label: "Iowa" },
+    { value: "KS", label: "Kansas" },
+    { value: "KY", label: "Kentucky" },
+    { value: "LA", label: "Louisiana" },
+    { value: "ME", label: "Maine" },
+    { value: "MD", label: "Maryland" },
+    { value: "MA", label: "Massachusetts" },
+    { value: "MI", label: "Michigan" },
+    { value: "MN", label: "Minnesota" },
+    { value: "MS", label: "Mississippi" },
+    { value: "MO", label: "Missouri" },
+    { value: "MT", label: "Montana" },
+    { value: "NE", label: "Nebraska" },
+    { value: "NV", label: "Nevada" },
+    { value: "NH", label: "New Hampshire" },
+    { value: "NJ", label: "New Jersey" },
+    { value: "NM", label: "New Mexico" },
+    { value: "NY", label: "New York" },
+    { value: "NC", label: "North Carolina" },
+    { value: "ND", label: "North Dakota" },
+    { value: "OH", label: "Ohio" },
+    { value: "OK", label: "Oklahoma" },
+    { value: "OR", label: "Oregon" },
+    { value: "PA", label: "Pennsylvania" },
+    { value: "RI", label: "Rhode Island" },
+    { value: "SC", label: "South Carolina" },
+    { value: "SD", label: "South Dakota" },
+    { value: "TN", label: "Tennessee" },
+    { value: "TX", label: "Texas" },
+    { value: "UT", label: "Utah" },
+    { value: "VT", label: "Vermont" },
+    { value: "VA", label: "Virginia" },
+    { value: "WA", label: "Washington" },
+    { value: "WV", label: "West Virginia" },
+    { value: "WI", label: "Wisconsin" },
+    { value: "WY", label: "Wyoming" },
+  ];
+
+  const canadaProvinces = [
+    { value: "AB", label: "Alberta" },
+    { value: "BC", label: "British Columbia" },
+    { value: "MB", label: "Manitoba" },
+    { value: "NB", label: "New Brunswick" },
+    { value: "NL", label: "Newfoundland and Labrador" },
+    { value: "NS", label: "Nova Scotia" },
+    { value: "ON", label: "Ontario" },
+    { value: "PE", label: "Prince Edward Island" },
+    { value: "QC", label: "Quebec" },
+    { value: "SK", label: "Saskatchewan" },
+  ];
+
+  const ukCountries = [
+    { value: "england", label: "England" },
+    { value: "scotland", label: "Scotland" },
+    { value: "wales", label: "Wales" },
+    { value: "northern_ireland", label: "Northern Ireland" },
+  ];
+
+  const getStatesForCountry = (country: string) => {
+    switch (country) {
+      case "bangladesh":
+        return bangladeshStates;
+      case "us":
+        return usStates;
+      case "ca":
+        return canadaProvinces;
+      case "uk":
+        return ukCountries;
+      default:
+        return []; // No states for other countries by default
+    }
+  };
+
+  const currentStates = getStatesForCountry(formData.country);
+
   return (
     <div className="min-h-screen bg-[#F5E6D3]">
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -346,7 +455,7 @@ export default function CheckoutPage() {
                     <Label htmlFor="city">City *</Label>
                     <Input
                       id="city"
-                      placeholder="Dhaka"
+                      placeholder="Washington"
                       value={formData.city}
                       onChange={(e) =>
                         handleInputChange("city", e.target.value)
@@ -354,44 +463,7 @@ export default function CheckoutPage() {
                       disabled={isLoading}
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="state">State/Province *</Label>
-                    <Select
-                      value={formData.state}
-                      onValueChange={(value) =>
-                        handleInputChange("state", value)
-                      }
-                      disabled={isLoading}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select state" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="dhaka">Dhaka</SelectItem>
-                        <SelectItem value="chittagong">Chittagong</SelectItem>
-                        <SelectItem value="sylhet">Sylhet</SelectItem>
-                        <SelectItem value="rajshahi">Rajshahi</SelectItem>
-                        <SelectItem value="khulna">Khulna</SelectItem>
-                        <SelectItem value="barisal">Barisal</SelectItem>
-                        <SelectItem value="rangpur">Rangpur</SelectItem>
-                        <SelectItem value="mymensingh">Mymensingh</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="postal">Postal Code *</Label>
-                    <Input
-                      id="postal"
-                      placeholder="1205"
-                      value={formData.postal}
-                      onChange={(e) =>
-                        handleInputChange("postal", e.target.value)
-                      }
-                      disabled={isLoading}
-                    />
-                  </div>
-
-                  <div className="col-span-2">
+                  <div className="col-span-1">
                     <Label htmlFor="country">Country *</Label>
                     <Select
                       value={formData.country}
@@ -408,9 +480,41 @@ export default function CheckoutPage() {
                         <SelectItem value="us">United States</SelectItem>
                         <SelectItem value="ca">Canada</SelectItem>
                         <SelectItem value="uk">United Kingdom</SelectItem>
-                        <SelectItem value="in">India</SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="state">State/Province *</Label>
+                    <Select
+                      value={formData.state}
+                      onValueChange={(value) =>
+                        handleInputChange("state", value)
+                      }
+                      disabled={isLoading}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select state" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {currentStates.map((state) => (
+                          <SelectItem key={state.value} value={state.value}>
+                            {state.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="postal">Postal Code *</Label>
+                    <Input
+                      id="postal"
+                      placeholder="1205"
+                      value={formData.postal}
+                      onChange={(e) =>
+                        handleInputChange("postal", e.target.value)
+                      }
+                      disabled={isLoading}
+                    />
                   </div>
                 </div>
               </div>

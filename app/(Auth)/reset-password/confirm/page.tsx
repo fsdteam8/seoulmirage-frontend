@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import AuthLayout from "@/components/auth-layout";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 const newPasswordSchema = z
   .object({
@@ -31,6 +32,10 @@ export default function NewPasswordPage() {
   const router = useRouter();
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const searchParams = useSearchParams();
+  //  console.log(searchParams)
+  const token = searchParams.get("token") || "";
+  const email = searchParams.get("email") || "";
 
   const form = useForm<NewPasswordFormValues>({
     resolver: zodResolver(newPasswordSchema),
@@ -40,11 +45,51 @@ export default function NewPasswordPage() {
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: async (fromdata: FormData) => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/forget/password/reset`,
+        {
+          method: "POST",
+          body: fromdata,
+        }
+      );
+
+      if (!res.ok) {
+        let errorMsg = "Something went wrong";
+        try {
+          const error = await res.json();
+          if (error?.message) errorMsg = error.message;
+          console.error("API Error Response:", error);
+        } catch (e) {
+          console.error("Failed to parse error response:", e);
+        }
+        throw new Error(errorMsg);
+      }
+
+      const result = await res.json();
+      console.log("API Success Response:", result);
+      return result;
+    },
+
+    onSuccess: () => {
+      toast.success("Reset password link has been sent to your email address.");
+      router.push("/login");
+    },
+
+    onError: (error: Error) => {
+      console.error("Error during mutation:", error);
+      toast.error(`Error: ${error.message}`);
+    },
+  });
+
   const onSubmit = async (data: NewPasswordFormValues) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("New password set:", data.newPassword);
-    toast.success("Your password has been updated. Please login.");
-    router.push("/login");
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("token", token);
+    formData.append("password", data.newPassword);
+    formData.append("password_confirmation", data.confirmPassword);
+    mutation.mutate(formData);
   };
 
   return (

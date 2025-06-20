@@ -29,21 +29,50 @@ export default function HeroSection() {
             </p>
 
             <div className="mt-[60px] flex  gap-4  sm:gap-6">
-            <Link href={'/products'}>
-              <Button
-                size="lg"
-                className="bg-white text-[#000000] text-base hover:bg-white font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
-              >
-                Shop Now
-              </Button>
-            </Link>
-              <Link href="/about">
+              <Link href={"/products"}>
+                <Button
+                  size="lg"
+                  className="bg-white text-[#000000] text-base hover:bg-white font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
+                >
+                  Shop Now
+                </Button>
+              </Link>
+              <Link href="/about" passHref>
                 <Button
                   variant="outline"
                   size="lg"
-                  className=" bg-transparent text-white text-base hover:bg-transparent font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
+                  className="
+      relative
+      bg-transparent
+      text-white
+      text-base
+      font-semibold
+      px-8
+      h-[50px]
+      rounded-[32px]
+      sm:text-lg
+      overflow-hidden
+      border
+      border-white
+      transition
+      duration-300
+      ease-in-out
+      before:absolute
+      before:inset-0
+      before:bg-white
+      before:bg-opacity-0
+      before:backdrop-blur-md
+      before:transition
+      before:duration-300
+      before:ease-in-out
+      hover:before:bg-opacity-20
+      hover:before:backdrop-blur-lg
+      hover:text-white
+      hover:text-black
+      z-0
+    "
                 >
-                  About Us
+                  <span className="relative z-10">About Us</span>
                 </Button>
               </Link>
             </div>

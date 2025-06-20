@@ -19,6 +19,8 @@ export default function AllProducts() {
 
   const searchParams = useSearchParams();
 
+  console.log(searchParams)
+
   const { data: category } = useQuery({
     queryKey: ["productStats"],
     queryFn: async () => {
@@ -53,13 +55,29 @@ export default function AllProducts() {
       ) || []),
     ];
   }, [category]);
+  
+const capitalizeWords = (str: string) =>
+  str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 
   useEffect(() => {
-    const categoryFromQuery = searchParams.get("category");
-    if (categoryFromQuery && categories?.includes(categoryFromQuery)) {
-      setSelectedCategory(categoryFromQuery);
-    }
-  }, [searchParams, categories]);
+  const categoryFromQuery =
+    searchParams.get("category") ||
+    Array.from(searchParams.entries()).find(([key]) =>
+      categories.includes(capitalizeWords(key))
+    )?.[0]; // handles ?mula%20gajor=
+
+  if (
+    categoryFromQuery &&
+    categories.includes(capitalizeWords(categoryFromQuery))
+  ) {
+    setSelectedCategory(capitalizeWords(categoryFromQuery));
+  }
+}, [searchParams, categories]);
+
+
 
   const { data, error, isLoading } = useQuery({
     queryKey: ["allProducts"],
