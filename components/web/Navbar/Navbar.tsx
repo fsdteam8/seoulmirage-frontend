@@ -43,7 +43,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSkincareOpen, setIsSkincareOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
-  const [isProductsOpen, setIsProductsOpen] = useState(false);
+  // const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
 
   const { data, isLoading } = useQuery<CategorizedData>({
@@ -324,7 +324,7 @@ export default function Navbar() {
                     </Collapsible>
 
                     {/* Mobile Products Collapsible */}
-                    <Collapsible
+                    {/* <Collapsible
                       open={isProductsOpen}
                       onOpenChange={setIsProductsOpen}
                     >
@@ -352,7 +352,7 @@ export default function Navbar() {
                           )) || <div>No Products items</div>
                         )}
                       </CollapsibleContent>
-                    </Collapsible>
+                    </Collapsible> */}
 
                     <Link
                       href="/about"

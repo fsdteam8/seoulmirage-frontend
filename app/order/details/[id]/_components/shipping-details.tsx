@@ -25,6 +25,7 @@ export default function ShippingDetails({
   trackingNumber,
   estimatedDelivery,
 }: ShippingDetailsProps) {
+  console.log(address);
   return (
     <div className="space-y-8">
       {/* Shipping Address */}
