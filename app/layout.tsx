@@ -1,6 +1,6 @@
 // app/layout.tsx or app/layout.js
 import type { Metadata } from "next";
-import { Raleway } from "next/font/google";
+import { Lora } from "next/font/google";
 import "./globals.css";
 
 import Footer from "@/components/web/Footer";
@@ -11,10 +11,10 @@ import AuthProvider from "@/components/Provider/AuthProvider";
 import Providers from "@/components/Provider/providers";
 
 // Import Raleway font
-const raleway = Raleway({
+const newFont = Lora({
   subsets: ["latin"],
   variable: "--font-raleway",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: [ "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${raleway.className} scroll-smooth`}>
-      <body className={`${raleway.variable} antialiased`}>
+    <html lang="en" className={`${newFont.className} scroll-smooth`}>
+      <body className={`${newFont.variable} antialiased`}>
         <Providers>
           <AuthProvider>
             <Navbar />

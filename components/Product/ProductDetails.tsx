@@ -315,7 +315,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
             </div>
 
             {/* Stock Status */}
-            <div>
+            {/* <div>
               <span
                 className={`text-sm font-medium ${
                   product.status === "available"
@@ -328,7 +328,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
                   : "Out of Stock"}{" "}
                 ({product.stock_quantity} available)
               </span>
-            </div>
+            </div> */}
 
             {/* Details */}
             <div className="space-y-4">

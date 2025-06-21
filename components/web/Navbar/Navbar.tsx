@@ -43,7 +43,6 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSkincareOpen, setIsSkincareOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
-  // const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
 
   const { data, isLoading } = useQuery<CategorizedData>({
@@ -52,20 +51,16 @@ export default function Navbar() {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/categories-by-type`,
         {
-          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      if (!res.ok) {
-        throw new Error("Failed to fetch categories");
-      }
+      if (!res.ok) throw new Error("Failed to fetch categories");
       return res.json();
     },
   });
 
-  // Helper function to generate href from name
   const generateHref = (type: string, name: string) =>
     `/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
 
@@ -73,20 +68,17 @@ export default function Navbar() {
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Left Side: Logo + Navigation */}
+          {/* Logo + Desktop Nav */}
           <div className="flex items-center space-x-8">
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <Link href="/" className="flex items-center">
-                <Image
-                  src="/asset/logo.png"
-                  alt="Serendipity"
-                  width={106.283}
-                  height={60}
-                  className="w-[106.283px] h-[60px] flex-shrink-0"
-                />
-              </Link>
-            </div>
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/asset/logo.png"
+                alt="Serendipity"
+                width={106.283}
+                height={60}
+                className="w-[106.283px] h-[60px]"
+              />
+            </Link>
 
             {/* Desktop Navigation */}
             <NavigationMenu className="hidden lg:flex">
@@ -96,7 +88,7 @@ export default function Navbar() {
                     Skincare
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
+                    <div className="grid grid-cols-2 gap-4 p-4 w-[400px]">
                       {isLoading ? (
                         <div>Loading...</div>
                       ) : (
@@ -104,14 +96,12 @@ export default function Navbar() {
                           <NavigationMenuLink key={item.id} asChild>
                             <Link
                               href={generateHref("category", item.name)}
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
+                              className="block rounded-md p-2 text-sm hover:bg-gray-50"
                             >
-                              <div className="font-raleway text-base font-medium leading-tight">
-                                {item.name}
-                              </div>
+                              {item.name}
                             </Link>
                           </NavigationMenuLink>
-                        )) || <div>No Skincare items</div>
+                        ))
                       )}
                     </div>
                   </NavigationMenuContent>
@@ -122,7 +112,7 @@ export default function Navbar() {
                     Collections
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
+                    <div className="grid grid-cols-2 gap-4 p-4 w-[400px]">
                       {isLoading ? (
                         <div>Loading...</div>
                       ) : (
@@ -130,40 +120,16 @@ export default function Navbar() {
                           <NavigationMenuLink key={item.id} asChild>
                             <Link
                               href={generateHref("collections", item.name)}
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
+                              className="block rounded-md p-2 text-sm hover:bg-gray-50"
                             >
-                              <div className="font-raleway text-base font-medium leading-tight">
-                                {item.name}
-                              </div>
+                              {item.name}
                             </Link>
                           </NavigationMenuLink>
-                        )) || <div>No Collections items</div>
+                        ))
                       )}
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
-
-                {/* <NavigationMenuItem>
-                  <NavigationMenuTrigger className="nav-text">Products</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid grid-cols-2 gap-y-2 gap-x-12 p-4 w-[400px]">
-                      {isLoading ? (
-                        <div>Loading...</div>
-                      ) : (
-                        data?.Products?.map((item) => (
-                          <NavigationMenuLink key={item.id} asChild>
-                            <Link
-                              href={generateHref("products", item.name)}
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-50 focus:text-gray-900 font-raleway text-base"
-                            >
-                              <div className="font-raleway text-base font-medium leading-tight">{item.name}</div>
-                            </Link>
-                          </NavigationMenuLink>
-                        )) || <div>No Products items</div>
-                      )}
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem> */}
 
                 <NavigationMenuItem>
                   <Link href="/about" className="nav-text">
@@ -182,7 +148,7 @@ export default function Navbar() {
 
           {/* Right Side: Icons */}
           <div className="flex items-center space-x-2">
-            {/* Search */}
+            {/* Search icon (always visible) */}
             <Button
               variant="ghost"
               size="sm"
@@ -192,58 +158,54 @@ export default function Navbar() {
               <Search className="h-4 w-4" />
             </Button>
 
-            {/* User Account */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                  <User className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                {token ? (
-                  <>
-                    <DropdownMenuItem>
-                      <Link href="/account" className="w-full font-raleway">
-                        My Account
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/account" className="w-full font-raleway">
-                        Order History
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => signOut()}
-                      className="text-red-600 font-raleway"
-                    >
-                      Log Out
-                    </DropdownMenuItem>
-                  </>
-                ) : (
-                  <>
-                    <DropdownMenuItem>
-                      <Link href="/login" className="w-full font-raleway">
-                        Sign in
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/sign-up" className="w-full font-raleway">
-                        Sign up
-                      </Link>
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Cart */}
+            {/* Cart icon (always visible) */}
             <Link href="/cart">
               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                 <ShoppingBag className="h-4 w-4" />
               </Button>
             </Link>
 
-            {/* Mobile Menu Button */}
+            {token ? (
+              // Logged-in user: show user dropdown
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <User className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem>
+                    <Link href="/account" className="w-full font-raleway">
+                      My Account
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link
+                      href="/account"
+                      className="w-full font-raleway"
+                    >
+                      Order History
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => signOut()}
+                    className="text-red-600 font-raleway"
+                  >
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              // Guest user: show login link
+              <Link
+                href="/login"
+                className="font-raleway bg-black text-white px-3 py-1 rounded-lg font-medium text-sm hover:underline"
+              >
+                Login
+              </Link>
+            )}
+
+            {/* Mobile Menu */}
             <div className="lg:hidden">
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                 <SheetTrigger asChild>
@@ -261,12 +223,12 @@ export default function Navbar() {
                     </SheetTitle>
                   </SheetHeader>
                   <nav className="flex flex-col p-6 space-y-1">
-                    {/* Mobile Skincare Collapsible */}
+                    {/* Mobile Skincare */}
                     <Collapsible
                       open={isSkincareOpen}
                       onOpenChange={setIsSkincareOpen}
                     >
-                      <CollapsibleTrigger className="flex items-center justify-between w-full py-3 text-left font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md px-3 text-lg">
+                      <CollapsibleTrigger className="flex items-center justify-between w-full py-3 px-3 text-lg font-medium text-black hover:bg-gray-50 rounded-md">
                         Skincare
                         <ChevronDown
                           className={`h-4 w-4 transition-transform ${
@@ -275,29 +237,25 @@ export default function Navbar() {
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
-                        {isLoading ? (
-                          <div>Loading...</div>
-                        ) : (
-                          data?.Skincare?.map((item) => (
-                            <Link
-                              key={item.id}
-                              href={generateHref("skincare", item.name)}
-                              className="block py-2 px-3 font-raleway text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                              {item.name}
-                            </Link>
-                          )) || <div>No Skincare items</div>
-                        )}
+                        {data?.Skincare?.map((item) => (
+                          <Link
+                            key={item.id}
+                            href={generateHref("skincare", item.name)}
+                            className="block py-2 px-3 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
                       </CollapsibleContent>
                     </Collapsible>
 
-                    {/* Mobile Collections Collapsible */}
+                    {/* Mobile Collections */}
                     <Collapsible
                       open={isCollectionsOpen}
                       onOpenChange={setIsCollectionsOpen}
                     >
-                      <CollapsibleTrigger className="flex items-center justify-between w-full py-3 text-left font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md px-3 text-lg">
+                      <CollapsibleTrigger className="flex items-center justify-between w-full py-3 px-3 text-lg font-medium text-black hover:bg-gray-50 rounded-md">
                         Collections
                         <ChevronDown
                           className={`h-4 w-4 transition-transform ${
@@ -306,64 +264,29 @@ export default function Navbar() {
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
-                        {isLoading ? (
-                          <div>Loading...</div>
-                        ) : (
-                          data?.Collections?.map((item) => (
-                            <Link
-                              key={item.id}
-                              href={generateHref("collections", item.name)}
-                              className="block py-2 px-3 font-raleway text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                              {item.name}
-                            </Link>
-                          )) || <div>No Collections items</div>
-                        )}
+                        {data?.Collections?.map((item) => (
+                          <Link
+                            key={item.id}
+                            href={generateHref("collections", item.name)}
+                            className="block py-2 px-3 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
                       </CollapsibleContent>
                     </Collapsible>
 
-                    {/* Mobile Products Collapsible */}
-                    {/* <Collapsible
-                      open={isProductsOpen}
-                      onOpenChange={setIsProductsOpen}
-                    >
-                      <CollapsibleTrigger className="flex items-center justify-between w-full py-3 text-left font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md px-3 text-lg">
-                        Products
-                        <ChevronDown
-                          className={`h-4 w-4 transition-transform ${
-                            isProductsOpen ? "rotate-180" : ""
-                          }`}
-                        />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="ml-3 mt-1 space-y-1">
-                        {isLoading ? (
-                          <div>Loading...</div>
-                        ) : (
-                          data?.Products?.map((item) => (
-                            <Link
-                              key={item.id}
-                              href={generateHref("products", item.name)}
-                              className="block py-2 px-3 font-raleway text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                              {item.name}
-                            </Link>
-                          )) || <div>No Products items</div>
-                        )}
-                      </CollapsibleContent>
-                    </Collapsible> */}
-
                     <Link
                       href="/about"
-                      className="py-3 px-3 font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md text-lg"
+                      className="py-3 px-3 text-lg font-medium hover:bg-gray-50 rounded-md"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       About
                     </Link>
                     <Link
                       href="/contact"
-                      className="py-3 px-3 font-raleway font-medium text-black hover:text-gray-900 hover:bg-gray-50 rounded-md text-lg"
+                      className="py-3 px-3 text-lg font-medium hover:bg-gray-50 rounded-md"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Contact

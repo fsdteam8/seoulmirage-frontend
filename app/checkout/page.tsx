@@ -336,6 +336,16 @@ export default function CheckoutPage() {
     { value: "WY", label: "Wyoming" },
   ];
 
+  const uaeStates = [
+    { value: "abudhabi", label: "Abu Dhabi" },
+    { value: "dubai", label: "Dubai" },
+    { value: "sharjah", label: "Sharjah" },
+    { value: "ajman", label: "Ajman" },
+    { value: "ummalquwain", label: "Umm Al-Quwain" },
+    { value: "rasalkhaimah", label: "Ras Al Khaimah" },
+    { value: "fujairah", label: "Fujairah" },
+  ];
+
   const canadaProvinces = [
     { value: "AB", label: "Alberta" },
     { value: "BC", label: "British Columbia" },
@@ -366,6 +376,8 @@ export default function CheckoutPage() {
         return canadaProvinces;
       case "uk":
         return ukCountries;
+      case "ae":
+        return uaeStates;
       default:
         return []; // No states for other countries by default
     }
@@ -455,7 +467,7 @@ export default function CheckoutPage() {
                     <Label htmlFor="city">City *</Label>
                     <Input
                       id="city"
-                      placeholder="Washington"
+                      placeholder="abu dhabi"
                       value={formData.city}
                       onChange={(e) =>
                         handleInputChange("city", e.target.value)
@@ -480,6 +492,7 @@ export default function CheckoutPage() {
                         <SelectItem value="us">United States</SelectItem>
                         <SelectItem value="ca">Canada</SelectItem>
                         <SelectItem value="uk">United Kingdom</SelectItem>
+                        <SelectItem value="ae">Arab Emirates (UAE)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
