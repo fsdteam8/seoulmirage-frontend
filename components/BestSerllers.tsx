@@ -68,7 +68,7 @@ export default function BestSellers() {
           {!isLoading &&
             !error &&
             bestSellerProducts &&
-            bestSellerProducts.map((product) => (
+            bestSellerProducts.slice(0, 4).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
         </div>

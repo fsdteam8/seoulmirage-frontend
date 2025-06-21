@@ -49,6 +49,33 @@ export default function SignUp() {
     },
   });
 
+  // const handelLogin = async () => {
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_URL}/api/google/auth/redirect`,
+  //       {
+  //         method: "GET",
+  //         credentials: "include", // Optional: include cookies if necessary
+  //       }
+  //     );
+
+  //     if (!res.ok) {
+  //       throw new Error("Failed to fetch Google redirect URL");
+  //     }
+
+  //     const data = await res.json();
+
+  //     if (data?.url) {
+  //       // Redirect the user to the Google login page
+  //       window.location.href = data.url;
+  //     } else {
+  //       console.error("Redirect URL not found in response.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+  //   }
+  // };
+
   const mutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
       const res = await fetch(
@@ -239,6 +266,7 @@ export default function SignUp() {
           .
         </div>
       </form>
+      {/* <Button onClick={handelLogin}>Login</Button> */}
     </div>
   );
 }
