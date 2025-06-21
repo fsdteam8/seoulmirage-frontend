@@ -174,6 +174,20 @@ export default function Login() {
 
         {/* Footer */}
         <div className="text-center">
+          <div className="flex mb-4 justify-center">
+            <Link
+              href="#"
+              className="text-gray-900 text-center hover:text-gray-700"
+            >
+              Don&apos;t have an account?
+            </Link>
+            {"  "}
+            <Link href={"/sign-up"}>
+              {" "}
+              <span className="underline cursor-pointer">Sgin up</span>
+            </Link>
+          </div>
+
           <p className="text-sm text-gray-600">
             By signing in, you agree to our{" "}
             <Link
