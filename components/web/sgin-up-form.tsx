@@ -51,8 +51,12 @@ export default function SignUp() {
     },
   });
 
-  const handelLogin = async () => {
-    await signIn("google", { callbackUrl: "/" });
+  const handelLogin = async (provider: string) => {
+    if (provider === "google") {
+      await signIn("google", { callbackUrl: "/" });
+    } else {
+      await signIn("facebook", { callbackUrl: "/" });
+    }
   };
   const mutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
@@ -236,7 +240,7 @@ export default function SignUp() {
         <Button
           type="button"
           variant="outline"
-          onClick={handelLogin}
+          onClick={() => handelLogin("google")}
           className="w-full mt-4 flex items-center justify-center gap-2 text-sm border-gray-300"
         >
           <Image
@@ -247,6 +251,21 @@ export default function SignUp() {
           />
           Sign up with Google
         </Button>
+
+        {/* <Button
+          type="button"
+          variant="outline"
+          onClick={() => handelLogin("facebook")}
+          className="w-full mt-4 flex items-center justify-center gap-2 text-sm border-gray-300"
+        >
+          <Image
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            width={20}
+            height={20}
+          />
+          Sign up with Facebook
+        </Button> */}
 
         {/* Footer */}
         <div className="text-center text-sm text-gray-600">

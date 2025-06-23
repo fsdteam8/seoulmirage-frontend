@@ -1,6 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
 import { JWT } from "next-auth/jwt";
 
 // Extend the User and Profile types to include custom fields
@@ -18,7 +19,6 @@ declare module "next-auth" {
   }
   interface Profile {
     email_verified?: boolean;
-    // Add other Google profile fields if needed
   }
 }
 
@@ -27,16 +27,22 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 24 * 60 * 60, // 24 hours
-    updateAge: 36 * 60 * 60, // Refresh every 36 hours
+    updateAge: 36 * 60 * 60, // 36 hours
   },
   providers: [
-    // Google OAuth Provider
+    // ✅ Google Provider
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
 
-    // Custom Credentials Provider
+    // ✅ Facebook Provider
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_APP_ID!,
+      clientSecret: process.env.FACEBOOK_APP_SECRET!,
+    }),
+
+    // ✅ Custom Credentials Login
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -89,43 +95,85 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    // Called after sign-in (Google only in this case)
+    // Handle social provider login
     async signIn({ user, account, profile }) {
-      if (account?.provider === "google") {
+      if (account?.provider === "google" || account?.provider === "facebook") {
+        // const endpoint =
+        //   account.provider === "google"
+        //     ? "/api/google/auth/jwt-process"
+        //     : "/api/facebook/auth/jwt-process";
+        console.log(profile);
         try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/google/auth/jwt-process`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                name: profile?.name,
-                email: profile?.email,
-                googleAuthentication: profile?.email_verified,
-              }),
+          if (account.provider === "google") {
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/api/google/auth/jwt-process`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  name: profile?.name,
+                  email: profile?.email,
+                  googleAuthentication: profile?.email_verified,
+                  // facebookAuthentication: account.provider === "facebook",
+                }),
+              }
+            );
+
+            const data = await res.json();
+            console.log("Backend Auth Response:", data);
+
+            if (!data?.token || !data?.user) {
+              console.error(`${account.provider} login failed:`, data);
+              return false;
             }
-          );
 
-          const data = await res.json();
-          console.log("Backend Google Auth Response:", data);
+            user.id = data.user.id;
+            user.name = data.user.name;
+            user.email = data.user.email;
+            user.image = data.user.image;
+            user.role = data.user.role;
+            user.phone = data.user.phone;
+            user.createdAt = data.user.created_at;
+            user.updatedAt = data.user.updated_at;
+            user.token = data.token;
+          } else if (account.provider === "facebook") {
+            console.log(profile);
+            console.log(account);
+            console.log(user);
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/api/google/auth/jwt-process`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  name: profile?.name,
+                  email: profile?.email,
+                  // googleAuthentication: profile?.email_verified,
+                  // facebookAuthentication: account.provider === "facebook",
+                }),
+              }
+            );
 
-          if (!data?.token || !data?.user) {
-            console.error("Google login failed:", data);
-            return false;
+            const data = await res.json();
+            console.log("Backend Auth Response:", data);
+
+            if (!data?.token || !data?.user) {
+              console.error(`${account.provider} login failed:`, data);
+              return false;
+            }
+
+            user.id = data.user.id;
+            user.name = data.user.name;
+            user.email = data.user.email;
+            user.image = data.user.image;
+            user.role = data.user.role;
+            user.phone = data.user.phone;
+            user.createdAt = data.user.created_at;
+            user.updatedAt = data.user.updated_at;
+            user.token = data.token;
           }
-
-          // Map backend user to NextAuth user
-          user.id = data.user.id;
-          user.name = data.user.name;
-          user.email = data.user.email;
-          user.image = data.user.image;
-          user.role = data.user.role;
-          user.phone = data.user.phone;
-          user.createdAt = data.user.created_at;
-          user.updatedAt = data.user.updated_at;
-          user.token = data.token;
         } catch (err) {
-          console.error("Google signIn error:", err);
+          console.error(`${account.provider} signIn error:`, err);
           return false;
         }
       }
@@ -133,7 +181,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
 
-    // Create custom JWT from user object
+    // Add user to JWT token
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ token, user }: { token: JWT; user?: any }) {
       if (user) {
@@ -150,7 +198,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
 
-    // Attach JWT token values to session.user
+    // Add JWT token to session object
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: { session: any; token: JWT }) {
       session.user = {
