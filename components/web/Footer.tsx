@@ -92,17 +92,19 @@ export default function Footer() {
           {/* Logo & Description */}
           <div className="sm:col-span-2 lg:col-span-2 text-center sm:text-left">
             <div className="mb-4 md:mb-6">
-              <div className="mb-4 ">
+              <div>
                 <Image
-                  src="/asset/logo.png"
-                  width={100}
-                  height={100}
-                  alt="logo"
-                  className="w-auto h-full object-contain"
+                  src="/logo.svg"
+                  alt="Serendipity"
+                  quality={90}
+                  width={900}
+                  height={900}
+                  className="w-[140px] h-[140px]"
                 />
               </div>
               <p className="text-base sm:text-lg lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
-               Nurturing your skin with nature’s finest ingredients for a radiant, healthy glow every day.
+                Nurturing your skin with nature’s finest ingredients for a
+                radiant, healthy glow every day.
               </p>
             </div>
 

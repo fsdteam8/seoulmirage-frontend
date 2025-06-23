@@ -1,12 +1,12 @@
-import SignUp from '@/components/web/sgin-up-form'
-import React from 'react'
+import SignUp from "@/components/web/sgin-up-form";
+import React from "react";
 
 const page = () => {
   return (
     <div>
-        <SignUp/>
+      <SignUp />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;
