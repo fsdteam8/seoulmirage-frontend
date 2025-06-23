@@ -13,6 +13,8 @@ import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 // Zod Schema
 const loginSchema = z
@@ -49,33 +51,9 @@ export default function SignUp() {
     },
   });
 
-  // const handelLogin = async () => {
-  //   try {
-  //     const res = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_URL}/api/google/auth/redirect`,
-  //       {
-  //         method: "GET",
-  //         credentials: "include", // Optional: include cookies if necessary
-  //       }
-  //     );
-
-  //     if (!res.ok) {
-  //       throw new Error("Failed to fetch Google redirect URL");
-  //     }
-
-  //     const data = await res.json();
-
-  //     if (data?.url) {
-  //       // Redirect the user to the Google login page
-  //       window.location.href = data.url;
-  //     } else {
-  //       console.error("Redirect URL not found in response.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Login error:", error);
-  //   }
-  // };
-
+  const handelLogin = async () => {
+    await signIn("google", { callbackUrl: "/" });
+  };
   const mutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
       const res = await fetch(
@@ -197,6 +175,7 @@ export default function SignUp() {
                 </p>
               )}
             </div>
+
             {/* Confirm Password */}
             <div className="space-y-2">
               <Label
@@ -231,7 +210,7 @@ export default function SignUp() {
               )}
             </div>
 
-            {/* Remember Me */}
+            {/* Terms */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Checkbox id="remember-me" {...register("rememberMe")} />
@@ -249,24 +228,38 @@ export default function SignUp() {
               type="submit"
               className="w-full h-11 bg-black hover:bg-gray-800 text-white"
             >
-              {mutation.isPending ? "Creating account..." : "Sign Up"}
+              Sign Up
             </Button>
           </div>
         </div>
+        {/* Google Sign-In Button */}
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handelLogin}
+          className="w-full mt-4 flex items-center justify-center gap-2 text-sm border-gray-300"
+        >
+          <Image
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            width={20}
+            height={20}
+          />
+          Sign up with Google
+        </Button>
 
         {/* Footer */}
         <div className="text-center text-sm text-gray-600">
-          Already have an account?
+          Already have an account?{" "}
           <Link
             href="/login"
             className="text-gray-900 hover:text-gray-700 underline"
           >
             Sign in
-          </Link>{" "}
+          </Link>
           .
         </div>
       </form>
-      {/* <Button onClick={handelLogin}>Login</Button> */}
     </div>
   );
 }

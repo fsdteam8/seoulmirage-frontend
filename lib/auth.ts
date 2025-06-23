@@ -1,15 +1,42 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { JWT } from "next-auth/jwt";
+
+// Extend the User and Profile types to include custom fields
+declare module "next-auth" {
+  interface User {
+    id?: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role?: string;
+    phone?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    token?: string;
+  }
+  interface Profile {
+    email_verified?: boolean;
+    // Add other Google profile fields if needed
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 24 * 60 * 60, // 24 hours
-    updateAge: 36 * 60 * 60, // 36 hours
+    updateAge: 36 * 60 * 60, // Refresh every 36 hours
   },
   providers: [
+    // Google OAuth Provider
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+
+    // Custom Credentials Provider
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -18,7 +45,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Please enter email and password");
+          throw new Error("Please provide both email and password");
         }
 
         try {
@@ -35,14 +62,12 @@ export const authOptions: NextAuthOptions = {
           );
 
           const data = await res.json();
-          console.log("kongkon", data);
 
           if (!res.ok || !data?.token || !data?.data) {
             throw new Error(data.message || "Invalid credentials");
           }
 
           const user = data.data;
-          console.log("mehedi", user);
 
           return {
             id: user.id,
@@ -56,13 +81,59 @@ export const authOptions: NextAuthOptions = {
             token: data.token,
           };
         } catch (error) {
-          console.error("Authentication error:", error);
-          throw new Error("Authentication failed. Please try again.");
+          console.error("Credentials login error:", error);
+          throw new Error("Login failed. Please try again.");
         }
       },
     }),
   ],
+
   callbacks: {
+    // Called after sign-in (Google only in this case)
+    async signIn({ user, account, profile }) {
+      if (account?.provider === "google") {
+        try {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/google/auth/jwt-process`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                name: profile?.name,
+                email: profile?.email,
+                googleAuthentication: profile?.email_verified,
+              }),
+            }
+          );
+
+          const data = await res.json();
+          console.log("Backend Google Auth Response:", data);
+
+          if (!data?.token || !data?.user) {
+            console.error("Google login failed:", data);
+            return false;
+          }
+
+          // Map backend user to NextAuth user
+          user.id = data.user.id;
+          user.name = data.user.name;
+          user.email = data.user.email;
+          user.image = data.user.image;
+          user.role = data.user.role;
+          user.phone = data.user.phone;
+          user.createdAt = data.user.created_at;
+          user.updatedAt = data.user.updated_at;
+          user.token = data.token;
+        } catch (err) {
+          console.error("Google signIn error:", err);
+          return false;
+        }
+      }
+
+      return true;
+    },
+
+    // Create custom JWT from user object
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ token, user }: { token: JWT; user?: any }) {
       if (user) {
@@ -78,6 +149,8 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
+
+    // Attach JWT token values to session.user
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: { session: any; token: JWT }) {
       session.user = {
