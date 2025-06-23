@@ -35,15 +35,19 @@ import { signOut, useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import type { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
 import SearchDialog from "@/components/search-dialog";
+import { useCartStore } from "@/store/cart-store";
 
 export default function Navbar() {
   const session = useSession();
   const token = (session?.data?.user as { token: string })?.token || "";
-
+  const { items } = useCartStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSkincareOpen, setIsSkincareOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
+
+  console.log(items);
+  console.log(session.status)
 
   const { data, isLoading } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
@@ -67,16 +71,17 @@ export default function Navbar() {
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center py-12 justify-between h-16">
           {/* Logo + Desktop Nav */}
           <div className="flex items-center space-x-8">
             <Link href="/" className="flex items-center">
               <Image
-                src="/asset/logo.png"
+                src="/logo.svg"
                 alt="Serendipity"
-                width={106.283}
-                height={60}
-                className="w-[106.283px] h-[60px]"
+                quality={90}
+                width={900}
+                height={900}
+                className="w-[140px] h-[140px]"
               />
             </Link>
 
@@ -159,13 +164,20 @@ export default function Navbar() {
             </Button>
 
             {/* Cart icon (always visible) */}
-            <Link href="/cart">
+            <Link href="/cart" className="relative">
               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                 <ShoppingBag className="h-4 w-4" />
               </Button>
+              {items.length === 0 ? (
+                ""
+              ) : (
+                <span className="absolute left-4 -top-1 bg-red-500 py-1 px-2 text-[8px] rounded-full text-white">
+                  {items.length}
+                </span>
+              )}
             </Link>
 
-            {token ? (
+            {token || session.status === "authenticated" ? (
               // Logged-in user: show user dropdown
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -180,10 +192,7 @@ export default function Navbar() {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link
-                      href="/account"
-                      className="w-full font-raleway"
-                    >
+                    <Link href="/account" className="w-full font-raleway">
                       Order History
                     </Link>
                   </DropdownMenuItem>

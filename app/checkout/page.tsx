@@ -547,7 +547,7 @@ export default function CheckoutPage() {
                         Standard Shipping (5-7 business days)
                       </Label>
                     </div>
-                    <span className="font-semibold">$5.99</span>
+                    <span className="font-semibold">{" "}د.إ 5.99</span>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
@@ -556,7 +556,7 @@ export default function CheckoutPage() {
                         Express Shipping (2-3 business days)
                       </Label>
                     </div>
-                    <span className="font-semibold">$12.99</span>
+                    <span className="font-semibold">{" "}د.إ 12.99</span>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
@@ -565,7 +565,7 @@ export default function CheckoutPage() {
                         Overnight Shipping (1 business day)
                       </Label>
                     </div>
-                    <span className="font-semibold">$24.99</span>
+                    <span className="font-semibold">{" "}د.إ 24.99</span>
                   </div>
                 </RadioGroup>
               </div>
@@ -621,7 +621,7 @@ export default function CheckoutPage() {
                       Quantity: {item.quantity}
                     </p>
                   </div>
-                  <span className="font-semibold">${item.price}</span>
+                  <span className="font-semibold">{" "}د.إ {item.price}</span>
                 </div>
               ))}
             </div>
@@ -629,11 +629,11 @@ export default function CheckoutPage() {
             <div className="space-y-2 border-t pt-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{" "}د.إ {subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>${shipping.toFixed(2)}</span>
+                <span>{" "}د.إ {shipping.toFixed(2)}</span>
               </div>
               <div>
                 <Label htmlFor="promo">Promo Code</Label>
@@ -658,12 +658,12 @@ export default function CheckoutPage() {
               {promoInfo && (
                 <div className="flex justify-between text-green-600">
                   <span>Promo ({formData.promo})</span>
-                  <span>-${discount.toFixed(2)}</span>
+                  <span>-{" "}د.إ {discount.toFixed(2)}</span>
                 </div>
               )}
               <div className="flex justify-between font-bold text-lg border-t pt-2">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{" "}د.إ {total.toFixed(2)}</span>
               </div>
             </div>
           </div>

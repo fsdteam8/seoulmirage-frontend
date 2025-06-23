@@ -63,6 +63,8 @@ export default function UserInformation() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const session = useSession();
   const token = (session?.data?.user as { token: string })?.token || "";
+  
+  console.log(session?.data)
 
   const {
     data: meData,

@@ -105,7 +105,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <h3 className="font-semibold text-lg mb-2 line-clamp-2">
             {product.name}
           </h3>
-          <p className="text-2xl font-bold mb-2">${product.price}</p>
+          <p className="text-2xl font-bold mb-2"> {" "}د.إ {product.price}</p>
 
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1">
