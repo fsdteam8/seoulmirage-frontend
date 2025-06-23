@@ -97,146 +97,190 @@ export default function SignUp() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4 py-8"
-      style={{ backgroundColor: "#F5E6D3" }}
-    >
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md space-y-8"
+    <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
+      <div
+        className="min-h-screen flex items-center justify-center px-4 py-8"
+        style={{ backgroundColor: "white" }}
       >
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-normal text-gray-900">
-            Create your account
-          </h1>
-          <p className="text-gray-600 text-base">
-            Or sign in to your existing account
-          </p>
-        </div>
-
-        {/* Form Card */}
-        <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full max-w-md space-y-9"
+        >
+          {/* Social Login Buttons */}
           <div className="space-y-4">
-            {/* Full Name */}
-            <div className="space-y-2">
-              <Label
-                htmlFor="name"
-                className="text-sm font-normal text-gray-700"
+            <h2 className=" text-md font-bold text-gray-600">Sign up with</h2>
+            <div className="flex gap-5">
+              {/* Google */}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handelLogin("google")}
+                className="w-full flex items-center justify-center gap-2 text-sm border-gray-300"
               >
-                Full Name
-              </Label>
-              <Input id="name" type="text" {...register("name")} />
-              {errors.name && (
-                <p className="text-sm text-red-500">{errors.name.message}</p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div className="space-y-2">
-              <Label
-                htmlFor="email"
-                className="text-sm font-normal text-gray-700"
-              >
-                Email address
-              </Label>
-              <Input id="email" type="email" {...register("email")} />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
-              )}
-            </div>
-
-            {/* Password */}
-            <div className="space-y-2">
-              <Label
-                htmlFor="password"
-                className="text-sm font-normal text-gray-700"
-              >
-                Password
-              </Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  {...register("password")}
-                  className="pr-10"
+                <Image
+                  src="https://www.svgrepo.com/show/475656/google-color.svg"
+                  alt="Google"
+                  width={20}
+                  height={20}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="text-sm text-red-500">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
+                Google
+              </Button>
 
-            {/* Confirm Password */}
-            <div className="space-y-2">
-              <Label
-                htmlFor="confirmPassword"
-                className="text-sm font-normal text-gray-700"
+              {/* Facebook */}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handelLogin("facebook")}
+                className="w-full flex bg-[#3b5998] text-white items-center justify-center gap-2 text-sm border-gray-300"
               >
-                Confirm Password
-              </Label>
-              <div className="relative">
-                <Input
-                  id="confirmPassword"
-                  type={showPassword ? "text" : "password"}
-                  {...register("confirmPassword")}
-                  className="pr-10"
+                <Image
+                  src="/facebook.svg"
+                  alt="Facebook"
+                  width={20}
+                  height={20}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-500">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
+                Facebook
+              </Button>
             </div>
-
-            {/* Terms */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="remember-me" {...register("rememberMe")} />
-                <Label
-                  htmlFor="remember-me"
-                  className="text-sm font-normal text-gray-700 cursor-pointer"
-                >
-                  I agree to the Terms of Service and Privacy Policy
-                </Label>
-              </div>
-            </div>
-
-            {/* Submit */}
-            <Button
-              type="submit"
-              className="w-full h-11 bg-black hover:bg-gray-800 text-white"
-            >
-              Sign Up
-            </Button>
           </div>
-        </div>
-        {/* Google Sign-In Button */}
+
+          <div className="flex items-center gap-4 my-4">
+            <hr className="flex-grow border-gray-300" />
+            <span className="text-sm text-gray-500">OR</span>
+            <hr className="flex-grow border-gray-300" />
+          </div>
+          {/* Header */}
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl font-normal text-gray-900">
+              Create your account
+            </h1>
+            {/* <p className="text-gray-600 text-base">
+              Or sign in to your existing account
+            </p> */}
+          </div>
+
+          {/* Form Card */}
+          <div className="bg-white rounded-lg py-0 space-y-6">
+            <div className="space-y-4">
+              {/* Full Name */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="name"
+                  className="text-sm font-normal text-gray-700"
+                >
+                  Full Name
+                </Label>
+                <Input id="name" type="text" {...register("name")} />
+                {errors.name && (
+                  <p className="text-sm text-red-500">{errors.name.message}</p>
+                )}
+              </div>
+
+              {/* Email */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-normal text-gray-700"
+                >
+                  Email address
+                </Label>
+                <Input id="email" type="email" {...register("email")} />
+                {errors.email && (
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                )}
+              </div>
+
+              {/* Password */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="password"
+                  className="text-sm font-normal text-gray-700"
+                >
+                  Password
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    {...register("password")}
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className="text-sm text-red-500">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Confirm Password */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-sm font-normal text-gray-700"
+                >
+                  Confirm Password
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showPassword ? "text" : "password"}
+                    {...register("confirmPassword")}
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                {errors.confirmPassword && (
+                  <p className="text-sm text-red-500">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Terms */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="remember-me" {...register("rememberMe")} />
+                  <Label
+                    htmlFor="remember-me"
+                    className="text-sm font-normal text-gray-700 cursor-pointer"
+                  >
+                    I agree to the Terms of Service and Privacy Policy
+                  </Label>
+                </div>
+              </div>
+
+              {/* Submit */}
+              <Button
+                type="submit"
+                className="w-full h-11 bg-black hover:bg-gray-800 text-white"
+              >
+                Sign Up
+              </Button>
+            </div>
+          </div>
+          {/* Google Sign-In Button
         <Button
           type="button"
           variant="outline"
@@ -252,7 +296,7 @@ export default function SignUp() {
           Sign up with Google
         </Button>
 
-        {/* <Button
+        <Button
           type="button"
           variant="outline"
           onClick={() => handelLogin("facebook")}
@@ -267,18 +311,29 @@ export default function SignUp() {
           Sign up with Facebook
         </Button> */}
 
-        {/* Footer */}
-        <div className="text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link
-            href="/login"
-            className="text-gray-900 hover:text-gray-700 underline"
-          >
-            Sign in
-          </Link>
-          .
-        </div>
-      </form>
+          {/* Footer */}
+          <div className="text-center text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="text-gray-900 hover:text-gray-700 underline"
+            >
+              Sign in
+            </Link>
+            .
+          </div>
+        </form>
+      </div>
+      {/* Right: Image Section */}
+      <div className="h-full w-full hidden md:block">
+        <Image
+          src="/hero.jpg"
+          alt="Hero"
+          width={1920}
+          height={1080}
+          className="h-full w-full object-cover"
+        />
+      </div>
     </div>
   );
 }
