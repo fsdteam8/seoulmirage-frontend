@@ -272,69 +272,69 @@ export default function CheckoutPage() {
   };
 
   // Define states for different countries
-  const bangladeshStates = [
-    { value: "dhaka", label: "Dhaka" },
-    { value: "chittagong", label: "Chittagong" },
-    { value: "sylhet", label: "Sylhet" },
-    { value: "rajshahi", label: "Rajshahi" },
-    { value: "khulna", label: "Khulna" },
-    { value: "barisal", label: "Barisal" },
-    { value: "rangpur", label: "Rangpur" },
-    { value: "mymensingh", label: "Mymensingh" },
-  ];
+  // const bangladeshStates = [
+  //   { value: "dhaka", label: "Dhaka" },
+  //   { value: "chittagong", label: "Chittagong" },
+  //   { value: "sylhet", label: "Sylhet" },
+  //   { value: "rajshahi", label: "Rajshahi" },
+  //   { value: "khulna", label: "Khulna" },
+  //   { value: "barisal", label: "Barisal" },
+  //   { value: "rangpur", label: "Rangpur" },
+  //   { value: "mymensingh", label: "Mymensingh" },
+  // ];
 
-  const usStates = [
-    { value: "AL", label: "Alabama" },
-    { value: "AK", label: "Alaska" },
-    { value: "AZ", label: "Arizona" },
-    { value: "AR", label: "Arkansas" },
-    { value: "CA", label: "California" },
-    { value: "CO", label: "Colorado" },
-    { value: "CT", label: "Connecticut" },
-    { value: "DE", label: "Delaware" },
-    { value: "FL", label: "Florida" },
-    { value: "GA", label: "Georgia" },
-    { value: "HI", label: "Hawaii" },
-    { value: "ID", label: "Idaho" },
-    { value: "IL", label: "Illinois" },
-    { value: "IN", label: "Indiana" },
-    { value: "IA", label: "Iowa" },
-    { value: "KS", label: "Kansas" },
-    { value: "KY", label: "Kentucky" },
-    { value: "LA", label: "Louisiana" },
-    { value: "ME", label: "Maine" },
-    { value: "MD", label: "Maryland" },
-    { value: "MA", label: "Massachusetts" },
-    { value: "MI", label: "Michigan" },
-    { value: "MN", label: "Minnesota" },
-    { value: "MS", label: "Mississippi" },
-    { value: "MO", label: "Missouri" },
-    { value: "MT", label: "Montana" },
-    { value: "NE", label: "Nebraska" },
-    { value: "NV", label: "Nevada" },
-    { value: "NH", label: "New Hampshire" },
-    { value: "NJ", label: "New Jersey" },
-    { value: "NM", label: "New Mexico" },
-    { value: "NY", label: "New York" },
-    { value: "NC", label: "North Carolina" },
-    { value: "ND", label: "North Dakota" },
-    { value: "OH", label: "Ohio" },
-    { value: "OK", label: "Oklahoma" },
-    { value: "OR", label: "Oregon" },
-    { value: "PA", label: "Pennsylvania" },
-    { value: "RI", label: "Rhode Island" },
-    { value: "SC", label: "South Carolina" },
-    { value: "SD", label: "South Dakota" },
-    { value: "TN", label: "Tennessee" },
-    { value: "TX", label: "Texas" },
-    { value: "UT", label: "Utah" },
-    { value: "VT", label: "Vermont" },
-    { value: "VA", label: "Virginia" },
-    { value: "WA", label: "Washington" },
-    { value: "WV", label: "West Virginia" },
-    { value: "WI", label: "Wisconsin" },
-    { value: "WY", label: "Wyoming" },
-  ];
+  // const usStates = [
+  //   { value: "AL", label: "Alabama" },
+  //   { value: "AK", label: "Alaska" },
+  //   { value: "AZ", label: "Arizona" },
+  //   { value: "AR", label: "Arkansas" },
+  //   { value: "CA", label: "California" },
+  //   { value: "CO", label: "Colorado" },
+  //   { value: "CT", label: "Connecticut" },
+  //   { value: "DE", label: "Delaware" },
+  //   { value: "FL", label: "Florida" },
+  //   { value: "GA", label: "Georgia" },
+  //   { value: "HI", label: "Hawaii" },
+  //   { value: "ID", label: "Idaho" },
+  //   { value: "IL", label: "Illinois" },
+  //   { value: "IN", label: "Indiana" },
+  //   { value: "IA", label: "Iowa" },
+  //   { value: "KS", label: "Kansas" },
+  //   { value: "KY", label: "Kentucky" },
+  //   { value: "LA", label: "Louisiana" },
+  //   { value: "ME", label: "Maine" },
+  //   { value: "MD", label: "Maryland" },
+  //   { value: "MA", label: "Massachusetts" },
+  //   { value: "MI", label: "Michigan" },
+  //   { value: "MN", label: "Minnesota" },
+  //   { value: "MS", label: "Mississippi" },
+  //   { value: "MO", label: "Missouri" },
+  //   { value: "MT", label: "Montana" },
+  //   { value: "NE", label: "Nebraska" },
+  //   { value: "NV", label: "Nevada" },
+  //   { value: "NH", label: "New Hampshire" },
+  //   { value: "NJ", label: "New Jersey" },
+  //   { value: "NM", label: "New Mexico" },
+  //   { value: "NY", label: "New York" },
+  //   { value: "NC", label: "North Carolina" },
+  //   { value: "ND", label: "North Dakota" },
+  //   { value: "OH", label: "Ohio" },
+  //   { value: "OK", label: "Oklahoma" },
+  //   { value: "OR", label: "Oregon" },
+  //   { value: "PA", label: "Pennsylvania" },
+  //   { value: "RI", label: "Rhode Island" },
+  //   { value: "SC", label: "South Carolina" },
+  //   { value: "SD", label: "South Dakota" },
+  //   { value: "TN", label: "Tennessee" },
+  //   { value: "TX", label: "Texas" },
+  //   { value: "UT", label: "Utah" },
+  //   { value: "VT", label: "Vermont" },
+  //   { value: "VA", label: "Virginia" },
+  //   { value: "WA", label: "Washington" },
+  //   { value: "WV", label: "West Virginia" },
+  //   { value: "WI", label: "Wisconsin" },
+  //   { value: "WY", label: "Wyoming" },
+  // ];
 
   const uaeStates = [
     { value: "abudhabi", label: "Abu Dhabi" },
@@ -346,36 +346,36 @@ export default function CheckoutPage() {
     { value: "fujairah", label: "Fujairah" },
   ];
 
-  const canadaProvinces = [
-    { value: "AB", label: "Alberta" },
-    { value: "BC", label: "British Columbia" },
-    { value: "MB", label: "Manitoba" },
-    { value: "NB", label: "New Brunswick" },
-    { value: "NL", label: "Newfoundland and Labrador" },
-    { value: "NS", label: "Nova Scotia" },
-    { value: "ON", label: "Ontario" },
-    { value: "PE", label: "Prince Edward Island" },
-    { value: "QC", label: "Quebec" },
-    { value: "SK", label: "Saskatchewan" },
-  ];
+  // const canadaProvinces = [
+  //   { value: "AB", label: "Alberta" },
+  //   { value: "BC", label: "British Columbia" },
+  //   { value: "MB", label: "Manitoba" },
+  //   { value: "NB", label: "New Brunswick" },
+  //   { value: "NL", label: "Newfoundland and Labrador" },
+  //   { value: "NS", label: "Nova Scotia" },
+  //   { value: "ON", label: "Ontario" },
+  //   { value: "PE", label: "Prince Edward Island" },
+  //   { value: "QC", label: "Quebec" },
+  //   { value: "SK", label: "Saskatchewan" },
+  // ];
 
-  const ukCountries = [
-    { value: "england", label: "England" },
-    { value: "scotland", label: "Scotland" },
-    { value: "wales", label: "Wales" },
-    { value: "northern_ireland", label: "Northern Ireland" },
-  ];
+  // const ukCountries = [
+  //   { value: "england", label: "England" },
+  //   { value: "scotland", label: "Scotland" },
+  //   { value: "wales", label: "Wales" },
+  //   { value: "northern_ireland", label: "Northern Ireland" },
+  // ];
 
   const getStatesForCountry = (country: string) => {
     switch (country) {
-      case "bangladesh":
-        return bangladeshStates;
-      case "us":
-        return usStates;
-      case "ca":
-        return canadaProvinces;
-      case "uk":
-        return ukCountries;
+      // case "bangladesh":
+      //   return bangladeshStates;
+      // case "us":
+      //   return usStates;
+      // case "ca":
+      //   return canadaProvinces;
+      // case "uk":
+      //   return ukCountries;
       case "ae":
         return uaeStates;
       default:
@@ -488,10 +488,10 @@ export default function CheckoutPage() {
                         <SelectValue placeholder="Select country" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="bangladesh">Bangladesh</SelectItem>
-                        <SelectItem value="us">United States</SelectItem>
-                        <SelectItem value="ca">Canada</SelectItem>
-                        <SelectItem value="uk">United Kingdom</SelectItem>
+                        {/* <SelectItem value="bangladesh">Bangladesh</SelectItem> */}
+                        {/* <SelectItem value="us">United States</SelectItem> */}
+                        {/* <SelectItem value="ca">Canada</SelectItem> */}
+                        {/* <SelectItem value="uk">United Kingdom</SelectItem> */}
                         <SelectItem value="ae">Arab Emirates (UAE)</SelectItem>
                       </SelectContent>
                     </Select>
@@ -547,7 +547,7 @@ export default function CheckoutPage() {
                         Standard Shipping (5-7 business days)
                       </Label>
                     </div>
-                    <span className="font-semibold">{" "}د.إ 5.99</span>
+                    <span className="font-semibold"><span className="text-[16px]">AED</span>  5.99</span>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
@@ -556,7 +556,7 @@ export default function CheckoutPage() {
                         Express Shipping (2-3 business days)
                       </Label>
                     </div>
-                    <span className="font-semibold">{" "}د.إ 12.99</span>
+                    <span className="font-semibold"><span className="text-[16px]">AED</span> 12.99</span>
                   </div>
                   <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-2">
@@ -565,7 +565,7 @@ export default function CheckoutPage() {
                         Overnight Shipping (1 business day)
                       </Label>
                     </div>
-                    <span className="font-semibold">{" "}د.إ 24.99</span>
+                    <span className="font-semibold"><span className="text-[16px]">AED</span>  24.99</span>
                   </div>
                 </RadioGroup>
               </div>
@@ -621,7 +621,7 @@ export default function CheckoutPage() {
                       Quantity: {item.quantity}
                     </p>
                   </div>
-                  <span className="font-semibold">{" "}د.إ {item.price}</span>
+                  <span className="font-semibold"><span className="text-[16px]">AED</span> {item.price}</span>
                 </div>
               ))}
             </div>
@@ -629,11 +629,11 @@ export default function CheckoutPage() {
             <div className="space-y-2 border-t pt-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>{" "}د.إ {subtotal.toFixed(2)}</span>
+                <span><span className="text-[16px]">AED</span> {subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>{" "}د.إ {shipping.toFixed(2)}</span>
+                <span><span className="text-[16px]">AED</span> {shipping.toFixed(2)}</span>
               </div>
               <div>
                 <Label htmlFor="promo">Promo Code</Label>
@@ -658,12 +658,12 @@ export default function CheckoutPage() {
               {promoInfo && (
                 <div className="flex justify-between text-green-600">
                   <span>Promo ({formData.promo})</span>
-                  <span>-{" "}د.إ {discount.toFixed(2)}</span>
+                  <span>-<span className="text-[16px]">AED</span> {discount.toFixed(2)}</span>
                 </div>
               )}
               <div className="flex justify-between font-bold text-lg border-t pt-2">
                 <span>Total</span>
-                <span>{" "}د.إ {total.toFixed(2)}</span>
+                <span><span className="text-[16px]">AED</span> {total.toFixed(2)}</span>
               </div>
             </div>
           </div>

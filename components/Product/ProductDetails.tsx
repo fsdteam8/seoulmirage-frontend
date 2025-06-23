@@ -300,11 +300,11 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
             {/* Price */}
             <div className="flex items-center gap-3">
               <span className="text-3xl font-bold">
-                ${product.price.toFixed(2)}
+                  <span className="text-[16px]">AED</span> {product.price.toFixed(2)}
               </span>
               {product.originalPrice && (
                 <span className="text-lg text-gray-500 line-through">
-                  ${product.originalPrice.toFixed(2)}
+                    <span className="text-[16px]">AED</span> {product.originalPrice.toFixed(2)}
                 </span>
               )}
               {product.discount > 0 && (
