@@ -179,7 +179,7 @@ export default function Navbar() {
 
             {token || session.status === "authenticated" ? (
               // Logged-in user: show user dropdown
-              <DropdownMenu>
+              <DropdownMenu >
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <User className="h-4 w-4" />
@@ -208,7 +208,7 @@ export default function Navbar() {
               // Guest user: show login link
               <Link
                 href="/login"
-                className="font-raleway bg-black text-white px-3 py-1 rounded-lg font-medium text-sm hover:underline"
+                className="font-raleway bg-black text-white  px-3 py-1 rounded-lg font-medium text-sm hover:underline"
               >
                 Login
               </Link>

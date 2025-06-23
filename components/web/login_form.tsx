@@ -13,6 +13,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Image from "next/image";
 
 // 1. Zod Schema
 const loginSchema = z.object({
@@ -66,25 +67,31 @@ export default function Login() {
     }
   };
 
-  return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4 py-8"
-      style={{ backgroundColor: "#F5E6D3" }}
-    >
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md space-y-8"
-      >
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-normal text-gray-900">
-            Sign in to your account
-          </h1>
-          <p className="text-gray-600 text-base">Or create a new account</p>
-        </div>
+  const handelLogin = async (provider: string) => {
+    if (provider === "google") {
+      await signIn("google", { callbackUrl: "/" });
+    } else {
+      await signIn("facebook", { callbackUrl: "/" });
+    }
+  };
 
-        {/* Form Card */}
-        <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
+      {/* Left: Login Form */}
+      <div className="flex items-center justify-center bg-white px-6 py-8">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full max-w-[460px] space-y-10"
+        >
+          {/* Header */}
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl font-normal text-gray-900">
+              Sign in to your account
+            </h1>
+            <p className="text-gray-600 text-base">Or create a new account</p>
+          </div>
+
+          {/* Form Card */}
           <div className="space-y-4">
             {/* Email Field */}
             <div className="space-y-2">
@@ -167,46 +174,97 @@ export default function Login() {
               type="submit"
               className="w-full h-11 bg-black hover:bg-gray-800 text-white font-normal rounded-md transition-colors"
             >
-              {isLoading ? "Sign in..." : "Sign In"}
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="text-center">
-          <div className="flex mb-4 justify-center">
-            <Link
-              href="#"
-              className="text-gray-900 text-center hover:text-gray-700"
-            >
-              Don&apos;t have an account?
-            </Link>
-            {"  "}
-            <Link href={"/sign-up"}>
-              {" "}
-              <span className="underline cursor-pointer">Sgin up</span>
-            </Link>
+          {/* Social Login Buttons */}
+          <div className="space-y-4">
+            <h2 className="text-center text-sm text-gray-600">Continue with</h2>
+            <div className="flex gap-5">
+              {/* Google */}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handelLogin("google")}
+                className="w-full flex items-center justify-center gap-2 text-sm border-gray-300"
+              >
+                <Image
+                  src="https://www.svgrepo.com/show/475656/google-color.svg"
+                  alt="Google"
+                  width={20}
+                  height={20}
+                />
+                Google
+              </Button>
+
+              {/* Facebook */}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handelLogin("facebook")}
+                className="w-full flex bg-[#3b5998] text-white items-center justify-center gap-2 text-sm border-gray-300"
+              >
+                <Image
+                  src="/facebook.svg"
+                  alt="Facebook"
+                  width={20}
+                  height={20}
+                />
+                Facebook
+              </Button>
+            </div>
           </div>
 
-          <p className="text-sm text-gray-600">
-            By signing in, you agree to our{" "}
-            <Link
-              href="#"
-              className="text-gray-900 hover:text-gray-700 underline"
-            >
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link
-              href="#"
-              className="text-gray-900 hover:text-gray-700 underline"
-            >
-              Privacy Policy
-            </Link>
-            .
-          </p>
-        </div>
-      </form>
+          <div className="flex items-center gap-4 my-4">
+            <hr className="flex-grow border-gray-300" />
+            <span className="text-sm text-gray-500">OR</span>
+            <hr className="flex-grow border-gray-300" />
+          </div>
+          {/* Footer */}
+          <div className="text-center">
+            <div className="flex justify-center items-center gap-1 mb-4">
+              <span className="text-gray-700 text-sm">
+                Don&#39;t have an account?
+              </span>
+              <Link href="/sign-up">
+                <span className="underline text-sm cursor-pointer">
+                  Sign up
+                </span>
+              </Link>
+            </div>
+
+            <p className="text-sm text-gray-600">
+              By signing in, you agree to our{" "}
+              <Link
+                href="#"
+                className="text-gray-900 hover:text-gray-700 underline"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="#"
+                className="text-gray-900 hover:text-gray-700 underline"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
+          </div>
+        </form>
+      </div>
+
+      {/* Right: Image Section */}
+      <div className="h-full w-full hidden md:block">
+        <Image
+          src="/hero.jpg"
+          alt="Hero"
+          width={1920}
+          height={1080}
+          className="h-full w-full object-cover"
+        />
+      </div>
     </div>
   );
 }

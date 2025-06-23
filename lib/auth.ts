@@ -102,7 +102,7 @@ export const authOptions: NextAuthOptions = {
         //   account.provider === "google"
         //     ? "/api/google/auth/jwt-process"
         //     : "/api/facebook/auth/jwt-process";
-        console.log(profile);
+        // console.log(profile);
         try {
           if (account.provider === "google") {
             const res = await fetch(
@@ -137,6 +137,7 @@ export const authOptions: NextAuthOptions = {
             user.updatedAt = data.user.updated_at;
             user.token = data.token;
           } else if (account.provider === "facebook") {
+            console.log("facebook");
             console.log(profile);
             console.log(account);
             console.log(user);
@@ -148,7 +149,7 @@ export const authOptions: NextAuthOptions = {
                 body: JSON.stringify({
                   name: profile?.name,
                   email: profile?.email,
-                  // googleAuthentication: profile?.email_verified,
+                  googleAuthentication: true,
                   // facebookAuthentication: account.provider === "facebook",
                 }),
               }

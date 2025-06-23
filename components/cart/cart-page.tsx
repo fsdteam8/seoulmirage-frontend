@@ -84,7 +84,10 @@ export default function CartPage() {
                 </div>
 
                 <div className="text-right">
-                  <p className="text-xl font-bold"> <span className="text-[16px]">AED</span> {item.price}</p>
+                  <p className="text-xl font-bold">
+                    {" "}
+                    <span className="text-[16px]">AED</span> {item.price}
+                  </p>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -109,12 +112,18 @@ export default function CartPage() {
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span> <span className="text-[16px]">AED</span> {subtotal.toFixed(2)}</span>
+                <span>
+                  {" "}
+                  <span className="text-[16px]">AED</span> {subtotal.toFixed(2)}
+                </span>
               </div>
               <hr className="my-2" />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span> <span className="text-[16px]">AED</span> {subtotal.toFixed(2)}</span>
+                <span>
+                  {" "}
+                  <span className="text-[16px]">AED</span> {subtotal.toFixed(2)}
+                </span>
               </div>
             </div>
 
