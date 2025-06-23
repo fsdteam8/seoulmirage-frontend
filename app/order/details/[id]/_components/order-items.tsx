@@ -40,7 +40,7 @@ export default function OrderItems({ items }: OrderItemsProps) {
               </div>
             </div>
             <div className="text-lg font-medium text-gray-900">
-              ${item.price}
+              <span className="text-[16px]">AED</span> {item.price}
             </div>
           </div>
         ))}
