@@ -25,7 +25,6 @@ export default function Home() {
     <div>
       {/* Hero Section */}
       <HeroSection />
-      <ShopByCategory />
 
       {/* Tabs Navigation */}
       <div className="flex justify-center mt-10 space-x-4">
@@ -56,11 +55,13 @@ export default function Home() {
             <NewArrive />
           </div>
         )}
-        {activeTab === "trd" && <div>{<ComingSoon/>}</div>}
+        {activeTab === "trd" && <div>{<ComingSoon />}</div>}
       </div>
 
       {/* Static Sections */}
-      <NewArrive />
+      {/* <NewArrive /> */}
+      <ShopByCategory />
+
       <OurSkinCare />
       <TestimonialCarousel />
     </div>
