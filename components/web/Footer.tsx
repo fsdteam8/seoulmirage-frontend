@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Facebook, Twitter, Instagram } from "lucide-react";
 import Image from "next/image";
 import { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
+import { usePathname } from "next/navigation";
 
 // Zod schema
 const emailSchema = z.object({
@@ -31,6 +32,7 @@ const subscribeToNewsletter = async (formData: FormData) => {
 };
 
 export default function Footer() {
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
 
   const mutation = useMutation({
@@ -55,6 +57,7 @@ export default function Footer() {
     fromdata.append("email", email);
     mutation.mutate(fromdata);
   };
+  console.log(pathname);
 
   const { data } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
@@ -71,13 +74,16 @@ export default function Footer() {
       return res.json();
     },
   });
-    const generateHref = (type: string, name: string) =>
+  const generateHref = (type: string, name: string) =>
     `/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
-
 
   return (
     <footer className="bg-gray-50 border-t">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
+      <div
+        className={`container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16 ${
+          ["/login", "/sign-up"].includes(pathname) ? "hidden" : "block"
+        }`}
+      >
         {/* Newsletter Section */}
         <div className="text-center mb-8 md:mb-12 lg:mb-16">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#000000CC] mb-3 md:mb-4">
@@ -232,7 +238,7 @@ export default function Footer() {
               {data?.Skincare.slice(0, 5).map((item) => (
                 <li key={item.id}>
                   <Link
-                   href={generateHref("category", item.name)}
+                    href={generateHref("category", item.name)}
                     className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                   >
                     {item.name}

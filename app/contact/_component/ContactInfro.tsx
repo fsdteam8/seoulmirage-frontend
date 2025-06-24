@@ -1,13 +1,12 @@
-import { Mail, Phone, MapPin } from "lucide-react"
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function ContactSection() {
   return (
-    <section className="bg-[#F9E4CB] py-12 ">
+    <section className="bg-[#F9E4CB] py-12 mb-10 mt-10 ">
       <div className=" container mx-auto !px-10">
-        <h2 className="text-2xl sm:text-[32px] font-medium text-[#000000] mb-8 text-center lg:text-left">
+        <h2 className="text-2xl flex flex-col justify-center items-center sm:text-[32px] font-medium text-[#000000] mb-10 text-center lg:text-left  border">
           Other Ways to Reach Us
         </h2>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
           {/* Email */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
@@ -15,7 +14,9 @@ export default function ContactSection() {
               <Mail className="w-5 h-5 text-gray-600 mr-2" />
               <h3 className="text-lg font-medium text-gray-800">Email</h3>
             </div>
-            <p className="text-gray-600 text-sm sm:text-base">seoulmirrage@gmail.com</p>
+            <p className="text-gray-600 text-sm sm:text-base">
+              seoulmirrage@gmail.com
+            </p>
           </div>
 
           {/* Phone */}
@@ -33,10 +34,12 @@ export default function ContactSection() {
               <MapPin className="w-5 h-5 text-gray-600 mr-2" />
               <h3 className="text-lg font-medium text-gray-800">Address</h3>
             </div>
-            <p className="text-gray-600 text-sm sm:text-base">123 Beauty Lane, Gangnam, Seoul, South Korea</p>
+            <p className="text-gray-600 text-sm sm:text-base">
+              123 Beauty Lane, Gangnam, Seoul, South Korea
+            </p>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
