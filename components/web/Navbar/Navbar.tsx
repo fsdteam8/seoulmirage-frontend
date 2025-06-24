@@ -160,13 +160,13 @@ export default function Navbar() {
               className="h-8 w-8 p-0"
               onClick={() => setIsSearchDialogOpen(true)}
             >
-              <Search className="h-4 w-4" />
+              <Search className="h-10 w-10" />
             </Button>
 
             {/* Cart icon (always visible) */}
             <Link href="/cart" className="relative">
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <ShoppingBag className="h-4 w-4" />
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 ">
+                <ShoppingBag className="h-4 w-4 " />
               </Button>
               {items.length === 0 ? (
                 ""
@@ -208,7 +208,7 @@ export default function Navbar() {
               // Guest user: show login link
               <Link
                 href="/login"
-                className="font-raleway bg-black text-white  px-3 py-1 rounded-lg font-medium text-sm hover:underline"
+                className="font-raleway bg-[#F092B0] text-white   px-3 py-1 rounded-lg font-medium text-sm hover:underline"
               >
                 Login
               </Link>
