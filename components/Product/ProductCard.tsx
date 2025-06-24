@@ -84,13 +84,15 @@ export default function ProductCard({ product }: ProductCardProps) {
                 isHovered ? "opacity-100" : "opacity-0"
               }`}
             >
-              <Button
-                onClick={handleAddToCart}
-                className="bg-white text-black hover:bg-gray-100 font-medium px-6 py-2 rounded-lg shadow-lg transform transition-transform duration-200 hover:scale-105"
-              >
-                <ShoppingBag className="w-4 h-4 mr-2" />
-                Add to Cart
-              </Button>
+              {product?.arrival_status !== "coming_soon" && (
+                <Button
+                  onClick={handleAddToCart}
+                  className="bg-white text-black hover:bg-gray-100 font-medium px-6 py-2 rounded-lg shadow-lg transform transition-transform duration-200 hover:scale-105"
+                >
+                  <ShoppingBag className="w-4 h-4 mr-2" />
+                  Add to Cart
+                </Button>
+              )}
             </div>
           </div>
 
@@ -101,11 +103,13 @@ export default function ProductCard({ product }: ProductCardProps) {
             <h3 className="font-semibold text-lg mb-2 line-clamp-2">
               {product.name}
             </h3>
+           
+           {product?.arrival_status !== "coming_soon" &&(
+            <>
             <p className="text-2xl font-bold mb-2">
               <span className="text-[16px]">AED</span> {product.price}
             </p>
-
-            <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 <StarRating rating={Number(product?.reviews_avg_rating) || 0} />
                 <span className="text-sm font-medium">
@@ -119,6 +123,11 @@ export default function ProductCard({ product }: ProductCardProps) {
                 ({product.reviews_count ?? 0})
               </span>
             </div>
+            </>
+           )
+
+           }
+        
           </div>
         </div>
       </Link>
