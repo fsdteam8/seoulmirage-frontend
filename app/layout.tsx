@@ -14,7 +14,7 @@ import Providers from "@/components/Provider/providers";
 const newFont = Lora({
   subsets: ["latin"],
   variable: "--font-raleway",
-  weight: [ "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
