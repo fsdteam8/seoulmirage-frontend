@@ -1,39 +1,69 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import Image from "next/image"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import Image from "next/image";
 
 export default function FAQSection() {
   const faqs = [
     {
-      question: "Figma ipsum component variant main layer?",
-      answer:
-        "Figma ipsum component variant main layer. Lore ipsum object list undo rectangle. Duplicate editor distribute overflow. Amet pen union device share scrolling style. Figma ipsum component variant main layer. Lore ipsum object list undo rectangle.",
+      question: "What makes your SEO approach different?",
+      answer: `We use AI tools to reverse-engineer how modern search engines - including Google SGE and Bing Copilot
+- are actually prioritizing sites now. It's not about guessing with keywords; it's about aligning your site with
+how AI reads and ranks content.`,
     },
     {
-      question: "Figma ipsum component variant main layer?",
-      answer:
-        "Figma ipsum component variant main layer. Lore ipsum object list undo rectangle. Duplicate editor distribute overflow. Amet pen union device share scrolling style. Figma ipsum component variant main layer. Lore ipsum object list undo rectangle.",
+      question:
+        "How is this different from what a traditional SEO agency does?",
+      answer: `Most agencies still optimize for Google as it worked 3-5 years ago. We optimize for how search works now
+- including AI summaries, voice search, and schema-driven visibility. Faster, leaner, and more aligned with
+the future of search.`,
     },
     {
-      question: "Figma ipsum component variant main layer?",
-      answer:
-        "Figma ipsum component variant main layer. Lore ipsum object list undo rectangle. Duplicate editor distribute overflow. Amet pen union device share scrolling style.",
+      question: "What's included in the Basic Tune-Up?",
+      answer: `We analyze your existing pages, identify gaps, fix titles and descriptions, add schema markup, and give
+you a smarter keyword plan - all powered by AI. It's a one-time checkup that sets the foundation.`,
     },
     {
-      question: "Figma ipsum component variant main layer?",
-      answer:
-        "Figma ipsum component variant main layer. Lore ipsum object list undo rectangle. Duplicate editor distribute overflow. Amet pen union device share scrolling style.",
+      question: "What if I need more than just a tune-up?",
+      answer: `That's where our Better and Full Rework packages come in. We'll rework your content, structure your
+pages to match what search engines now expect, and prepare your site for long-term visibility - not just a
+quick fix.`,
     },
     {
-      question: "Figma ipsum component variant main layer?",
-      answer:
-        "Figma ipsum component variant main layer. Lore ipsum object list undo rectangle. Duplicate editor distribute overflow. Amet pen union device share scrolling style.",
+      question: " Do you write or rewrite content?",
+      answer: `Yes - in the Better and Full Rework tiers, we offer AI-enhanced rewrites. You get smarter, better-targeted
+content that still sounds like you, but works harder to get found.`,
     },
     {
-      question: "Figma ipsum component variant main layer?",
-      answer:
-        "Figma ipsum component variant main layer. Lore ipsum object list undo rectangle. Duplicate editor distribute overflow. Amet pen union device share scrolling style.",
+      question: "What is schema, and why does it matter?",
+      answer: `Schema is a behind-the-scenes code that tells search engines what your site is about. It's critical for
+showing up in AI-driven results and voice search. We add the right schema types automatically in every
+package.`,
     },
-  ]
+    {
+      question:
+        "Will this help me show up in Google's AI results or Bing Copilot?",
+      answer: `Yes - our audits and rewrites are designed with generative search in mind. We optimize for how your
+business appears in AI answers, not just the old blue links.`,
+    },
+    {
+      question: "Is this a monthly service or a one-time project?",
+      answer: `These are one-time services - no contracts, no recurring fees. You can come back for more if needed, but`,
+    },
+    {
+      question: "How long does it take to complete?",
+      answer: `Most tune-ups are done in 5-7 business days. Full reworks may take 10-14 days depending on page count
+and complexity.`,
+    },
+    {
+      question: "What if I'm not sure which tier I need?",
+      answer: `Start with a free visibility check - we'll let you know where your site stands and which option (if any) makes
+the most sense for you.`,
+    },
+  ];
 
   return (
     <section className="py-8 md:py-12 lg:py-0">
@@ -61,8 +91,9 @@ export default function FAQSection() {
                 Frequently Asked Questions
               </h2>
               <p className="text-[#000000CC] font-medium text-base sm:text-lg leading-tight">
-                Find answers to our most commonly asked questions. If you can&lsquo;t find what you&lsquo;re looking for, please
-                contact us.
+                Find answers to our most commonly asked questions. If you
+                can&lsquo;t find what you&lsquo;re looking for, please contact
+                us.
               </p>
             </div>
 
@@ -86,5 +117,5 @@ export default function FAQSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
