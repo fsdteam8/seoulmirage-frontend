@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Facebook, Twitter, Instagram } from "lucide-react";
 import Image from "next/image";
+import { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
 
 // Zod schema
 const emailSchema = z.object({
@@ -55,6 +56,25 @@ export default function Footer() {
     mutation.mutate(fromdata);
   };
 
+  const { data } = useQuery<CategorizedData>({
+    queryKey: ["categoriesData"],
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/categories-by-type`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch categories");
+      return res.json();
+    },
+  });
+    const generateHref = (type: string, name: string) =>
+    `/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
+
+
   return (
     <footer className="bg-gray-50 border-t">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
@@ -88,7 +108,7 @@ export default function Footer() {
         </div>
 
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12">
           {/* Logo & Description */}
           <div className="sm:col-span-2 lg:col-span-2 text-center sm:text-left">
             <div className="mb-4 md:mb-6">
@@ -99,10 +119,10 @@ export default function Footer() {
                   quality={90}
                   width={900}
                   height={900}
-                  className="w-[140px] h-[140px]"
+                  className="w-[140px] "
                 />
               </div>
-              <p className="text-base sm:text-lg lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
+              <p className="text-base sm:text-lg mt-5 lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
                 Nurturing your skin with nature’s finest ingredients for a
                 radiant, healthy glow every day.
               </p>
@@ -202,6 +222,23 @@ export default function Footer() {
                   Privacy Policy
                 </Link>
               </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
+              Skincare
+            </h3>
+            <ul>
+              {data?.Skincare.slice(0, 5).map((item) => (
+                <li key={item.id}>
+                  <Link
+                   href={generateHref("category", item.name)}
+                    className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

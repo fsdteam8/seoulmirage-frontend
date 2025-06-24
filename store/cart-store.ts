@@ -21,6 +21,7 @@ export interface Media {
 
 export interface Product {
   id: number;
+  arrival_status?:string
   name: string;
   description: string;
   image: string | null; // ✅ not optional
