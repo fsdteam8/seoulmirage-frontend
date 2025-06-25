@@ -2,7 +2,9 @@
   "home": {
     "banner": {
       "title": "Discover your skin's true potential",
-      "desc": "Premium skincare that combines innovation with clean, effective ingredients for all skin types."
+      "desc": "Premium skincare that combines innovation with clean, effective ingredients for all skin types.",
+      "shopNowButtonLabel": "Shop Now",
+      "aboutUsButtonLabel": "About Us"
     }
   }
 }

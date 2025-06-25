@@ -37,7 +37,7 @@ export default function HeroSection({ dict }: Props) {
                   size="lg"
                   className="bg-white text-[#000000] text-base hover:bg-white font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
                 >
-                  Shop Now
+                  {dict.home.banner.shopNowButtonLabel}
                 </Button>
               </Link>
               <Link href="/about" passHref>
@@ -74,7 +74,9 @@ export default function HeroSection({ dict }: Props) {
       z-0
     "
                 >
-                  <span className="relative z-10">About Us</span>
+                  <span className="relative z-10">
+                    {dict.home.banner.aboutUsButtonLabel}
+                  </span>
                 </Button>
               </Link>
             </div>
