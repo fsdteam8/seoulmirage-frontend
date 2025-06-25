@@ -1,21 +1,18 @@
 // middleware.ts
-import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-
-  // If no token, redirect to login
-  if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
-
   // Otherwise, allow access
   return NextResponse.next();
 }
 
 // Match the exact route or paths you want to protect
 export const config = {
-  matcher: ["/account/:path*"],
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
+  ],
 };
