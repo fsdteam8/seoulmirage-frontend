@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { ChevronDown, Search, User, ShoppingBag, Menu } from "lucide-react";
+import logo from "../../../public/logo.svg";
+
+import SearchDialog from "@/components/search-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,20 +26,18 @@ import {
 import {
   Sheet,
   SheetContent,
-  SheetTrigger,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { signOut, useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
-import type { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
-import SearchDialog from "@/components/search-dialog";
 import { useCartStore } from "@/store/cart-store";
+import type { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
+import { useQuery } from "@tanstack/react-query";
+import { ChevronDown, Menu, Search, ShoppingBag, User } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function Navbar() {
   const session = useSession();
@@ -47,7 +49,7 @@ export default function Navbar() {
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
 
   console.log(items);
-  console.log(session.status)
+  console.log(session.status);
 
   const { data, isLoading } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
@@ -76,12 +78,12 @@ export default function Navbar() {
           <div className="flex items-center space-x-8">
             <Link href="/" className="flex items-center">
               <Image
-                src="/logo.svg"
+                src={logo}
                 alt="Serendipity"
-                quality={90}
-                width={900}
-                height={900}
-                className="w-[140px] h-[140px]"
+                width={0} // Let it be responsive
+                height={0}
+                className="w-[140px] h-[100px] md:w-[140px] md:h-[140px]"
+                priority // optional: helps load faster if this is a crucial image
               />
             </Link>
 
@@ -179,7 +181,7 @@ export default function Navbar() {
 
             {token || session.status === "authenticated" ? (
               // Logged-in user: show user dropdown
-              <DropdownMenu >
+              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                     <User className="h-4 w-4" />
