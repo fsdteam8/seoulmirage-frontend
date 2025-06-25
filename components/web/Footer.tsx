@@ -214,7 +214,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/coming"
+                  href="/faq-&-help"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   Shipping & Returns
@@ -222,7 +222,15 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/coming"
+                  href="/faq-&-help"
+                  className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
+                >
+              FAQ & Help
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/privacy-policy"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
                   Privacy Policy
