@@ -21,7 +21,7 @@ const emailSchema = z.object({
 const subscribeToNewsletter = async (formData: FormData) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/newsletter`, {
     method: "POST",
-    body: formData, // no need to stringify
+    body: formData,
   });
 
   if (!res.ok) {
@@ -53,11 +53,9 @@ export default function Footer() {
       return;
     }
     const fromdata = new FormData();
-
     fromdata.append("email", email);
     mutation.mutate(fromdata);
   };
-  console.log(pathname);
 
   const { data } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
@@ -74,6 +72,7 @@ export default function Footer() {
       return res.json();
     },
   });
+
   const generateHref = (type: string, name: string) =>
     `/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
 
@@ -84,8 +83,26 @@ export default function Footer() {
           ["/login", "/sign-up"].includes(pathname) ? "hidden" : "block"
         }`}
       >
+        {/* Logo & Description */}
+        {/* <div className="sm:col-span-2 lg:col-span-2 text-center sm:text-left">  */}
+        <div className="mb-4 md:mb-6 flex  flex-col lg:gap-0   justify-center items-center ">
+          <div>
+            <Image
+              src="/logo.svg"
+              alt="Serendipity"
+              quality={90}
+              width={900}
+              height={900}
+              className="w-[140px] "
+            />
+          </div>
+          <p className="text-base text-center sm:text-lg mt-5 lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
+            Nurturing your skin with nature’s finest ingredients for a radiant,
+            healthy glow every day.
+          </p>
+        </div>
         {/* Newsletter Section */}
-        <div className="text-center mb-8 md:mb-12 lg:mb-16">
+        <div className="text-center mb-8 md:mb-12 lg:mb-16 mt-20">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#000000CC] mb-3 md:mb-4">
             Join Our Community
           </h2>
@@ -113,50 +130,31 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12">
-          {/* Logo & Description */}
-          <div className="sm:col-span-2 lg:col-span-2 text-center sm:text-left">
-            <div className="mb-4 md:mb-6">
-              <div>
-                <Image
-                  src="/logo.svg"
-                  alt="Serendipity"
-                  quality={90}
-                  width={900}
-                  height={900}
-                  className="w-[140px] "
-                />
-              </div>
-              <p className="text-base sm:text-lg mt-5 lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
-                Nurturing your skin with nature’s finest ingredients for a
-                radiant, healthy glow every day.
-              </p>
-            </div>
-
-            {/* Social Icons */}
-            <div className="flex space-x-2 justify-center sm:justify-start">
-              <Link
-                href="#"
-                className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors shadow-sm"
-              >
-                <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
-              </Link>
-              <Link
-                href="#"
-                className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors shadow-sm"
-              >
-                <Twitter className="w-4 h-4 sm:w-5 sm:h-5" />
-              </Link>
-              <Link
-                href="#"
-                className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors shadow-sm"
-              >
-                <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
-              </Link>
-            </div>
+        {/* ✅ Centered Social Icons */}
+        <div className="border-b mb-10 border-[#00000033] mt-6 sm:mt-8 md:mt-10 lg:mt-12 pt-4 sm:pt-6">
+          <div className="flex space-x-2 justify-center items-center mb-10">
+            <Link
+              href="#"
+              className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors shadow-sm"
+            >
+              <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Link>
+            <Link
+              href="#"
+              className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors shadow-sm"
+            >
+              <Twitter className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Link>
+            <Link
+              href="#"
+              className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center text-[#F092B0] hover:bg-pink-50 transition-colors shadow-sm"
+            >
+              <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Link>
           </div>
-
+        </div>
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex justify-center gap-6 sm:gap-8 lg:gap-[350px]">
           {/* Shop Links */}
           <div className="text-center sm:text-left">
             <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
@@ -225,7 +223,7 @@ export default function Footer() {
                   href="/faq-&-help"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-              FAQ & Help
+                  FAQ & Help
                 </Link>
               </li>
               <li>
@@ -238,7 +236,9 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          <div>
+
+          {/* Skincare Links */}
+          <div className="flex flex-col justify-center items-center">
             <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
               Skincare
             </h3>
