@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function About_Section() {
   const session = useSession();
   const token = (session?.data?.user as { token: string })?.token || "";
-  
+
   console.log(token);
   return (
     <div className="w-full">
@@ -17,10 +17,15 @@ export default function About_Section() {
               <h2 className="text-3xl sm:text-4xl lg:text-[60px] font-semibold text-[#000000CC] mb-6 lg:mb-[30px]">
                 Our <span className="font-bold">Story</span>
               </h2>
-              <p className="text-base sm:text-lg lg:text-[24px] text-[#000000CC]  leading-[120%] font-normal">
-                Seoul Mirage was born from a passion for Korean skincare
-                innovation and a commitment to creating luxury products that
-                deliver exceptional results.
+              <p className="text-base sm:text-lg lg:text-[18px] text-[#000000CC]  leading-[120%] font-normal">
+                At Seoul Mirage, we’re passionate about sharing the unmatched
+                quality and innovation of Korean beauty with the world. Our
+                journey began with a simple mission: to bring trusted,
+                effective, and science-driven skincare and haircare solutions
+                from Korea to individuals and professionals across the UAE. We
+                carefully select each product for its proven results, clean
+                ingredients, and cutting-edge formulations so you can glow
+                confidently, inside and out. Inspired by Korea. Curated for You.
               </p>
             </div>
             <div className="order-1 lg:order-2">
@@ -58,19 +63,20 @@ export default function About_Section() {
               </h2>
               <div className="space-y-4 sm:space-y-6">
                 <p className="text-base sm:text-[24px] md:text-[18px] text-[#000000CC] leading-[120%] font-normal">
-                  Founded in 2018 by skincare enthusiast and biochemist Dr.
-                  Ji-Yoon Park, Seoul Mirage began as a small laboratory in the
-                  heart of Seoul&apos;s beauty district. Frustrated by the
-                  prevalence of products with harsh chemicals and unfulfilled
-                  promises, Dr. Park set out to create a line that combined
-                  traditional Korean ingredients with cutting-edge science.
+                  Our journey began with a vision: to connect people with beauty
+                  that truly works. Through years of exploration, collaboration,
+                  and research, we’ve partnered with leading creators of Korean
+                  cosmetics to offer products that are as effective as they are
+                  elegant. Seoul Mirage is the result of dedication to quality,
+                  to authenticity, and to the belief that self-care should feel
+                  as good as it looks. And this is just the beginning.
                 </p>
-                <p className="text-base sm:text-[24px] md:text-[18px] text-[#000000CC] leading-[120%] font-normal mt-[30px]">
+                {/* <p className="text-base sm:text-[24px] md:text-[18px] text-[#000000CC] leading-[120%] font-normal mt-[30px]">
                   What started as a passion project quickly gained recognition
                   for its exceptional quality and remarkable results. Today,
                   Seoul Mirage has grown into a global brand, but our commitment
                   to purity, efficacy, and luxury remains unchanged.
-                </p>
+                </p> */}
               </div>
             </div>
           </div>
@@ -82,45 +88,49 @@ export default function About_Section() {
                 Our Philosophy
               </h2>
               <p className="text-base sm:text-[24px] md:text-[18px] text-[#000000] leading-[120%] mb-8 lg:mb-12">
-                Founded in 2018 by skincare enthusiast and biochemist Dr.
-                Ji-Yoon Park, Seoul Mirage began as a small laboratory in the
-                heart of Seoul&apos;s beauty district. Frustrated by the
-                prevalence of products with harsh chemicals and unfulfilled
-                promises, Dr. Park set out to create a line that combined
-                traditional Korean ingredients with cutting-edge science.
+                At Seoul Mirage, we believe that beauty should be intentional
+                not overwhelming. That’s why we focus on what truly matters:
+                clean, effective, and carefully crafted products that deliver
+                real results. We value transparency, innovation, and
+                self-respect. Every product we offer is chosen with purpose,
+                backed by science, and rooted in the principles of gentle yet
+                powerful care. To us, skincare and haircare are daily acts of
+                self-worth and everyone deserves access to quality that elevates
+                their glow. With Seoul Mirage, it’s not about trends. It’s about
+                timeless beauty, made simple.
               </p>
 
               <div className="space-y-6 lg:space-y-8">
                 <div className="border-l-4 border-[#000000] pl-4 sm:pl-6">
                   <h3 className="text-xl sm:text-[40px] font-semibold text-[#000000] mb-2 sm:mb-[30px]">
-                    Purity
+                    Curated with Purpose
                   </h3>
                   <p className="text-sm md:text-[18px] sm:text-xl text-[#000000] leading-[120%]">
-                    We source the highest quality ingredients and maintain
-                    rigorous standards to ensure our products are free from
-                    harmful chemicals.
+                    We carefully select each product based on its performance,
+                    ingredients, and integrity, only offering what we truly
+                    believe in.
                   </p>
                 </div>
 
                 <div className="border-l-4 border-[#000000] pl-4 sm:pl-6">
                   <h3 className="text-xl sm:text-[40px] font-semibold text-[#000000] mb-2 sm:mb-[30px]">
-                    Innovation
+                    Powered by Innovation
                   </h3>
                   <p className="text-sm sm:text-xl md:text-[18px] text-[#000000] leading-[120%]">
-                    We continuously research and develop new formulations that
-                    harness the power of both traditional Korean ingredients and
-                    modern scientific breakthroughs.
+                    We bring you cutting-edge Korean skincare and haircare
+                    solutions developed with the latest beauty science and
+                    time-tested traditions.
                   </p>
                 </div>
 
                 <div className="border-l-4 border-[#000000] pl-4 sm:pl-6">
                   <h3 className="text-xl sm:text-[40px] font-semibold text-[#000000] mb-2 sm:mb-4">
-                    Sustainability
+                    Beauty with Intention{" "}
                   </h3>
                   <p className="text-sm sm:text-xl md:text-[18px] text-[#000000] leading-[120%]">
-                    We are committed to ethical practices, from responsible
-                    sourcing to eco-friendly packaging, ensuring our beauty
-                    doesn&apos;t come at the expense of our planet.
+                    We believe in mindful routines, lasting results, and
+                    products that enhance your natural glow because self-care
+                    should feel as good as it looks.
                   </p>
                 </div>
               </div>
@@ -147,10 +157,12 @@ export default function About_Section() {
               Our Ingredients
             </h2>
             <p className="text-base sm:text-lg lg:text-[24px] text-[#000000CC] leading-[120%] w-full p-2 mx-auto">
-              We believe in the power of nature enhanced by science. Our
-              formulations combine time-honored Korean botanical ingredients
-              with advanced scientific compounds to create products that deliver
-              visible results.
+              We believe that effective beauty starts with exceptional
+              ingredients, selected for their purity, performance, and purpose.
+              Our collection features formulas developed by leading Korean
+              laboratories, where tradition meets technology. Every product is
+              carefully crafted to nourish, protect, and transform your skin and
+              hair without compromise.
             </p>
           </div>
 
@@ -167,11 +179,12 @@ export default function About_Section() {
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center">
                   <div className="p-4 sm:p-6 text-white flex flex-col justify-center text-center">
                     <h3 className="text-xl sm:text-[30px] text-white font-bold  mb-2">
-                      Botanical Extracts
+                      Botanical Heroes
                     </h3>
                     <p className="text-sm sm:text-xl text-[#FFFFFF] font-normal opacity-90">
-                      From ginseng to green tea, our products harness the power
-                      of traditional Korean botanical ingredients.
+                      Green tea, centella asiatica, ginseng calming,
+                      antioxidant-rich ingredients rooted in centuries of Korean
+                      skincare wisdom.
                     </p>
                   </div>
                 </div>
@@ -190,12 +203,11 @@ export default function About_Section() {
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center">
                   <div className="p-4 sm:p-6 text-white flex flex-col justify-center text-center">
                     <h3 className="text-xl sm:text-[30px] text-white font-bold  mb-2">
-                      Fermented Ingredients
+                      Fermented Elements
                     </h3>
                     <p className="text-sm sm:text-base opacity-90">
-                      We utilize the ancient Korean practice of fermentation to
-                      enhance the potency and bioavailability of our active
-                      ingredients.
+                      A hallmark of K-beauty, fermented extracts improve
+                      absorption and support long-term skin and scalp health.
                     </p>
                   </div>
                 </div>
@@ -214,11 +226,12 @@ export default function About_Section() {
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center">
                   <div className="p-4 sm:p-6 text-white flex flex-col justify-center text-center">
                     <h3 className="text-xl sm:text-[30px] text-white font-bold  mb-2">
-                      Scientific Compounds
+                      Clean & Conscious Formulas
                     </h3>
                     <p className="text-sm sm:text-base opacity-90">
-                      Our formulations incorporate cutting-edge compounds like
-                      peptides and ceramides for maximum efficacy.
+                      We prioritize high-quality, skin-friendly compositions,
+                      free from harsh chemicals, unnecessary additives, and
+                      animal testing.
                     </p>
                   </div>
                 </div>

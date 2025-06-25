@@ -15,7 +15,7 @@ export default function ContactSection() {
               <h3 className="text-lg font-medium text-gray-800">Email</h3>
             </div>
             <p className="text-gray-600 text-sm sm:text-base">
-              seoulmirrage@gmail.com
+              contact.seoulmirage@gmail.com
             </p>
           </div>
 
@@ -25,7 +25,9 @@ export default function ContactSection() {
               <Phone className="w-5 h-5 text-gray-600 mr-2" />
               <h3 className="text-lg font-medium text-gray-800">Phone</h3>
             </div>
-            <p className="text-gray-600 text-sm sm:text-base">+82 2 123 4567</p>
+            <p className="text-gray-600 text-sm sm:text-base">
+              +971 52 2G9 4938
+            </p>
           </div>
 
           {/* Address */}
@@ -35,7 +37,7 @@ export default function ContactSection() {
               <h3 className="text-lg font-medium text-gray-800">Address</h3>
             </div>
             <p className="text-gray-600 text-sm sm:text-base">
-              123 Beauty Lane, Gangnam, Seoul, South Korea
+              Office 43-44, Owned by Dubai Municipality, Al Fahidi, Bur Dubai
             </p>
           </div>
         </div>
