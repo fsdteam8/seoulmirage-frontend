@@ -68,7 +68,6 @@ export default function HeroSection() {
       hover:before:bg-opacity-20
       hover:before:backdrop-blur-lg
       hover:text-white
-      hover:text-black
       z-0
     "
                 >
