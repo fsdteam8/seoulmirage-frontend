@@ -5,10 +5,10 @@ import "./globals.css";
 
 import Footer from "@/components/web/Footer";
 
-import Navbar from "@/components/web/Navbar/Navbar";
-import { Toaster } from "sonner";
 import AuthProvider from "@/components/Provider/AuthProvider";
 import Providers from "@/components/Provider/providers";
+import Navbar from "@/components/web/Navbar/Navbar";
+import { Toaster } from "sonner";
 
 // Import Raleway font
 const newFont = Lora({
@@ -24,15 +24,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { lang: string };
 }>) {
+  const { lang } = params;
+
   return (
     <html lang="en" className={`${newFont.className} scroll-smooth`}>
       <body className={`${newFont.variable} antialiased`}>
         <Providers>
           <AuthProvider>
-            <Navbar />
+            <Navbar lang={lang} />
             {children}
             <Toaster position="top-right" />
             <Footer />
