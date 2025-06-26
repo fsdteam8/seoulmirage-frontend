@@ -14,6 +14,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Image from "next/image";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 
 // 1. Zod Schema
 const loginSchema = z.object({
@@ -25,8 +26,11 @@ const loginSchema = z.object({
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
+interface Props {
+  dict: DictionaryType;
+}
 
-export default function Login() {
+export default function Login({ dict }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -86,9 +90,9 @@ export default function Login() {
           {/* Header */}
           <div className="text-center space-y-2">
             <h1 className="text-3xl font-normal text-gray-900">
-              Sign in to your account
+              {dict.login.title}
             </h1>
-            <p className="text-gray-600 text-base">Or create a new account</p>
+            <p className="text-gray-600 text-base"> {dict.login.shortTilte}</p>
           </div>
 
           {/* Form Card */}
@@ -99,7 +103,7 @@ export default function Login() {
                 htmlFor="email"
                 className="text-sm font-normal text-gray-700"
               >
-                Email address
+                {dict.login.email}
               </Label>
               <Input
                 id="email"
@@ -118,7 +122,7 @@ export default function Login() {
                 htmlFor="password"
                 className="text-sm font-normal text-gray-700"
               >
-                Password
+                {dict.login.password}
               </Label>
               <div className="relative">
                 <Input
@@ -158,14 +162,14 @@ export default function Login() {
                   htmlFor="remember-me"
                   className="text-sm font-normal text-gray-700 cursor-pointer"
                 >
-                  Remember me
+                  {dict.login.RememberMe}
                 </Label>
               </div>
               <Link
                 href="/reset-password"
                 className="text-sm text-gray-900 hover:text-gray-700 font-normal"
               >
-                Forgot your password?
+                {dict.login.Forgot}
               </Link>
             </div>
 
@@ -180,7 +184,7 @@ export default function Login() {
 
           {/* Social Login Buttons */}
           <div className="space-y-4">
-            <h2 className="text-center text-sm text-gray-600">Continue with</h2>
+            <h2 className="text-center text-sm text-gray-600">{dict.login.continue}</h2>
             <div className="flex gap-5">
               {/* Google */}
               <Button
@@ -225,11 +229,11 @@ export default function Login() {
           <div className="text-center">
             <div className="flex justify-center items-center gap-1 mb-4">
               <span className="text-gray-700 text-sm">
-                Don&#39;t have an account?
+                {dict.login["Don't"]}
               </span>
               <Link href="/sign-up">
                 <span className="underline text-sm cursor-pointer">
-                  Sign up
+                  {dict.login["sign-up"]}
                 </span>
               </Link>
             </div>
@@ -244,7 +248,7 @@ export default function Login() {
               </Link>{" "}
               and{" "}
               <Link
-                href="#"
+                href="/privacy-policy"
                 className="text-gray-900 hover:text-gray-700 underline"
               >
                 Privacy Policy

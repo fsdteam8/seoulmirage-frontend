@@ -11,6 +11,7 @@ import { Facebook, Twitter, Instagram } from "lucide-react";
 import Image from "next/image";
 import { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
 import { usePathname } from "next/navigation";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 
 // Zod schema
 const emailSchema = z.object({
@@ -30,8 +31,12 @@ const subscribeToNewsletter = async (formData: FormData) => {
 
   return res.json();
 };
+interface Props {
+  lang: string;
+  dict: DictionaryType;
+}
 
-export default function Footer() {
+export default function Footer({ lang, dict }: Props) {
   const pathname = usePathname();
   const [email, setEmail] = useState("");
 
@@ -57,6 +62,8 @@ export default function Footer() {
     mutation.mutate(fromdata);
   };
 
+  console.log();
+
   const { data } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
     queryFn: async () => {
@@ -74,7 +81,7 @@ export default function Footer() {
   });
 
   const generateHref = (type: string, name: string) =>
-    `/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
+    `/${lang}/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
 
   return (
     <footer className="bg-gray-50 border-t">
@@ -97,18 +104,16 @@ export default function Footer() {
             />
           </div>
           <p className="text-base text-center sm:text-lg mt-5 lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
-            Nurturing your skin with nature’s finest ingredients for a radiant,
-            healthy glow every day.
+            {dict.footer.title}
           </p>
         </div>
         {/* Newsletter Section */}
         <div className="text-center mb-8 md:mb-12 lg:mb-16 mt-20">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#000000CC] mb-3 md:mb-4">
-            Join Our Community
+            {dict.footer["Our-Community"].title}
           </h2>
           <p className="text-sm sm:text-base md:text-lg lg:text-[18px] text-[#000000CC] mb-8 md:mb-12 lg:mb-[60px] max-w-xs sm:max-w-md md:max-w-lg lg:max-w-[650px] mx-auto font-medium px-4 sm:px-0">
-            Subscribe to our newsletter for exclusive offers, skincare tips, and
-            new product announcements.
+            {dict.footer["Our-Community"].desc}
           </p>
 
           {/* Email Form */}

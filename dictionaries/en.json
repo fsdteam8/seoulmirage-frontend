@@ -11,6 +11,164 @@
       "desc1": "Seoul Mirage was born from a deep appreciation for Korean skincare innovation and the belief that effective products should be accessible to everyone.",
       "desc2": "We combine time-tested Korean ingredients with modern science to create formulations that deliver visible results. Each product is meticulously crafted to honor the tradition of the multi-step skincare ritual while fitting seamlessly into your daily routine.",
       "buttonLabel": "About Us"
+    },
+    "navbar": {
+      "about": "About",
+      "collections": "Collections",
+      "skincare": "Skincare",
+      "contact": "Contact",
+      "login": "Login"
     }
+  },
+  "about": {
+    "Our-Story": {
+      "title1": "Our",
+      "title2": "Story",
+      "desc": "At Seoul Mirage, we’re passionate about sharing the unmatched quality and innovation of Korean beauty with the world. Our journey began with a simple mission: to bring trusted, effective, and science-driven skincare and haircare solutions from Korea to individuals and professionals across the UAE. We carefully select each product for its proven results, clean ingredients, and cutting-edge formulations so you can glow confidently, inside and out. Inspired by Korea. Curated for You."
+    },
+    "Our-Journey": {
+      "title1": "Our",
+      "title2": "Journey",
+      "desc": "Our journey began with a vision: to connect people with beauty that truly works. Through years of exploration, collaboration, and research, we’ve partnered with leading creators of Korean cosmetics to offer products that are as effective as they are elegant. Seoul Mirage is the result of dedication to quality, to authenticity, and to the belief that self-care should feel as good as it looks. And this is just the beginning."
+    },
+    "Our-Philosophy": {
+      "title1": "Our Philosophy",
+      "desc": "At Seoul Mirage, we believe that beauty should be intentional not overwhelming. That’s why we focus on what truly matters: clean, effective, and carefully crafted products that deliver real results. We value transparency, innovation, and self-respect. Every product we offer is chosen with purpose, backed by science, and rooted in the principles of gentle yet powerful care. To us, skincare and haircare are daily acts of self-worth and everyone deserves access to quality that elevates their glow. With Seoul Mirage, it’s not about trends. It’s about timeless beauty, made simple.",
+      "Curated-with-Purpose": {
+        "title": "Curated with Purpose",
+        "desc": "We carefully select each product based on its performance, ingredients, and integrity, only offering what we truly believe in."
+      },
+      "Powered-by-Innovation": {
+        "title": "Powered by Innovation",
+        "desc": "We bring you cutting-edge Korean skincare and haircare solutions developed with the latest beauty science and time-tested traditions."
+      },
+      "Beauty-with-Intention": {
+        "title": "Beauty with Intention",
+        "desc": "We believe in mindful routines, lasting results, and products that enhance your natural glow because self-care should feel as good as it looks."
+      }
+    },
+    "Our-Ingredients": {
+      "title": "Our Ingredients",
+      "desc": "We believe that effective beauty starts with exceptional ingredients, selected for their purity, performance, and purpose. Our collection features formulas developed by leading Korean laboratories, where tradition meets technology. Every product is carefully crafted to nourish, protect, and transform your skin and hair without compromise.",
+      "card1": {
+        "title": "Botanical Heroes",
+        "desc": "Green tea, centella asiatica, ginseng calming, antioxidant-rich ingredients rooted in centuries of Korean skincare wisdom."
+      },
+      "card2": {
+        "title": "Fermented Elements",
+        "desc": "A hallmark of K-beauty, fermented extracts improve absorption and support long-term skin and scalp health."
+      },
+      "card3": {
+        "title": "Clean & Conscious Formulas",
+        "desc": "We prioritize high-quality, skin-friendly compositions, free from harsh chemicals, unnecessary additives, and animal testing."
+      }
+    }
+  },
+  "testomonial": {
+    "title": "Don't just take our words"
+  },
+  "footer": {
+    "title": "Nurturing your skin with nature’s finest ingredients for a radiant, healthy glow every day.",
+    "Our-Community": {
+      "title": "Join Our Community",
+      "desc": "Subscribe to our newsletter for exclusive offers, skincare tips, and new product announcements.",
+      "button": {
+        "placeholder": "Your email address",
+        "buttonLabel": "Subscribe"
+      }
+    }
+  },
+  "contactus": {
+    "title": "Contact Us",
+    "title1": "Get in Touch",
+    "desc": "Have a question or need assistance? Fill out the form below and our team will get back to you as soon as possible.",
+    "name": "Name",
+    "email": "Email",
+    "How-can-we-help": "How can we help?",
+    "button": "Let Us Know",
+    "loadingBtn": "Sending...",
+    "Reach-Us": {
+      "title": "Other Ways to Reach Us"
+    },
+    "Questions": {
+      "title": "Frequently Asked Questions",
+      "desc": "Find answers to our most commonly asked questions. If you can‘t find what you‘re looking for, please contact us."
+    },
+    "faq": [
+      {
+        "id": "qn1",
+        "title": "What makes your SEO approach different?",
+        "desc": "We use AI tools to reverse-engineer how modern search engines - including Google SGE and Bing Copilot - are actually prioritizing sites now. It's not about guessing with keywords; it's about aligning your site with how AI reads and ranks content."
+      },
+      {
+        "id": "qn2",
+        "title": "How is this different from what a traditional SEO agency does?",
+        "desc": "Most agencies still optimize for Google as it worked 3-5 years ago. We optimize for how search works now - including AI summaries, voice search, and schema-driven visibility. Faster, leaner, and more aligned with the future of search."
+      },
+      {
+        "id": "qn3",
+        "title": "What's included in the Basic Tune-Up?",
+        "desc": "We analyze your existing pages, identify gaps, fix titles and descriptions, add schema markup, and give you a smarter keyword plan - all powered by AI. It's a one-time checkup that sets the foundation."
+      },
+      {
+        "id": "qn4",
+        "title": "What if I need more than just a tune-up?",
+        "desc": "That's where our Better and Full Rework packages come in. We'll rework your content, structure your pages to match what search engines now expect, and prepare your site for long-term visibility - not just a quick fix."
+      },
+      {
+        "id": "qn5",
+        "title": "Do you write or rewrite content?",
+        "desc": "Yes - in the Better and Full Rework tiers, we offer AI-enhanced rewrites. You get smarter, better-targeted content that still sounds like you, but works harder to get found."
+      },
+      {
+        "id": "qn6",
+        "title": "What is schema, and why does it matter?",
+        "desc": "Schema is a behind-the-scenes code that tells search engines what your site is about. It's critical for showing up in AI-driven results and voice search. We add the right schema types automatically in every package."
+      },
+      {
+        "id": "qn7",
+        "title": "Will this help me show up in Google's AI results or Bing Copilot?",
+        "desc": "Yes - our audits and rewrites are designed with generative search in mind. We optimize for how your business appears in AI answers, not just the old blue links."
+      },
+      {
+        "id": "qn8",
+        "title": "Is this a monthly service or a one-time project?",
+        "desc": "These are one-time services - no contracts, no recurring fees. You can come back for more if needed, but"
+      },
+      {
+        "id": "qn9",
+        "title": "How long does it take to complete?",
+        "desc": "Most tune-ups are done in 5-7 business days. Full reworks may take 10-14 days depending on page count and complexity."
+      },
+      {
+        "id": "qn10",
+        "title": "What if I'm not sure which tier I need?",
+        "desc": "Start with a free visibility check - we'll let you know where your site stands and which option (if any) makes the most sense for you."
+      }
+    ]
+  },
+  "login": {
+    "title": "Sign in to your account",
+    "shortTilte": "Or create a new account",
+    "email": "Email address",
+    "password": "Password",
+    "RememberMe": "Remember me",
+    "Forgot": "Forgot your password?",
+    "btn": "Sign In",
+    "continue": "Continue with",
+    "Don't": "Don't have an account?",
+    "sign-up": "Sign up",
+    "by-signing": "By signing in, you agree to our Terms of Service and Privacy Policy."
+  },
+  "signup": {
+    "topTitle": "Sign up with",
+    "title": "Create your account",
+    "fullname": "Full Name",
+    "email": "Email address",
+    "password": "Password",
+    "confirm-password": "Confirm Password",
+    "tmc": "I agree to the Terms of Service and Privacy Policy",
+    "hvand": "Already have an account?",
+    "sgin": "Sign in."
   }
 }

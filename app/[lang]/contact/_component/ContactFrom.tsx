@@ -8,8 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { DictionaryType } from "@/dictionaries/dictionaries";
+interface Props {
+  dict: DictionaryType;
+}
 
-export default function ContactForm() {
+export default function ContactForm({ dict }: Props) {
   const [formDatas, setFormData] = useState({
     name: "",
     email: "",
@@ -64,9 +68,9 @@ export default function ContactForm() {
 
   return (
     <section className="py-8 sm:py-12 lg:py-0">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 mt-10 sm:px-6 lg:px-8">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[60px] font-bold text-[#000000CC] pb-6 sm:pb-8 lg:pb-10">
-          Contact Us
+          {dict.contactus.title}
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
@@ -75,11 +79,10 @@ export default function ContactForm() {
             <div className="w-full max-w-2xl">
               <div className="mb-6 sm:mb-8">
                 <h3 className="text-xl sm:text-2xl font-bold text-[#000000CC] mb-3">
-                  Get in Touch
+                  {dict.contactus.title1}
                 </h3>
                 <p className="text-[#000000CC] text-base sm:text-lg font-normal leading-relaxed">
-                  Have a question or need assistance? Fill out the form below
-                  and our team will get back to you as soon as possible.
+                  {dict.contactus.desc}
                 </p>
               </div>
 
@@ -89,7 +92,7 @@ export default function ContactForm() {
                     htmlFor="name"
                     className="text-sm font-normal text-[#000000] mb-2 block"
                   >
-                    Name
+                    {dict.contactus.name}
                   </Label>
                   <Input
                     id="name"
@@ -107,7 +110,7 @@ export default function ContactForm() {
                     htmlFor="email"
                     className="text-sm font-normal text-[#000000] mb-2 block"
                   >
-                    Email
+                    {dict.contactus.email}
                   </Label>
                   <Input
                     id="email"
@@ -125,7 +128,7 @@ export default function ContactForm() {
                     htmlFor="message"
                     className="text-sm font-normal text-[#000000] mb-2 block"
                   >
-                    How can we help?
+                    {dict.contactus["How-can-we-help"]}
                   </Label>
                   <Textarea
                     id="message"
@@ -147,10 +150,10 @@ export default function ContactForm() {
                     {mutation.isPending ? (
                       <div className="flex items-center gap-2">
                         <span className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                        Sending...
+                      {dict.contactus.loadingBtn}                       
                       </div>
                     ) : (
-                      "Let Us Know"
+                      dict.contactus.button
                     )}
                   </Button>
                 </div>
