@@ -1,6 +1,6 @@
 "use client";
 
-import logo from "../../../public/logo.svg";
+import logo from "../../../public/logo.optimized.svg";
 
 import SearchDialog from "@/components/search-dialog";
 import { Button } from "@/components/ui/button";
