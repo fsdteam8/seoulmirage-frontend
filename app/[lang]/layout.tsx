@@ -24,15 +24,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { lang: string };
 }>) {
+  const { lang } = params;
+
   return (
     <html lang="en" className={`${newFont.className} scroll-smooth`}>
       <body className={`${newFont.variable} antialiased`}>
         <Providers>
           <AuthProvider>
-            <Navbar />
+            <Navbar lang={lang} />
             {children}
             <Toaster position="top-right" />
             <Footer />

@@ -39,7 +39,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function Navbar() {
+interface Props {
+  lang: string;
+}
+
+export default function Navbar({ lang }: Props) {
   const session = useSession();
   const token = (session?.data?.user as { token: string })?.token || "";
   const { items } = useCartStore();
@@ -47,9 +51,6 @@ export default function Navbar() {
   const [isSkincareOpen, setIsSkincareOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
-
-  console.log(items);
-  console.log(session.status);
 
   const { data, isLoading } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
@@ -68,7 +69,7 @@ export default function Navbar() {
   });
 
   const generateHref = (type: string, name: string) =>
-    `/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
+    `/${lang}/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
 
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
