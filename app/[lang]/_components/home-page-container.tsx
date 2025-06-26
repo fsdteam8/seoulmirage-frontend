@@ -10,6 +10,7 @@ import NewArrive from "@/components/NewArrive";
 import OurSkinCare from "@/components/OurSkinCare";
 import ShopByCategory from "@/components/Product/ShopByCategory";
 import TestimonialCarousel from "@/components/web/Testimonial";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 
 const tabs = [
   { id: "bestsellers", label: "Best Sellers" },
@@ -17,7 +18,11 @@ const tabs = [
   { id: "trd", label: "Coming soon" },
 ];
 
-export default function HomePageContainer() {
+interface Props {
+  dict: DictionaryType;
+}
+
+export default function HomePageContainer({ dict }: Props) {
   const [activeTab, setActiveTab] = useState("bestsellers");
 
   return (
@@ -58,7 +63,7 @@ export default function HomePageContainer() {
       {/* <NewArrive /> */}
       <ShopByCategory />
 
-      <OurSkinCare />
+      <OurSkinCare dict={dict} />
       <TestimonialCarousel />
     </div>
   );

@@ -11,7 +11,7 @@ const Page = async ({ params }: { params: { lang: string } }) => {
     <div>
       {/* Hero Section */}
       <HeroSection dict={dict} />
-      <HomePageContainer />
+      <HomePageContainer dict={dict} />
     </div>
   );
 };

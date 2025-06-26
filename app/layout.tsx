@@ -5,10 +5,10 @@ import "./globals.css";
 
 import Footer from "@/components/web/Footer";
 
-import Navbar from "@/components/web/Navbar/Navbar";
-import { Toaster } from "sonner";
 import AuthProvider from "@/components/Provider/AuthProvider";
 import Providers from "@/components/Provider/providers";
+import Navbar from "@/components/web/Navbar/Navbar";
+import { Toaster } from "sonner";
 
 // Import Raleway font
 const newFont = Lora({

@@ -1,12 +1,11 @@
-import React from 'react'
-import About_Section from './_componets/About_Section'
+import About_Section from "./_componets/About_Section";
 
-const page = () => {
+const page = async ({}: { params: { lang: string } }) => {
   return (
     <div>
-    <About_Section/>
+      <About_Section />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;
