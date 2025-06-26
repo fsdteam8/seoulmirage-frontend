@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 import Link from "next/link";
 
-export default function HeroSection() {
+interface Props {
+  dict: DictionaryType;
+}
+export default function HeroSection({ dict }: Props) {
   return (
     <section className="relative min-h-screen w-full overflow-hidden">
       {/* Background Image */}
@@ -20,12 +24,11 @@ export default function HeroSection() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
             <h1 className="text-4xl font-bold tracking-tight  text-white sm:text-5xl md:text-6xl lg:text-[60px]">
-              Discover your skin&apos;s true potential
+              {dict.home.banner.title}
             </h1>
 
             <p className=" text-lg text-white sm:text-xl md:text-2xl font-semibold mt-[30px] lg:w-[738px]">
-              Premium skincare that combines innovation with clean, effective
-              ingredients for all skin types.
+              {dict.home.banner.desc}
             </p>
 
             <div className="mt-[60px] flex  gap-4  sm:gap-6">
@@ -34,7 +37,7 @@ export default function HeroSection() {
                   size="lg"
                   className="bg-white text-[#000000] text-base hover:bg-white font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
                 >
-                  Shop Now
+                  {dict.home.banner.shopNowButtonLabel}
                 </Button>
               </Link>
               <Link href="/about" passHref>
@@ -68,11 +71,12 @@ export default function HeroSection() {
       hover:before:bg-opacity-20
       hover:before:backdrop-blur-lg
       hover:text-white
-      hover:text-black
       z-0
     "
                 >
-                  <span className="relative z-10">About Us</span>
+                  <span className="relative z-10">
+                    {dict.home.banner.aboutUsButtonLabel}
+                  </span>
                 </Button>
               </Link>
             </div>

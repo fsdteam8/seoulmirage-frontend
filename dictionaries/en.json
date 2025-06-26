@@ -1,0 +1,16 @@
+{
+  "home": {
+    "banner": {
+      "title": "Discover your skin's true potential",
+      "desc": "Premium skincare that combines innovation with clean, effective ingredients for all skin types.",
+      "shopNowButtonLabel": "Shop Now",
+      "aboutUsButtonLabel": "About Us"
+    },
+    "skincare": {
+      "title": "Our Skincare Philosophy",
+      "desc1": "Seoul Mirage was born from a deep appreciation for Korean skincare innovation and the belief that effective products should be accessible to everyone.",
+      "desc2": "We combine time-tested Korean ingredients with modern science to create formulations that deliver visible results. Each product is meticulously crafted to honor the tradition of the multi-step skincare ritual while fitting seamlessly into your daily routine.",
+      "buttonLabel": "About Us"
+    }
+  }
+}

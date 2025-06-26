@@ -4,13 +4,13 @@ import { useState } from "react";
 
 // ✅ Import your components (double-check these paths)
 // import BestSellers from "@/components/BestSellers"; // ✅ FIXED typo from BestSerllers
+import BestSellers from "@/components/BestSerllers";
+import ComingSoon from "@/components/coming-soon";
 import NewArrive from "@/components/NewArrive";
 import OurSkinCare from "@/components/OurSkinCare";
 import ShopByCategory from "@/components/Product/ShopByCategory";
-import HeroSection from "@/components/web/HeroSection";
 import TestimonialCarousel from "@/components/web/Testimonial";
-import BestSellers from "@/components/BestSerllers";
-import ComingSoon from "@/components/coming-soon";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 
 const tabs = [
   { id: "bestsellers", label: "Best Sellers" },
@@ -18,14 +18,15 @@ const tabs = [
   { id: "trd", label: "Coming soon" },
 ];
 
-export default function Home() {
+interface Props {
+  dict: DictionaryType;
+}
+
+export default function HomePageContainer({ dict }: Props) {
   const [activeTab, setActiveTab] = useState("bestsellers");
 
   return (
     <div>
-      {/* Hero Section */}
-      <HeroSection />
-
       {/* Tabs Navigation */}
       <div className="flex justify-center mt-10 px-4">
         <div className="flex w-full max-w-md justify-between flex-wrap gap-4">
@@ -64,7 +65,7 @@ export default function Home() {
       {/* <NewArrive /> */}
       <ShopByCategory />
 
-      <OurSkinCare />
+      <OurSkinCare dict={dict} />
       <TestimonialCarousel />
     </div>
   );

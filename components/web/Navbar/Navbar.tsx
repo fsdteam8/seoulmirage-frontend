@@ -1,10 +1,14 @@
 "use client";
-import logo  from '../../../public/logo.svg'
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { ChevronDown, Search, User, ShoppingBag, Menu } from "lucide-react";
+
+import logo from "../../../public/logo.svg";
+
+import SearchDialog from "@/components/search-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,22 +26,24 @@ import {
 import {
   Sheet,
   SheetContent,
-  SheetTrigger,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { signOut, useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
-import type { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
-import SearchDialog from "@/components/search-dialog";
 import { useCartStore } from "@/store/cart-store";
+import type { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
+import { useQuery } from "@tanstack/react-query";
+import { ChevronDown, Menu, Search, ShoppingBag, User } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
-export default function Navbar() {
+interface Props {
+  lang: string;
+}
+
+export default function Navbar({ lang }: Props) {
   const session = useSession();
   const token = (session?.data?.user as { token: string })?.token || "";
   const { items } = useCartStore();
@@ -45,9 +51,6 @@ export default function Navbar() {
   const [isSkincareOpen, setIsSkincareOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
-
-  console.log(items);
-  console.log(session.status);
 
   const { data, isLoading } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
@@ -66,7 +69,7 @@ export default function Navbar() {
   });
 
   const generateHref = (type: string, name: string) =>
-    `/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
+    `/${lang}/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
 
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
