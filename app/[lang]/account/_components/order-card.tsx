@@ -68,7 +68,7 @@ const OrderCard = () => {
 
   return (
     <>
-      <div className="space-y-6">
+      <div className="space-y-6 ">
         {orderData.map((order) => (
           <div
             key={order.id}

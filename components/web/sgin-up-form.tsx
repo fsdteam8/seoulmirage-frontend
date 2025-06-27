@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 
 // Zod Schema
 const loginSchema = z
@@ -36,7 +37,12 @@ const loginSchema = z
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export default function SignUp() {
+interface Props {
+  dict: DictionaryType
+}
+
+
+export default function SignUp({dict}:Props) {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
@@ -108,7 +114,7 @@ export default function SignUp() {
         >
           {/* Social Login Buttons */}
           <div className="space-y-4">
-            <h2 className=" text-md font-bold text-gray-600">Sign up with</h2>
+            <h2 className=" text-md font-bold text-gray-600">{dict.signup.topTitle}</h2>
             <div className="flex gap-5">
               {/* Google */}
               <Button
@@ -152,7 +158,7 @@ export default function SignUp() {
           {/* Header */}
           <div className="text-center space-y-2">
             <h1 className="text-3xl font-normal text-gray-900">
-              Create your account
+              {dict.signup.title}
             </h1>
             {/* <p className="text-gray-600 text-base">
               Or sign in to your existing account
@@ -168,7 +174,7 @@ export default function SignUp() {
                   htmlFor="name"
                   className="text-sm font-normal text-gray-700"
                 >
-                  Full Name
+                     {dict.signup.fullname}
                 </Label>
                 <Input id="name" type="text" {...register("name")} />
                 {errors.name && (
@@ -182,7 +188,7 @@ export default function SignUp() {
                   htmlFor="email"
                   className="text-sm font-normal text-gray-700"
                 >
-                  Email address
+                  {dict.signup.email}
                 </Label>
                 <Input id="email" type="email" {...register("email")} />
                 {errors.email && (
@@ -196,7 +202,7 @@ export default function SignUp() {
                   htmlFor="password"
                   className="text-sm font-normal text-gray-700"
                 >
-                  Password
+                 {dict.signup.password}
                 </Label>
                 <div className="relative">
                   <Input
@@ -230,7 +236,7 @@ export default function SignUp() {
                   htmlFor="confirmPassword"
                   className="text-sm font-normal text-gray-700"
                 >
-                  Confirm Password
+                  {dict.signup["confirm-password"]}
                 </Label>
                 <div className="relative">
                   <Input
@@ -266,7 +272,7 @@ export default function SignUp() {
                     htmlFor="remember-me"
                     className="text-sm font-normal text-gray-700 cursor-pointer"
                   >
-                    I agree to the Terms of Service and Privacy Policy
+                   {dict.signup.tmc}
                   </Label>
                 </div>
               </div>
@@ -276,7 +282,7 @@ export default function SignUp() {
                 type="submit"
                 className="w-full h-11 bg-black hover:bg-gray-800 text-white"
               >
-                Sign Up
+             {dict.signup.sginup}
               </Button>
             </div>
           </div>
@@ -313,14 +319,13 @@ export default function SignUp() {
 
           {/* Footer */}
           <div className="text-center text-sm text-gray-600">
-            Already have an account?{" "}
+            {dict.signup.hvand}{" "}
             <Link
               href="/login"
               className="text-gray-900 hover:text-gray-700 underline"
             >
-              Sign in
+             {dict.signup.sgin}
             </Link>
-            .
           </div>
         </form>
       </div>

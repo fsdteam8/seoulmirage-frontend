@@ -5,8 +5,8 @@ import Negotiator from "negotiator";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-let defaultLocale = "en";
-let locales = ["en", "ar"];
+const defaultLocale = "en";
+const locales = ["en", "ar"];
 
 function getLocale(request: NextRequest) {
   const acceptedLanguage = request.headers.get("accept-language") ?? undefined;
@@ -21,7 +21,10 @@ export async function middleware(req: NextRequest) {
   // get the pathname from request url
 
   const pathName = req.nextUrl.pathname;
-
+  // ✅ Ignore API routes early
+  if (pathName.startsWith("/api")) {
+    return NextResponse.next();
+  }
   const pathNameIsMissingLocale = locales.every(
     (locale) =>
       !pathName.startsWith(`/${locale}`) && !pathName.startsWith(`/${locale}/`)

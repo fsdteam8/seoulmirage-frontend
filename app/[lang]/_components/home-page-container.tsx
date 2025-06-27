@@ -34,7 +34,7 @@ export default function HomePageContainer({ dict }: Props) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 min-w-[90px] px-5 py-2 rounded-lg font-medium border text-center transition-all duration-200 ${
+              className={`flex-1 min-w-[90px] lg:px-3 lg:py-2 py-2 px-1 text-sm lg:text-md rounded-lg font-medium border text-center transition-all duration-200 ${
                 activeTab === tab.id
                   ? "bg-[#F092B0] text-white"
                   : "bg-white text-black border-[#F092B0] hover:bg-gray-100"
@@ -66,7 +66,7 @@ export default function HomePageContainer({ dict }: Props) {
       <ShopByCategory />
 
       <OurSkinCare dict={dict} />
-      <TestimonialCarousel />
+      <TestimonialCarousel  dict={dict}/>
     </div>
   );
 }

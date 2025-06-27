@@ -6,9 +6,14 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/store/cart-store";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 // import { useState } from "react";
 
-export default function CartPage() {
+interface Props {
+  dict: DictionaryType;
+}
+
+export default function CartPage({ dict }: Props) {
   const { items, updateQuantity, removeItem, getTotalPrice } = useCartStore();
   const subtotal = getTotalPrice();
 
@@ -18,7 +23,7 @@ export default function CartPage() {
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
           <Link href="/products">
-            <Button>Continue Shopping</Button>
+            <Button>{dict.cart.btn}</Button>
           </Link>
         </div>
       </div>
@@ -28,7 +33,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
+        <h1 className="text-3xl font-bold mb-8">{dict.cart.title}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
@@ -52,10 +57,12 @@ export default function CartPage() {
 
                 <div className="flex-1">
                   <h3 className="font-semibold text-lg">{item.name}</h3>
-                  <p className="text-gray-600">Quantity: {item.quantity}</p>
-                  <p className="text-sm text-gray-500">
-                    In Stock: {item.stock_quantity}
+                  <p className="text-gray-600">
+                    {dict.cart.quantity} : {item.quantity}
                   </p>
+                  {/* <p className="text-sm text-gray-500">
+                    In Stock: {item.stock_quantity}
+                  </p> */}
 
                   <div className="flex items-center space-x-2 mt-2">
                     <Button
@@ -101,17 +108,17 @@ export default function CartPage() {
             ))}
 
             <Link href="/products" className="mt-6 inline-block">
-              <Button variant="outline">Continue Shopping</Button>
+              <Button variant="outline">{dict.cart.btn}</Button>
             </Link>
           </div>
 
           {/* Order Summary */}
           <div className="bg-[#F5E6D3] p-6 rounded-lg h-fit">
-            <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+            <h2 className="text-xl font-bold mb-4">{dict.cart.order}</h2>
 
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
-                <span>Subtotal</span>
+                <span>{dict.cart.subtotal}</span>
                 <span>
                   {" "}
                   <span className="text-[16px]">AED</span> {subtotal.toFixed(2)}
@@ -119,7 +126,7 @@ export default function CartPage() {
               </div>
               <hr className="my-2" />
               <div className="flex justify-between font-bold text-lg">
-                <span>Total</span>
+                <span>{dict.cart.total}</span>
                 <span>
                   {" "}
                   <span className="text-[16px]">AED</span> {subtotal.toFixed(2)}
@@ -129,7 +136,7 @@ export default function CartPage() {
 
             <Link href="/checkout">
               <Button className="w-full bg-black text-white hover:bg-gray-800">
-                Proceed to Checkout
+                {dict.cart.checkout}
               </Button>
             </Link>
           </div>

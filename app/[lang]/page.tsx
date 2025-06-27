@@ -14,6 +14,7 @@ const Page = async ({ params }: { params: { lang: string } }) => {
       <HomePageContainer dict={dict} />
     </div>
   );
+  
 };
 
 export default Page;
