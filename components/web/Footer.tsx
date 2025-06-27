@@ -11,6 +11,7 @@ import { Facebook, Twitter, Instagram } from "lucide-react";
 import Image from "next/image";
 import { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
 import { usePathname } from "next/navigation";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 
 // Zod schema
 const emailSchema = z.object({
@@ -30,8 +31,12 @@ const subscribeToNewsletter = async (formData: FormData) => {
 
   return res.json();
 };
+interface Props {
+  lang: string;
+  dict: DictionaryType;
+}
 
-export default function Footer() {
+export default function Footer({ lang, dict }: Props) {
   const pathname = usePathname();
   const [email, setEmail] = useState("");
 
@@ -57,6 +62,8 @@ export default function Footer() {
     mutation.mutate(fromdata);
   };
 
+  console.log();
+
   const { data } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
     queryFn: async () => {
@@ -74,13 +81,15 @@ export default function Footer() {
   });
 
   const generateHref = (type: string, name: string) =>
-    `/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
+    `/${lang}/products?${name.toLowerCase().replace(/\s+/g, "-")}`;
 
   return (
     <footer className="bg-gray-50 border-t">
       <div
         className={`container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16 ${
-          ["/login", "/sign-up"].includes(pathname) ? "hidden" : "block"
+          [`/${lang}/login`, `/${lang}/sign-up`].includes(pathname)
+            ? "hidden"
+            : "block"
         }`}
       >
         {/* Logo & Description */}
@@ -97,18 +106,17 @@ export default function Footer() {
             />
           </div>
           <p className="text-base text-center sm:text-lg mt-5 lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
-            Nurturing your skin with nature’s finest ingredients for a radiant,
-            healthy glow every day.
+            {dict.footer.title}
           </p>
         </div>
+        <div className="border-b mb-10 border-[#00000033] mt-6 sm:mt-8 md:mt-10 lg:mt-2 pt-4 sm:pt-6"></div>
         {/* Newsletter Section */}
         <div className="text-center mb-8 md:mb-12 lg:mb-16 mt-20">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#000000CC] mb-3 md:mb-4">
-            Join Our Community
+            {dict.footer["Our-Community"].title}
           </h2>
           <p className="text-sm sm:text-base md:text-lg lg:text-[18px] text-[#000000CC] mb-8 md:mb-12 lg:mb-[60px] max-w-xs sm:max-w-md md:max-w-lg lg:max-w-[650px] mx-auto font-medium px-4 sm:px-0">
-            Subscribe to our newsletter for exclusive offers, skincare tips, and
-            new product announcements.
+            {dict.footer["Our-Community"].desc}
           </p>
 
           {/* Email Form */}
@@ -158,7 +166,7 @@ export default function Footer() {
           {/* Shop Links */}
           <div className="text-center sm:text-left">
             <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
-              Shop
+              {dict.footer.link.shop.title}
             </h3>
             <ul className="space-y-2 md:space-y-3">
               <li>
@@ -166,7 +174,7 @@ export default function Footer() {
                   href="/products"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  All Products
+                  {dict.footer.link.shop.allproduct}
                 </Link>
               </li>
               <li>
@@ -174,7 +182,7 @@ export default function Footer() {
                   href="/#best"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  Bestsellers
+                  {dict.footer.link.shop.Bestsellers}
                 </Link>
               </li>
               <li>
@@ -182,7 +190,7 @@ export default function Footer() {
                   href="/#new"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  New Arrivals
+                  {dict.footer.link.shop.NewArrivals}
                 </Link>
               </li>
             </ul>
@@ -191,7 +199,7 @@ export default function Footer() {
           {/* About Links */}
           <div className="text-center sm:text-left">
             <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
-              About
+              {dict.footer.link.about.title}
             </h3>
             <ul className="space-y-2 md:space-y-3">
               <li>
@@ -199,7 +207,7 @@ export default function Footer() {
                   href="/about"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  About Us
+                                             {dict.footer.link.about.about}
                 </Link>
               </li>
               <li>
@@ -207,7 +215,7 @@ export default function Footer() {
                   href="/contact"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  Contact Us
+                                             {dict.footer.link.about.contact}
                 </Link>
               </li>
               <li>
@@ -215,7 +223,7 @@ export default function Footer() {
                   href="/faq-&-help"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  Shipping & Returns
+                                             {dict.footer.link.about.shipping}
                 </Link>
               </li>
               <li>
@@ -223,7 +231,7 @@ export default function Footer() {
                   href="/faq-&-help"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  FAQ & Help
+                                             {dict.footer.link.about.faq}
                 </Link>
               </li>
               <li>
@@ -231,14 +239,14 @@ export default function Footer() {
                   href="/privacy-policy"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  Privacy Policy
+                                             {dict.footer.link.about.poc}
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Skincare Links */}
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col ">
             <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
               Skincare
             </h3>

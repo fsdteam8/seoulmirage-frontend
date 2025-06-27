@@ -25,7 +25,7 @@ export default function AccountPage() {
         )}
 
         {activeTab === "orders" && (
-          <div className=" p-6">
+          <div className="lg:p-6">
             <h2 className="text-lg font-medium text-gray-900 mb-4">
               Order History
             </h2>

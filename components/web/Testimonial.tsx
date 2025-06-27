@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 
 interface Review {
   id: number;
@@ -20,8 +21,10 @@ interface Review {
     image: string | null;
   };
 }
-
-export default function TestimonialCarousel() {
+interface Props {
+  dict: DictionaryType;
+}
+export default function TestimonialCarousel({ dict }: Props) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -71,7 +74,7 @@ export default function TestimonialCarousel() {
           {happyUser?.happyUser}+ Happy Users
         </div>
         <h2 className="text-3xl md:text-[40px] font-bold text-center text-[#C7A18A]">
-          Don&apos;t just take our words
+          {dict.testomonial.title}
         </h2>
       </div>
 

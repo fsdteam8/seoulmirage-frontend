@@ -1,11 +1,14 @@
 import Login from "@/components/web/login_form";
+import { getDictionary } from "@/dictionaries/dictionaries";
 import React from "react";
 
-const page = () => {
+const page = async ({ params }: { params: { lang: string } }) => {
+    const { lang } = params;
   
+    const dict = await getDictionary(lang as "en" | "ar");
   return (
     <div>
-      <Login />
+      <Login dict={dict} />
     </div>
   );
 };

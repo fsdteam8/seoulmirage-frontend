@@ -1,6 +1,6 @@
 "use client";
 
-import logo from "../../../public/logo.svg";
+import logo from "../../../public/logo.optimized.svg";
 
 import SearchDialog from "@/components/search-dialog";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { DictionaryType } from "@/dictionaries/dictionaries";
 import { useCartStore } from "@/store/cart-store";
 import type { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
 import { useQuery } from "@tanstack/react-query";
@@ -41,9 +42,10 @@ import { useState } from "react";
 
 interface Props {
   lang: string;
+  dict: DictionaryType;
 }
 
-export default function Navbar({ lang }: Props) {
+export default function Navbar({ lang, dict }: Props) {
   const session = useSession();
   const token = (session?.data?.user as { token: string })?.token || "";
   const { items } = useCartStore();
@@ -93,7 +95,7 @@ export default function Navbar({ lang }: Props) {
               <NavigationMenuList className="space-x-6">
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="nav-text">
-                    Skincare
+                    {dict.home.navbar.skincare}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid grid-cols-2 gap-4 p-4 w-[400px]">
@@ -117,7 +119,7 @@ export default function Navbar({ lang }: Props) {
 
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="nav-text">
-                    Collections
+                    {dict.home.navbar.collections}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid grid-cols-2 gap-4 p-4 w-[400px]">
@@ -141,13 +143,13 @@ export default function Navbar({ lang }: Props) {
 
                 <NavigationMenuItem>
                   <Link href="/about" className="nav-text">
-                    About
+                    {dict.home.navbar.about}
                   </Link>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
                   <Link href="/contact" className="nav-text">
-                    Contact
+                    {dict.home.navbar.contact}
                   </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
@@ -155,7 +157,7 @@ export default function Navbar({ lang }: Props) {
           </div>
 
           {/* Right Side: Icons */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-5">
             {/* Search icon (always visible) */}
             <Button
               variant="ghost"
@@ -213,7 +215,7 @@ export default function Navbar({ lang }: Props) {
                 href="/login"
                 className="font-raleway bg-[#F092B0] text-white   px-3 py-1 rounded-lg font-medium text-sm hover:underline"
               >
-                Login
+                {dict.home.navbar.login}
               </Link>
             )}
 
@@ -241,7 +243,7 @@ export default function Navbar({ lang }: Props) {
                       onOpenChange={setIsSkincareOpen}
                     >
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-3 px-3 text-lg font-medium text-black hover:bg-gray-50 rounded-md">
-                        Skincare
+                        {dict.home.navbar.skincare}
                         <ChevronDown
                           className={`h-4 w-4 transition-transform ${
                             isSkincareOpen ? "rotate-180" : ""
@@ -268,7 +270,7 @@ export default function Navbar({ lang }: Props) {
                       onOpenChange={setIsCollectionsOpen}
                     >
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-3 px-3 text-lg font-medium text-black hover:bg-gray-50 rounded-md">
-                        Collections
+                        {dict.home.navbar.collections}
                         <ChevronDown
                           className={`h-4 w-4 transition-transform ${
                             isCollectionsOpen ? "rotate-180" : ""
@@ -294,14 +296,14 @@ export default function Navbar({ lang }: Props) {
                       className="py-3 px-3 text-lg font-medium hover:bg-gray-50 rounded-md"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      About
+                      {dict.home.navbar.about}
                     </Link>
                     <Link
                       href="/contact"
                       className="py-3 px-3 text-lg font-medium hover:bg-gray-50 rounded-md"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      Contact
+                      {dict.home.navbar.contact}
                     </Link>
                   </nav>
                 </SheetContent>

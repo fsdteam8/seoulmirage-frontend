@@ -1,11 +1,15 @@
+import { DictionaryType } from "@/dictionaries/dictionaries";
 import { Mail, Phone, MapPin } from "lucide-react";
+interface Props {
+  dict: DictionaryType;
+}
+export default function ContactSection({dict}:Props) {
 
-export default function ContactSection() {
   return (
     <section className="bg-[#F9E4CB] py-12 mb-10 mt-10 ">
       <div className=" container mx-auto !px-10">
         <h2 className="text-2xl flex flex-col justify-center items-center sm:text-[32px] font-medium text-[#000000] mb-10 text-center lg:text-left  border">
-          Other Ways to Reach Us
+         {dict.contactus["Reach-Us"].title}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
           {/* Email */}

@@ -161,7 +161,7 @@ export default function AllProducts() {
 
             {/* Sort dropdown with responsive smaller width on mobile */}
             <div className="flex items-center space-x-1 sm:space-x-2">
-              <span className="text-sm font-medium">Sort:</span>
+              <span className="text-sm font-medium hidden md:block">Sort:</span>
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-28 sm:w-40 bg-white">
                   <SelectValue />
