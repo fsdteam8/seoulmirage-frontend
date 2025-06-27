@@ -76,20 +76,28 @@ export default function Navbar({ lang, dict }: Props) {
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center py-12 justify-between h-16">
+        <div className="flex items-center py-6 justify-between lg:h-16 h-32">
           {/* Logo + Desktop Nav */}
           <div className="flex items-center space-x-8">
-            <Link href="/" className="flex items-center">
-              <Image
+            <Link href="/" className="flex  items-center  ">
+              {/* <Image
                 src={"/logo.optimized.svg"}
                 alt="Serendipity"
                 width={0} // Let it be responsive
                 height={0}
-                className="w-[140px] h-[100px] md:w-[140px] md:h-[140px]"
+                className="w-[140px] hidden h-[100px] md:w-[140px] md:h-[140px]"
                 priority // optional: helps load faster if this is a crucial image
+              /> */}
+              <Image
+                src="/logo.svg"
+                width={900}
+                height={900}
+                quality={90}
+                alt="logo"
+                className="w-[250px] h-[250px] md:w-[140px] md:h-[140px]"
+                style={{ imageRendering: "auto" }}
               />
             </Link>
-
             {/* Desktop Navigation */}
             <NavigationMenu className="hidden lg:flex">
               <NavigationMenuList className="space-x-6">
