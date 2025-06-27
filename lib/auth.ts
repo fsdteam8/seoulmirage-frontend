@@ -120,10 +120,10 @@ export const authOptions: NextAuthOptions = {
             );
 
             const data = await res.json();
-            console.log("Backend Auth Response:", data);
+      
 
             if (!data?.token || !data?.user) {
-              console.error(`${account.provider} login failed:`, data);
+             
               return false;
             }
 
@@ -137,10 +137,6 @@ export const authOptions: NextAuthOptions = {
             user.updatedAt = data.user.updated_at;
             user.token = data.token;
           } else if (account.provider === "facebook") {
-            console.log("facebook");
-            console.log(profile);
-            console.log(account);
-            console.log(user);
             const res = await fetch(
               `${process.env.NEXT_PUBLIC_API_URL}/api/google/auth/jwt-process`,
               {
@@ -156,7 +152,7 @@ export const authOptions: NextAuthOptions = {
             );
 
             const data = await res.json();
-            console.log("Backend Auth Response:", data);
+         
 
             if (!data?.token || !data?.user) {
               console.error(`${account.provider} login failed:`, data);
