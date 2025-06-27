@@ -40,46 +40,46 @@ export default function HeroSection({ dict }: Props) {
                   {dict.home.banner.shopNowButtonLabel}
                 </Button>
               </Link>
-              <Link href="/about" passHref>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="
-      relative
-      bg-transparent
-      hover:bg-black
-      hover:border-black
-      text-white
-      text-base
-      font-semibold
-      px-8
-      h-[50px]
-      rounded-[32px]
-      sm:text-lg
-      overflow-hidden
-      border
-      border-white
-      transition
-      duration-300
-      ease-in-out
-      before:absolute
-      before:inset-0
-      before:bg-white
-      before:bg-opacity-0
-      before:backdrop-blur-md
-      before:transition
-      before:duration-300
-      before:ease-in-out
-      hover:before:bg-opacity-20
-      hover:before:backdrop-blur-lg
-      hover:text-white
-      z-0
-    "
-                >
-                  <span className="relative z-10 ">
-                    {dict.home.banner.aboutUsButtonLabel}
-                  </span>
-                </Button>
+              <Link href="/about">
+                <div className="relative group">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="
+        bg-transparent
+        text-white
+        text-base
+        font-semibold
+        px-8
+        h-[50px]
+        rounded-[32px]
+        sm:text-lg
+        border border-white
+        transition duration-300 ease-in-out
+        group-hover:bg-black group-hover:border-black
+        overflow-hidden
+        relative
+        z-10
+        hover:text-white
+      "
+                  >
+                    <span className="relative z-20">
+                      {dict.home.banner.aboutUsButtonLabel}
+                    </span>
+                  </Button>
+                  <div
+                    className="
+        absolute inset-0
+        z-0
+        bg-white bg-opacity-0
+        backdrop-blur-md
+        transition duration-300 ease-in-out
+        group-hover:bg-opacity-20 group-hover:backdrop-blur-lg
+        rounded-[32px]
+        pointer-events-none
+      "
+                  />
+                </div>
               </Link>
             </div>
           </div>
