@@ -35,7 +35,7 @@ export default function HeroSection({ dict }: Props) {
               <Link href={"/products"}>
                 <Button
                   size="lg"
-                  className="bg-white text-[#000000] text-base hover:bg-white font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg"
+                  className="bg-white text-[#000000] text-base hover:bg-white  font-semibold px-8 h-[50px] rounded-[32px] sm:text-lg overflow-hidden"
                 >
                   {dict.home.banner.shopNowButtonLabel}
                 </Button>
@@ -47,6 +47,8 @@ export default function HeroSection({ dict }: Props) {
                   className="
       relative
       bg-transparent
+      hover:bg-black
+      hover:border-black
       text-white
       text-base
       font-semibold
@@ -74,7 +76,7 @@ export default function HeroSection({ dict }: Props) {
       z-0
     "
                 >
-                  <span className="relative z-10">
+                  <span className="relative z-10 ">
                     {dict.home.banner.aboutUsButtonLabel}
                   </span>
                 </Button>

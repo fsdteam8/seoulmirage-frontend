@@ -1,8 +1,10 @@
-import CartPage from '@/components/cart/cart-page'
-import React from 'react'
+import CartPage from "@/components/cart/cart-page";
+import { getDictionary } from "@/dictionaries/dictionaries";
+import React from "react";
 
-export default function page() {
-  return (
-   <CartPage/>
-  )
+export default async function page({ params }: { params: { lang: string } }) {
+  const { lang } = params;
+
+  const dict = await getDictionary(lang as "en" | "ar");
+  return <CartPage dict={dict} />;
 }

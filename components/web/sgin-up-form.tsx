@@ -282,7 +282,7 @@ export default function SignUp({dict}:Props) {
                 type="submit"
                 className="w-full h-11 bg-black hover:bg-gray-800 text-white"
               >
-                Sign Up
+             {dict.signup.sginup}
               </Button>
             </div>
           </div>

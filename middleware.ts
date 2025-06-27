@@ -21,7 +21,10 @@ export async function middleware(req: NextRequest) {
   // get the pathname from request url
 
   const pathName = req.nextUrl.pathname;
-
+  // ✅ Ignore API routes early
+  if (pathName.startsWith("/api")) {
+    return NextResponse.next();
+  }
   const pathNameIsMissingLocale = locales.every(
     (locale) =>
       !pathName.startsWith(`/${locale}`) && !pathName.startsWith(`/${locale}/`)

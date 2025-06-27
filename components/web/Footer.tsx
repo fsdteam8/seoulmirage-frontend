@@ -87,7 +87,9 @@ export default function Footer({ lang, dict }: Props) {
     <footer className="bg-gray-50 border-t">
       <div
         className={`container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16 ${
-          ["/login", "/sign-up"].includes(pathname) ? "hidden" : "block"
+          [`/${lang}/login`, `/${lang}/sign-up`].includes(pathname)
+            ? "hidden"
+            : "block"
         }`}
       >
         {/* Logo & Description */}
@@ -107,6 +109,7 @@ export default function Footer({ lang, dict }: Props) {
             {dict.footer.title}
           </p>
         </div>
+        <div className="border-b mb-10 border-[#00000033] mt-6 sm:mt-8 md:mt-10 lg:mt-2 pt-4 sm:pt-6"></div>
         {/* Newsletter Section */}
         <div className="text-center mb-8 md:mb-12 lg:mb-16 mt-20">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#000000CC] mb-3 md:mb-4">
@@ -163,7 +166,7 @@ export default function Footer({ lang, dict }: Props) {
           {/* Shop Links */}
           <div className="text-center sm:text-left">
             <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
-              Shop
+              {dict.footer.link.shop.title}
             </h3>
             <ul className="space-y-2 md:space-y-3">
               <li>
@@ -171,7 +174,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/products"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  All Products
+                  {dict.footer.link.shop.allproduct}
                 </Link>
               </li>
               <li>
@@ -179,7 +182,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/#best"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  Bestsellers
+                  {dict.footer.link.shop.Bestsellers}
                 </Link>
               </li>
               <li>
@@ -187,7 +190,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/#new"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  New Arrivals
+                  {dict.footer.link.shop.NewArrivals}
                 </Link>
               </li>
             </ul>
@@ -196,7 +199,7 @@ export default function Footer({ lang, dict }: Props) {
           {/* About Links */}
           <div className="text-center sm:text-left">
             <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
-              About
+              {dict.footer.link.about.title}
             </h3>
             <ul className="space-y-2 md:space-y-3">
               <li>
@@ -204,7 +207,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/about"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  About Us
+                                             {dict.footer.link.about.about}
                 </Link>
               </li>
               <li>
@@ -212,7 +215,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/contact"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  Contact Us
+                                             {dict.footer.link.about.contact}
                 </Link>
               </li>
               <li>
@@ -220,7 +223,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/faq-&-help"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  Shipping & Returns
+                                             {dict.footer.link.about.shipping}
                 </Link>
               </li>
               <li>
@@ -228,7 +231,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/faq-&-help"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  FAQ & Help
+                                             {dict.footer.link.about.faq}
                 </Link>
               </li>
               <li>
@@ -236,14 +239,14 @@ export default function Footer({ lang, dict }: Props) {
                   href="/privacy-policy"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                  Privacy Policy
+                                             {dict.footer.link.about.poc}
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Skincare Links */}
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col ">
             <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
               Skincare
             </h3>

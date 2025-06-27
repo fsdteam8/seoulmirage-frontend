@@ -178,7 +178,7 @@ export default function Login({ dict }: Props) {
               type="submit"
               className="w-full h-11 bg-black hover:bg-gray-800 text-white font-normal rounded-md transition-colors"
             >
-              {isLoading ? "Signing in..." : "Sign In"}
+              {isLoading ? dict.login["signing-in"] :dict.login.sgin}
             </Button>
           </div>
 
@@ -239,19 +239,19 @@ export default function Login({ dict }: Props) {
             </div>
 
             <p className="text-sm text-gray-600">
-              By signing in, you agree to our{" "}
+              {dict.login["by-signing"]}{" "}
               <Link
                 href="#"
                 className="text-gray-900 hover:text-gray-700 underline"
               >
-                Terms of Service
+                {dict.login.toc}
               </Link>{" "}
-              and{" "}
+              {dict.login.abd}{" "}
               <Link
                 href="/privacy-policy"
                 className="text-gray-900 hover:text-gray-700 underline"
               >
-                Privacy Policy
+             {dict.login.poc}
               </Link>
               .
             </p>

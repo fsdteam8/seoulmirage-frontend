@@ -76,6 +76,22 @@
         "placeholder": "Your email address",
         "buttonLabel": "Subscribe"
       }
+    },
+    "link": {
+      "shop": {
+        "title": "Shop",
+        "allproduct": "All Products",
+        "Bestsellers": "Bestsellers",
+        "NewArrivals": "New Arrivals"
+      },
+      "about": {
+        "title": "About",
+        "about": "About Us",
+        "contact": "Contact Us",
+        "shipping": "Shipping & Returns",
+        "faq": "FAQ & Help",
+        "poc": "Privacy Policy"
+      }
     }
   },
   "contactus": {
@@ -158,7 +174,12 @@
     "continue": "Continue with",
     "Don't": "Don't have an account?",
     "sign-up": "Sign up",
-    "by-signing": "By signing in, you agree to our Terms of Service and Privacy Policy."
+    "by-signing": "By signing in, you agree to our",
+    "toc": "Terms of Service",
+    "poc": " Privacy Policy.",
+    "abd": "and",
+    "sgin": "Sign in.",
+    "signing-in": "Signing in..."
   },
   "signup": {
     "topTitle": "Sign up with",
@@ -169,6 +190,37 @@
     "confirm-password": "Confirm Password",
     "tmc": "I agree to the Terms of Service and Privacy Policy",
     "hvand": "Already have an account?",
-    "sgin": "Sign in."
+    "sgin": "Sign in.",
+    "sginup": "Sign in."
+  },
+   "cart":{
+    "title":"Shopping Cart",
+    "btn":"Continue Shopping",
+    "quantity":"Quantity",
+    "order":"Order Summary",
+    "subtotal":"Subtotal",
+    "total":"Total",
+    "checkout":"Proceed to Checkout"
+  },
+  "checkout":{
+    "title":"Checkout",
+    "info":"Shipping Information",
+    "flname":"Full name *",
+    "lsname":"Last name *",
+    "email":"Email *",
+    "phone":"Phone *",
+    "apartment":"Apartment, suite, etc. (optional)",
+    "city":"City *",
+    "country":"Country *",
+    "postal":"Postal Code *",
+    "state":"State/Province *",
+    "method":"Shipping Method",
+    "payment":"Payment →",
+    "summary":"Order Summary",
+    "subtotal":"Subtotal",
+    "shipping":"Shipping",
+    "promo":"Promo Code",
+    "redeem":"Redeem",
+    "total":"Total"
   }
 }
