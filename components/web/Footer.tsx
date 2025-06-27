@@ -97,15 +97,17 @@ export default function Footer({ lang, dict }: Props) {
         <div className="mb-4 md:mb-6 flex  flex-col lg:gap-0   justify-center items-center ">
           <div>
             <Image
-              src="/logo.svg"
-              alt="Serendipity"
-              quality={90}
+              src="/logo.high-quality.svg"
               width={900}
               height={900}
-              className="w-[140px] "
+              quality={90}
+              alt="Sara & Paige Collections"
+              className="w-[145px] h-[300px] md:w-[140px] md:h-[140px]"
+              style={{ imageRendering: "auto" }}
             />
+            
           </div>
-          <p className="text-base text-center sm:text-lg mt-5 lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
+          <p className="text-base text-center sm:text-lg mt-0 lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
             {dict.footer.title}
           </p>
         </div>
