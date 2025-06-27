@@ -1,6 +1,6 @@
 "use client";
 
-import logo from "../../../public/logo.optimized.svg";
+// import logo from "../../../public/logo.optimized.svg";
 
 import SearchDialog from "@/components/search-dialog";
 import { Button } from "@/components/ui/button";
@@ -81,7 +81,7 @@ export default function Navbar({ lang, dict }: Props) {
           <div className="flex items-center space-x-8">
             <Link href="/" className="flex items-center">
               <Image
-                src={logo}
+                src={"/logo.optimized.svg"}
                 alt="Serendipity"
                 width={0} // Let it be responsive
                 height={0}
