@@ -207,7 +207,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/about"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                                             {dict.footer.link.about.about}
+                  {dict.footer.link.about.about}
                 </Link>
               </li>
               <li>
@@ -215,7 +215,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/contact"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                                             {dict.footer.link.about.contact}
+                  {dict.footer.link.about.contact}
                 </Link>
               </li>
               <li>
@@ -223,7 +223,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/faq-&-help"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                                             {dict.footer.link.about.shipping}
+                  {dict.footer.link.about.shipping}
                 </Link>
               </li>
               <li>
@@ -231,7 +231,7 @@ export default function Footer({ lang, dict }: Props) {
                   href="/faq-&-help"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                                             {dict.footer.link.about.faq}
+                  {dict.footer.link.about.faq}
                 </Link>
               </li>
               <li>
@@ -239,14 +239,14 @@ export default function Footer({ lang, dict }: Props) {
                   href="/privacy-policy"
                   className="text-sm sm:text-base lg:text-base text-[#000000CC] font-normal hover:text-[#F092B0] transition-colors"
                 >
-                                             {dict.footer.link.about.poc}
+                  {dict.footer.link.about.poc}
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Skincare Links */}
-          <div className="flex flex-col ">
+          <div className="flex flex-col items-center">
             <h3 className="font-medium text-xl sm:text-2xl md:text-3xl lg:text-[32px] text-[#000000CC] mb-3 md:mb-4">
               Skincare
             </h3>
