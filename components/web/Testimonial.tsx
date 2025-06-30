@@ -145,7 +145,6 @@ export default function TestimonialCarousel({ dict }: Props) {
               ))}
             </CarouselContent>
           </Carousel>
-
           {/* Dots */}
           <div className="flex justify-center mt-8">
             <div className="flex gap-2">
