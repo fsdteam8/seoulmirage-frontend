@@ -105,7 +105,7 @@ export default function ResetPasswordPage() {
         <div>
           <Button
             type="submit"
-            className="w-full bg-brand-black text-brand-white hover:bg-brand-black/90"
+            className="w-full text-white hover:bg-brand-black/90"
             disabled={mutation.isPending}
           >
             {mutation.isPending ? "Sending..." : "Send"}
