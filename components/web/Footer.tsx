@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Facebook, Twitter, Instagram } from "lucide-react";
-import Image from "next/image";
+// import Image from "next/image";
 import { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
 import { usePathname } from "next/navigation";
 import { DictionaryType } from "@/dictionaries/dictionaries";
@@ -94,7 +94,7 @@ export default function Footer({ lang, dict }: Props) {
       >
         {/* Logo & Description */}
         {/* <div className="sm:col-span-2 lg:col-span-2 text-center sm:text-left">  */}
-        <div className="mb-4 md:mb-6 flex  flex-col lg:gap-0   justify-center items-center ">
+        {/* <div className="mb-4 md:mb-6 flex  flex-col lg:gap-0   justify-center items-center ">
           <div>
             <Image
               src="/logo.high-quality.svg"
@@ -110,8 +110,8 @@ export default function Footer({ lang, dict }: Props) {
           <p className="text-base text-center sm:text-lg mt-0 lg:text-[18px] text-[#000000CC] font-medium leading-relaxed max-w-sm mx-auto sm:mx-0">
             {dict.footer.title}
           </p>
-        </div>
-        <div className="border-b mb-10 border-[#00000033] mt-6 sm:mt-8 md:mt-10 lg:mt-2 pt-4 sm:pt-6"></div>
+        </div> */}
+        {/* <div className="border-b mb-10 border-[#00000033] mt-6 sm:mt-8 md:mt-10 lg:mt-2 pt-4 sm:pt-6"></div> */}
         {/* Newsletter Section */}
         <div className="text-center mb-8 md:mb-12 lg:mb-16 mt-20">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#000000CC] mb-3 md:mb-4">
