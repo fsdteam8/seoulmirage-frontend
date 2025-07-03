@@ -63,7 +63,9 @@ export default function HomePageContainer({ dict }: Props) {
 
       {/* Static Sections */}
       {/* <NewArrive /> */}
-      <ShopByCategory />
+      <div className="mb-32 mt-32">
+        <ShopByCategory />
+      </div>
 
       <OurSkinCare dict={dict} />
       <TestimonialCarousel  dict={dict}/>
