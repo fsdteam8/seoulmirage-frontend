@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/sheet";
 import { DictionaryType } from "@/dictionaries/dictionaries";
 import { useCartStore } from "@/store/cart-store";
+import { useTabStore } from "@/store/useTabStore";
 import type { CategorizedData } from "@/types/CategoryDataTypeByNavbar";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, Menu, Search, ShoppingBag, User } from "lucide-react";
@@ -53,6 +54,7 @@ export default function Navbar({ lang, dict }: Props) {
   const [isSkincareOpen, setIsSkincareOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
+  const setActiveTab = useTabStore((state) => state.setActiveTab);
 
   const { data, isLoading } = useQuery<CategorizedData>({
     queryKey: ["categoriesData"],
@@ -200,12 +202,12 @@ export default function Navbar({ lang, dict }: Props) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuItem>
-                    <Link href="/account" className="w-full font-raleway">
+                    <Link href="/account" onClick={() => setActiveTab("account")} className="w-full font-raleway">
                       My Account
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href="/account" className="w-full font-raleway">
+                    <Link href="/account" onClick={() => setActiveTab("order-history")} className="w-full font-raleway">
                       Order History
                     </Link>
                   </DropdownMenuItem>
@@ -253,9 +255,8 @@ export default function Navbar({ lang, dict }: Props) {
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-3 px-3 text-lg font-medium text-black hover:bg-gray-50 rounded-md">
                         {dict.home.navbar.skincare}
                         <ChevronDown
-                          className={`h-4 w-4 transition-transform ${
-                            isSkincareOpen ? "rotate-180" : ""
-                          }`}
+                          className={`h-4 w-4 transition-transform ${isSkincareOpen ? "rotate-180" : ""
+                            }`}
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
@@ -280,9 +281,8 @@ export default function Navbar({ lang, dict }: Props) {
                       <CollapsibleTrigger className="flex items-center justify-between w-full py-3 px-3 text-lg font-medium text-black hover:bg-gray-50 rounded-md">
                         {dict.home.navbar.collections}
                         <ChevronDown
-                          className={`h-4 w-4 transition-transform ${
-                            isCollectionsOpen ? "rotate-180" : ""
-                          }`}
+                          className={`h-4 w-4 transition-transform ${isCollectionsOpen ? "rotate-180" : ""
+                            }`}
                         />
                       </CollapsibleTrigger>
                       <CollapsibleContent className="ml-3 mt-1 space-y-1">
