@@ -5,14 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Star, Plus, Minus, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// import BestSellers from "../BestSellers"; // Fixed typo
 import ProductReviews from "./ProductReviews";
 import { useQuery } from "@tanstack/react-query";
 import BestSellers from "../BestSerllers";
 import { toast } from "sonner";
 import { useCartStore } from "@/store/cart-store";
 
-// Define the API response types
 export interface Media {
   id: number;
   product_id: number;
@@ -88,7 +86,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
   const addItem = useCartStore((state) => state.addItem);
 
   const handleQuantityChange = (change: number) => {
-    setQuantity(Math.max(1, quantity + change));
+    setQuantity((prev) => Math.max(1, prev + change));
   };
 
   const { data, error, isLoading } = useQuery<ProductDetailsResponse>({
@@ -103,31 +101,23 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
         }
       );
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch product details");
-      }
-
-      const data = await res.json();
-      return data as ProductDetailsResponse;
+      if (!res.ok) throw new Error("Failed to fetch product details");
+      return res.json();
     },
   });
 
   const productDetails = data?.data;
 
-  // Handle loading and error states
-  if (isLoading) {
+  if (isLoading)
     return <div className="container mx-auto px-4 py-8">Loading...</div>;
-  }
 
-  if (error || !productDetails) {
+  if (error || !productDetails)
     return (
       <div className="container mx-auto px-4 py-8">
         Error loading product details. Please try again later.
       </div>
     );
-  }
 
-  // Map API data to the expected structure
   const product = {
     id: productDetails.id.toString(),
     name: productDetails.name,
@@ -135,44 +125,45 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
     price: parseFloat(productDetails.price),
     originalPrice:
       parseFloat(productDetails.cost_price) ||
-      parseFloat(productDetails.price) * 1.5, // Fallback: assume original price is 1.5x if not provided
-    rating: 4.5, // Fallback: API doesn't provide rating
-    reviews: productDetails?.reviews?.length, // Fallback: API doesn't provide reviews
+      parseFloat(productDetails.price) * 1.5,
+    rating: 4.5,
+    reviews: productDetails?.reviews?.length || 0,
     discount:
       Math.round(
         ((parseFloat(productDetails.cost_price || productDetails.price) -
           parseFloat(productDetails.price)) /
           parseFloat(productDetails.cost_price || productDetails.price)) *
           100
-      ) || 0, // Calculate discount if possible, else 0
+      ) || 0,
     images: productDetails.media.map(
-      (media) => `${process.env.NEXT_PUBLIC_API_URL}/${media.file_path}`
-    ), // Prepend API URL to image paths
+      (m) => `${process.env.NEXT_PUBLIC_API_URL}/${m.file_path}`
+    ),
     description: productDetails.description || "No description available.",
     details: {
-      "STRAIGHT UP": "A high-quality product designed for your needs.", // Fallback
+      "STRAIGHT UP": "A high-quality product designed for your needs.",
       "THE LOWDOWN": [
         "Premium quality materials.",
         "Suitable for various uses.",
-        "Crafted with care.", // Fallback details
+        "Crafted with care.",
       ],
     },
-    additionalInfo: `Part of our ${productDetails.category.name} collection.`, // Fallback
-    stock_quantity: productDetails.stock_quantity, // Additional field from API
-    status: productDetails.status, // Additional field from API
+    stock_quantity: productDetails.stock_quantity,
+    status: productDetails.status,
   };
 
+  // ✅ FIXED: Passing quantity into addItem
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // prevent link navigation when clicking button inside Link
+    e.preventDefault();
 
     addItem({
       ...productDetails,
+      quantity, // ✅ pass user-selected quantity
       status:
-        productDetails.status === "active" ||
-        productDetails.status === "inactive"
+        productDetails.status === "active" || productDetails.status === "inactive"
           ? productDetails.status
           : "inactive",
     });
+
     toast.success(`${product.name} has been added to your cart!`, {
       duration: 2000,
       position: "top-center",
@@ -187,7 +178,6 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
   return (
     <section>
       <div className="container mx-auto px-4 py-8">
-        {/* Back Button */}
         <Link
           href="/products"
           className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
@@ -199,7 +189,6 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Image Gallery */}
           <div className="space-y-4">
-            {/* Thumbnail Images - Mobile: Horizontal scroll */}
             <div className="lg:hidden">
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {product.images.map((image, index) => (
@@ -224,7 +213,6 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
               </div>
             </div>
 
-            {/* Desktop Thumbnail Layout */}
             <div className="hidden lg:flex gap-4">
               <div className="flex flex-col gap-2">
                 {product.images.map((image, index) => (
@@ -248,7 +236,6 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
                 ))}
               </div>
 
-              {/* Main Image */}
               <div className="flex-1 aspect-square rounded-lg overflow-hidden bg-gray-100">
                 <Image
                   src={product.images[selectedImageIndex] || "/placeholder.svg"}
@@ -260,7 +247,6 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
               </div>
             </div>
 
-            {/* Mobile Main Image */}
             <div className="lg:hidden aspect-square rounded-lg overflow-hidden bg-gray-100">
               <Image
                 src={product.images[selectedImageIndex] || "/placeholder.svg"}
@@ -272,7 +258,7 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
             </div>
           </div>
 
-          {/* Product Information */}
+          {/* Product Info */}
           <div className="space-y-6">
             <div>
               <h1 className="text-2xl lg:text-3xl font-bold mb-2">
@@ -297,7 +283,6 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
               </div>
             </div>
 
-            {/* Price */}
             <div className="flex items-center gap-3">
               <span className="text-3xl font-bold">
                 <span className="text-[16px]">AED</span>{" "}
@@ -316,23 +301,6 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
               )}
             </div>
 
-            {/* Stock Status */}
-            {/* <div>
-              <span
-                className={`text-sm font-medium ${
-                  product.status === "available"
-                    ? "text-green-600"
-                    : "text-red-600"
-                }`}
-              >
-                {product?.status?.toLowerCase() === "low stock"
-                  ? "available"
-                  : "Out of Stock"}{" "}
-                ({product.stock_quantity} available)
-              </span>
-            </div> */}
-
-            {/* Details */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Details</h3>
               <p className="text-gray-700">{product.description}</p>
@@ -354,16 +322,8 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
                   )}
                 </div>
               ))}
-
-              {/* <div>
-                <h4 className="font-semibold mb-2">What else?!</h4>
-                <p className="text-sm text-gray-700">
-                  {product.additionalInfo}
-                </p>
-              </div> */}
             </div>
 
-            {/* Quantity and Add to Cart */}
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <div className="flex items-center border rounded-lg">
@@ -402,12 +362,10 @@ export default function ProductDetails({ productId }: ProductDetailsProps) {
         </div>
       </div>
 
-      {/* ProductReviews */}
       <div className="bg-[#F5D2A899] py-8">
         <ProductReviews productId={productId} />
       </div>
 
-      {/* Best Seller products */}
       <BestSellers />
     </section>
   );
