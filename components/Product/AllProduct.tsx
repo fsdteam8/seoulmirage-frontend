@@ -145,11 +145,10 @@ export default function AllProducts() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`flex-shrink-0 text-sm font-medium transition-colors whitespace-nowrap scroll-snap-align-start ${
-                    selectedCategory === category
+                  className={`flex-shrink-0 text-sm font-medium transition-colors whitespace-nowrap scroll-snap-align-start ${selectedCategory === category
                       ? "text-black border-b-2 border-black pb-1"
                       : "text-gray-600 hover:text-black"
-                  }`}
+                    }`}
                   role="tab"
                   aria-selected={selectedCategory === category}
                   tabIndex={selectedCategory === category ? 0 : -1}
