@@ -1,21 +1,23 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 import AccountHeader from "./_components/account-header";
 import UserInformation from "./_components/user-information";
 // import ShippingAddress from "./_components/shipping-address";
 import ChangePassword from "./_components/change-password";
 import OrderCard from "./_components/order-card";
+import { useTabStore } from "@/store/useTabStore";
 
 export default function AccountPage() {
-  const [activeTab, setActiveTab] = useState<"profile" | "orders">("profile");
-
+  // const [activeTab, setActiveTab] = useState<"profile" | "orders">("profile");
+  const activeTabs = useTabStore((state) => state.activeTab);
+  console.log(activeTabs)
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <AccountHeader activeTab={activeTab} onTabChange={setActiveTab} />
+        <AccountHeader />
 
-        {activeTab === "profile" && (
+        {activeTabs === "account" && (
           <div className="space-y-[60px]">
             <UserInformation />
             {/* <ShippingAddress /> */}
@@ -24,7 +26,7 @@ export default function AccountPage() {
           </div>
         )}
 
-        {activeTab === "orders" && (
+        {activeTabs === "order-history" && (
           <div className="lg:p-6">
             <h2 className="text-lg font-medium text-gray-900 mb-4">
               Order History

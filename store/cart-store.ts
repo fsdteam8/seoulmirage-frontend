@@ -1,53 +1,49 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export interface MediaItem {
+// Product types
+export interface Media {
   id: number;
   product_id: number;
   file_path: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Category {
   id: number;
   name: string;
 }
-export interface Media {
-  id: number;
-  product_id: number;
-  file_path: string;
-  created_at?: string; // ISO date string
-  updated_at?: string; // ISO date string
-}
 
 export interface Product {
   id: number;
-  arrival_status?:string
+  arrival_status?: string;
   name: string;
   description: string;
-  image: string | null; // ✅ not optional
+  image: string | null;
   price: string;
   category_id: number;
   status: "active" | "inactive";
   cost_price: string;
   stock_quantity: number;
   sales: number;
-  // orders_count: number;
   created_at: string;
   updated_at: string;
   category: Category;
   media: Media[];
-  images?: string[]; // if you're adding this for cart/store compatibility
+  images?: string[];
   reviews_avg_rating?: number | string;
-  reviews_count?:number | string
+  reviews_count?: number | string;
 }
 
 export interface CartItem extends Product {
   quantity: number;
 }
 
+// Store type
 interface CartStore {
   items: CartItem[];
-  addItem: (product: Product) => void;
+  addItem: (product: CartItem) => void;
   removeItem: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
@@ -55,11 +51,13 @@ interface CartStore {
   getTotalPrice: () => number;
 }
 
+// Zustand store
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
 
+      // ✅ Add item with quantity support
       addItem: (product) =>
         set((state) => {
           const existing = state.items.find((item) => item.id === product.id);
@@ -67,48 +65,48 @@ export const useCartStore = create<CartStore>()(
             return {
               items: state.items.map((item) =>
                 item.id === product.id
-                  ? { ...item, quantity: item.quantity + 1 }
+                  ? { ...item, quantity: item.quantity + product.quantity }
                   : item
               ),
             };
           }
           return {
-            items: [...state.items, { ...product, quantity: 1 }],
+            items: [...state.items, { ...product }],
           };
         }),
 
+      // ✅ Remove item
       removeItem: (productId) =>
         set((state) => ({
           items: state.items.filter((item) => item.id !== productId),
         })),
 
+      // ✅ Update item quantity
       updateQuantity: (productId, quantity) =>
         set((state) => ({
           items: state.items.map((item) =>
             item.id === productId
-              ? {
-                  ...item,
-                  quantity: quantity > 0 ? quantity : 1,
-                }
+              ? { ...item, quantity: quantity > 0 ? quantity : 1 }
               : item
           ),
         })),
 
+      // ✅ Clear cart
       clearCart: () => set({ items: [] }),
 
-      getTotalItems: () => {
-        return get().items.reduce((total, item) => total + item.quantity, 0);
-      },
+      // ✅ Get total items count
+      getTotalItems: () =>
+        get().items.reduce((total, item) => total + item.quantity, 0),
 
-      getTotalPrice: () => {
-        return get().items.reduce((total, item) => {
+      // ✅ Get total cart price
+      getTotalPrice: () =>
+        get().items.reduce((total, item) => {
           const price = parseFloat(item.price);
           return total + (isNaN(price) ? 0 : price * item.quantity);
-        }, 0);
-      },
+        }, 0),
     }),
     {
-      name: "cart-storage", // localStorage key
+      name: "cart-storage", // Key for localStorage
     }
   )
 );
