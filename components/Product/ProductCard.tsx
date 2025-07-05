@@ -42,7 +42,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
-    addItem(product);
+    addItem({ ...product, quantity: 1 });
     e.preventDefault();
     setShowModal(true); // Open the modal
     // toast.success(`${product.name} has been added to your cart!`, {
